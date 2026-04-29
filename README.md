@@ -231,6 +231,110 @@ book-writer/
                 └── build_epub.sh
 ```
 
+---
+
+## 라노벨/소설 하네스
+
+소설 아이디어를 던지면 스토리 바이블부터 EPUB까지 자동으로 수행하는 픽션 전용 하네스다. 기술서 하네스와 **독립적으로 공존**하며, `lightnovel-writing-orchestrator` 스킬이 진입점이다.
+
+### 이 하네스가 하는 일
+
+1. **소재/세계관 리서치** — 장르·배경과 관련된 자료·유사 작품·독자 반응 수집
+2. **스토리 바이블 작성** — 로그라인·장르·톤·Canon 상태(locked/draft/candidate) 확정
+3. **캐릭터 카드 작성** — 주인공·히로인·라이벌·빌런·조연의 욕망·결핍·말투를 개별 파일로 정의
+4. **세계관 카드 작성** — 세계 핵심 규칙·마법/시스템·세력·장소를 별도 파일로 분리
+5. **시즌 구조 설계** — 시즌별 핵심 질문·아크·피날레·다음 시즌 훅·복선 흐름 설계
+6. **챕터 플롯 작성** — 챕터 목적·감정 변화·복선 사용/회수·엔딩 훅을 챕터별로 설계
+7. **챕터 집필** — `lightnovel-style-guide.md` 기준으로 팀 에이전트가 최대 3챕터 동시 집필
+8. **문체/대사/시점/연속성 검수** — `novel-style-guardian`(8개 항목)과 `continuity-keeper`가 실시간·시즌 전체 관점으로 검수
+9. **통합 편집** — 저자 노트 제거, 전환부·용어 정리, 서문·작가 후기 작성, manifest 생성
+10. **표지 + EPUB 빌드** — 기존 `cover-designer`·`epub-builder`·`build_epub.sh`를 그대로 재사용
+
+### 지원 구조
+
+| 구조 | 설명 |
+|------|------|
+| 단권 라노벨 | 내부적으로 `s01`로 처리. 시즌 1과 동일한 파이프라인 |
+| 시즌제 라노벨 | `seasons/s01/`, `seasons/s02/` … 시즌별 독립 바이블·챕터 플랜·원고 |
+| 장편 판타지 소설 | 시즌제와 동일 구조, 시즌 = 편(部) 개념으로 운용 |
+| 웹소설식 챕터 구조 | 챕터 번호 3자리 제로 패딩(`001`, `002` …), 회차 단위 집필 |
+| 외전/후일담 추가 | 별도 슬러그 + 시즌 구조 신규 실행, 기존 바이블 참조 가능 |
+
+### 기대 산출물
+
+```
+{slug}/
+├── 02_story_bible.md              # 전체 스토리 바이블 + Canon 상태 표
+├── 02_story_bible.json            # 기계 판독용 구조화 메타데이터
+├── 02_story_bible_review.md       # 바이블 리뷰 결과
+├── characters/
+│   ├── protagonist.md
+│   ├── heroine.md
+│   ├── rival.md
+│   ├── villain.md
+│   └── supporting.md
+├── worldbuilding/
+│   ├── world_rules.md
+│   ├── magic_system.md            # 또는 system_rules.md
+│   ├── factions.md
+│   └── locations.md
+├── relationships.md
+├── season_seeds.md
+├── 03_season_plan.md              # 전체 시즌 구조 요약 + 복선 추적표
+├── seasons/
+│   └── s01/
+│       ├── season_bible.md        # 시즌 1 완전 상세 아크
+│       ├── chapter_plan.md        # 챕터별 플롯 설계
+│       ├── season_manuscript.md   # 시즌 통합 원고
+│       └── chapters/
+│           ├── 001_draft.md
+│           ├── 001_final.md
+│           └── ...
+├── continuity/
+│   ├── continuity_log.md
+│   ├── timeline.md
+│   ├── foreshadowing_tracker.md
+│   └── character_state_table.md
+├── 04_manuscript.md               # 전체 통합 원고 (EPUB 빌더 직접 소비)
+├── book_manifest.json             # EPUB 메타데이터
+├── cover.png
+└── build_log.md
+
+{작품-제목}-v1.0.0.epub            # 최종 산출물 (프로젝트 루트)
+{작품-제목}-v1.0.0.md              # 책 소개 markdown (EPUB과 같은 폴더, 같은 stem)
+```
+
+### 빠른 시작 — 예시 프롬프트
+
+```
+장르: 이세계 판타지 라노벨
+구조: 시즌제
+시즌 수: 3
+시점: 1인칭 주인공 시점
+주인공: 현실에서 서버 개발자였던 남자
+핵심 설정:
+- 주인공은 이세계에서 마법 대신 시스템 로그를 읽을 수 있다
+- 세계의 마법 체계에는 버그가 있다
+- 주인공은 폐급으로 오해받지만 실제로는 세계의 오류를 수정할 수 있다
+시즌 방향:
+- 시즌 1: 폐급 판정과 첫 번째 버그 수정
+- 시즌 2: 왕국 시스템의 붕괴와 적대 세력 등장
+- 시즌 3: 세계가 설계된 이유와 최종 선택
+저자: 상진
+
+이 설정으로 라노벨을 기획하고 시즌 1부터 집필해줘.
+```
+
+`lightnovel-writing-orchestrator`가 Phase 0부터 Phase 9까지 순차적으로 진행하며, Phase 2(스토리 바이블) 완료 후 사용자 승인을 요청하는 지점이 있다.
+
+### 기술 노트
+
+- **EPUB 빌더 공유:** `cover-designer`, `epub-builder`, `build_epub.sh`는 기술서 하네스와 동일하다. `04_manuscript.md` + `book_manifest.json` 포맷을 맞추면 동일 파이프라인으로 처리된다.
+- **단권 소설:** 시즌제가 아닌 단권 요청도 내부적으로 `s01`로 처리하며 동일한 구조를 따른다. 사용자에게는 시즌 개념이 노출되지 않아도 된다.
+- **Canon 상태:** 스토리 바이블의 `[LOCKED]` 설정은 이후 집필 에이전트가 변경할 수 없다. `[CANDIDATE]`는 원고에서 확정 사실로 서술되지 않는다.
+
+---
+
 ## 데이터 전달 규칙
 
 | 방식 | 용도 |
@@ -265,6 +369,22 @@ EPUB은 생성되지만 표준 위반 사항이 있다. `{slug}/.epubcheck.log`�
 
 ### "book-writing-orchestrator 스킬이 트리거되지 않음"
 프롬프트에 "책 써줘", "저술", "EPUB" 같은 키워드가 있는지 확인한다. 단순 질문(예: "이 하네스가 뭐야?")에는 트리거되지 않는 게 정상이다. 억지로 발동시키려면 `/book-writing-orchestrator`를 직접 호출.
+
+### 에이전트/스킬 파일 편집 후 프론트매터 오류 의심 시
+
+`.claude/agents/` 또는 `.claude/skills/` 파일을 수정한 뒤 하네스가 예상대로 동작하지 않는다면 프론트매터 검증 스크립트를 실행한다.
+
+```bash
+python3 scripts/validate_harness_frontmatter.py
+```
+
+이 스크립트는 Python 3 표준 라이브러리만 사용하며 외부 의존성이 없다. 검사 항목:
+- 파일이 `---`로 시작하는가
+- 프론트매터 닫는 `---`가 있는가
+- 에이전트 파일에 `name`, `description`, `model` 필드가 있고 비어 있지 않은가
+- 스킬 파일에 `name`, `description` 필드가 있고 비어 있지 않은가
+
+모든 파일이 유효하면 `All N files valid.`를 출력하고 종료 코드 0을 반환한다. 오류가 있으면 해당 파일과 원인을 출력하고 종료 코드 1을 반환한다.
 
 ## 진화 규칙
 
