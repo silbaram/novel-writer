@@ -25,7 +25,9 @@ description: Build a standards-compliant EPUB 3 file from a manuscript markdown,
 5. **책 소개 markdown 생성** — EPUB과 같은 폴더(프로젝트 루트)에 `{책-제목}-v{version}.md` 작성
    - 파일명 슬러그화 규칙은 EPUB과 동일 (공백→하이픈, 특수문자 제거)
    - 콘텐츠 템플릿·작성 원칙은 `epub-builder` 에이전트의 "책 소개 markdown" 섹션 참조
-   - 소스: `book_manifest.json` (메타), `02_plan.md` (독자·아크), `04_manuscript.md` (실제 차례)
+   - 모드 판별: `{slug}/02_story_bible.md`가 있으면 소설 모드, 없고 `02_plan.md`가 있으면 기술서 모드
+   - 기술서 모드 소스: `book_manifest.json`, `02_plan.md`, `04_manuscript.md`
+   - 소설 모드 소스: `book_manifest.json`, `02_story_bible.md`, `03_season_plan.md`, `04_chapter_plan.md`, `04_manuscript.md`
    - 같은 버전 파일이 이미 있으면 `_prev/`로 이동 후 신규 작성
 6. **기록** — `{slug}/build_log.md`에 명령, 출력, 크기, 검증 결과, 책 소개 md 경로
 
