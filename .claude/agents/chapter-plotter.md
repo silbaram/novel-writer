@@ -28,7 +28,7 @@ model: opus
 
 - 슬러그
 - `{slug}/02_story_bible.md`
-- `{slug}/02_story_bible.json` (있을 경우)
+- `{slug}/02_story_bible.json`
 - `{slug}/03_season_plan.md`
 - `{slug}/seasons/sNN/season_bible.md` (대상 시즌 전체)
 - `{slug}/characters/*.md`

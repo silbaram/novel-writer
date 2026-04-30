@@ -180,6 +180,30 @@ def validate_skill_refs(agent_path: Path, skill_dirs: set[str]) -> list[str]:
     return errors
 
 
+def validate_lightnovel_agent_refs(agent_path: Path, agent_names: set[str]) -> list[str]:
+    """Lightweight check for lightnovel orchestrator's critical agent references."""
+    errors: list[str] = []
+    if agent_path.name != "lightnovel-writing-orchestrator.md":
+        return errors
+
+    text = agent_path.read_text(encoding="utf-8")
+    # Keep this check intentionally lightweight: only guard must-have Phase agents.
+    required_agents = {
+        "story-bible-planner",
+        "season-planner",
+        "chapter-plotter",
+        "chapter-novelist",
+        "novel-editor",
+        "epub-builder",
+    }
+    for name in sorted(required_agents):
+        if f"`{name}`" in text and name not in agent_names:
+            errors.append(
+                f"references agent '{name}' but .claude/agents/{name}.md does not exist"
+            )
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -194,6 +218,8 @@ def main() -> int:
 
     # Build set of skill directory names that actually exist.
     skill_dirs: set[str] = {p.parent.name for p in skill_paths}
+
+    agent_names: set[str] = {p.stem for p in agent_paths}
 
     total = 0
     failed = 0
@@ -214,7 +240,8 @@ def main() -> int:
     print(f"=== Agents ({len(agent_paths)} files) ===")
     for p in agent_paths:
         skill_ref_errors = validate_skill_refs(p, skill_dirs)
-        check(p, REQUIRED_AGENT_FIELDS, skill_ref_errors)
+        orchestrator_ref_errors = validate_lightnovel_agent_refs(p, agent_names)
+        check(p, REQUIRED_AGENT_FIELDS, skill_ref_errors + orchestrator_ref_errors)
 
     print()
     print(f"=== Skills ({len(skill_paths)} files) ===")

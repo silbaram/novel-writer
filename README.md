@@ -53,7 +53,7 @@ Claude Code를 이 디렉토리에서 실행하면 `.claude/agents/`, `.claude/s
 
 ## 빠른 시작
 
-Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력하면 자동으로 `book-writing-orchestrator` 스킬이 발동한다.
+Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력하면 자동으로 기술서는 `book-writing-orchestrator`, 소설은 `lightnovel-writing-orchestrator` 스킬이 발동한다.
 
 ```
 주제: 효과적인 SQL 쿼리 튜닝
@@ -194,7 +194,7 @@ Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력
 ## 디렉토리 구조
 
 ```
-book-writer/
+novel-writer/
 ├── CLAUDE.md                        # 하네스 포인터 + 변경 이력 (새 세션 자동 로드)
 ├── README.md                        # 이 파일
 ├── toby-book-writing-style.md       # Toby 문체 기본 가이드

@@ -201,9 +201,9 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 - `novel-style-guardian`이 시즌 원고 전체의 톤 일관성을 점검한다 (챕터별 피드백과 달리 전체 흐름 관점)
 - `continuity-keeper`가 시즌 전체의 복선 회수 여부, 캐릭터 아크 완결성, 타임라인 충돌을 최종 점검한다
 - 발견된 문제는 `novel-style-guardian` 또는 `continuity-keeper`가 해당 챕터의 `chapter-novelist`에게 수정 요청을 보낸다
-- Critical 미해결 항목이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 수동 확인을 완료할 때까지 **Phase 9(최종 EPUB 빌드)는 중단**한다
+- Critical 미해결 항목이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 수동 확인 또는 수정 완료를 확인할 때까지 **Phase 9(최종 EPUB 빌드)는 중단**한다
 - 즉, `season_manuscript.md` 및 `04_manuscript.md` 초안 생성은 허용하되 최종 배포 산출물(EPUB)은 생성하지 않는다
-- Critical 이슈가 해소된 것이 확인되면 Phase 9로 진행한다
+- Critical 이슈가 해소되거나 사용자 수동 확인이 완료되면 Phase 9로 진행한다
 
 **출력:**
 - `{slug}/style_log.md` (누적 append)
