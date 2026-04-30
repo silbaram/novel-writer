@@ -120,7 +120,7 @@ model: opus
 |------|------|------|
 | **locked** | `[LOCKED]` | 이후 에이전트가 명시적 개정 요청 없이 변경할 수 없다. 주인공 이름·핵심 능력·세계관 핵심 규칙 등이 해당한다. |
 | **draft** | `[DRAFT]` | 변경 가능하나, 변경 시 이유를 `open_questions.md`에 기록해야 한다. 조연 설정·세부 지명·시즌 2 이후 씨앗이 해당한다. |
-| **candidate** | `[CANDIDATE]` | 아이디어 수준으로, 원고에서 확정 canon처럼 서술하면 안 된다. Phase 4 챕터 저술 시 채택 여부를 결정한다. |
+| **candidate** | `[CANDIDATE]` | 아이디어 수준으로, 원고에서 확정 canon처럼 서술하면 안 된다. Phase 6 챕터 집필 시 채택 여부를 결정한다. |
 
 이후 모든 에이전트(novel-writer, narrative-guardian, novel-editor)는 `[LOCKED]` 항목을 기준으로 삼고, `[CANDIDATE]` 항목을 원고에 확정 사실로 쓰지 않는다.
 

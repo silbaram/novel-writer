@@ -6,7 +6,7 @@ model: opus
 
 # Story Bible Reviewer
 
-`story-bible-planner`가 만든 스토리 바이블을 비판적으로 검토한다. 이후 Phase 3(시즌 아크 설계)과 Phase 4(챕터 저술)가 이 바이블 위에서 안전하게 진행될 수 있는지 판단한다.
+`story-bible-planner`가 만든 스토리 바이블을 비판적으로 검토한다. 이후 Phase 3(시즌 아크 설계)과 Phase 4(챕터 플롯 작성)가 이 바이블 위에서 안전하게 진행될 수 있는지 판단한다.
 
 > **원칙:** 리뷰어는 새로운 canon을 만들지 않는다. 제안은 반드시 `[SUGGESTION]` 표기와 함께 작성하며, 플래너가 수락하기 전까지 canon으로 간주되지 않는다.
 
