@@ -32,7 +32,8 @@ model: opus
 - `{slug}/04_manuscript.md`
 - `{slug}/cover.png`
 - `{slug}/book_manifest.json`
-- `{slug}/02_plan.md` (책 소개 작성 시 참조 — 독자 여정·핵심 메시지·챕터 흐름 추출)
+- 기술서 모드: `{slug}/02_plan.md` (책 소개 작성 시 참조 — 독자 여정·핵심 메시지·챕터 흐름 추출)
+- 소설 모드: `{slug}/02_story_bible.md`, `{slug}/03_season_plan.md`, `{slug}/04_chapter_plan.md`, `{slug}/04_manuscript.md`, `{slug}/book_manifest.json` (책 소개 작성 시 참조 — 세계관·시즌 아크·챕터 흐름 추출)
 
 ## 출력 프로토콜
 
@@ -45,6 +46,16 @@ model: opus
 EPUB 빌드가 성공한 직후, 같은 슬러그·버전 stem의 `.md` 파일을 EPUB 옆에 만든다. 파일명 규칙은 EPUB과 동일하다 (예: `효과적인-SQL-쿼리-튜닝-v1.0.0.md`). 슬러그화 로직도 같은 규칙(공백→하이픈, 특수문자 제거).
 
 이 파일은 **사람이 읽는 마케팅·공유용 책 소개**다. 블로그/스토어/SNS에 그대로 붙여 쓸 수 있어야 한다. EPUB 내부의 서문(preface)을 복붙하지 말고, 외부 독자(아직 책을 읽지 않은 사람)를 향해 다시 쓴다.
+
+### 모드 판별
+
+책 소개 작성 전 아래 우선순위로 모드를 판별한다.
+
+1. `{slug}/02_plan.md`가 있으면 **기술서 모드**
+2. `{slug}/02_plan.md`가 없고 `{slug}/02_story_bible.md` 또는 `{slug}/03_season_plan.md`가 있으면 **소설 모드**
+3. 둘 다 없으면 `book_manifest.json` + `04_manuscript.md`만으로 최소 템플릿 작성 후 `build_log.md`에 참조 소스 부족 경고 기록
+
+소설 모드에서는 "대상 독자 여정" 대신 **독자 경험/감정 아크**, "챕터 핵심 질문" 대신 **회차 훅/갈등 축**을 사용한다.
 
 ### 콘텐츠 템플릿
 
@@ -61,11 +72,15 @@ EPUB 빌드가 성공한 직후, 같은 슬러그·버전 stem의 `.md` 파일�
 
 ## 이 책은 무엇인가
 
-{2~4문단. 책이 다루는 주제, 왜 지금 필요한 책인지, 다른 자료와 무엇이 다른지. 02_plan.md의 "책 특성"과 manifest.description을 토대로 작성}
+{2~4문단. 책/소설이 다루는 주제, 왜 지금 필요한지, 다른 자료와 무엇이 다른지.
+기술서 모드: 02_plan.md의 "책 특성" + manifest.description 기반.
+소설 모드: 02_story_bible.md의 핵심 콘셉트/테마 + manifest.description 기반.}
 
 ## 누구를 위한 책인가
 
-{2~3문단 또는 bullet. 02_plan.md의 "대상 독자 / 독자 여정"을 외부 독자 시점으로 풀어서 — 진입 상태와 출구 상태를 구체적으로}
+{2~3문단 또는 bullet.
+기술서 모드: 02_plan.md의 "대상 독자 / 독자 여정"을 외부 독자 시점으로.
+소설 모드: 03_season_plan.md/04_chapter_plan.md의 독자 경험(감정선·긴장선·기대 포인트)을 외부 독자 시점으로.}
 
 ## 무엇을 얻게 되는가
 
@@ -80,7 +95,9 @@ EPUB 빌드가 성공한 직후, 같은 슬러그·버전 stem의 `.md` 파일�
 2. {챕터 2 제목} — {한 줄 요약}
 ...
 
-(04_manuscript.md의 1단계 헤딩과 02_plan.md의 챕터 핵심 질문을 결합)
+(04_manuscript.md의 1단계 헤딩을 기준으로 작성.
+기술서 모드: 02_plan.md의 챕터 핵심 질문 결합.
+소설 모드: 04_chapter_plan.md 및 seasons/sNN/chapter_plan.md의 에피소드 훅/갈등 축 결합.)
 
 ## 저자 소개
 
@@ -97,7 +114,10 @@ EPUB 빌드가 성공한 직후, 같은 슬러그·버전 stem의 `.md` 파일�
 
 - **외부 시점:** 책 안의 서문이 "여러분과 함께 ~를 살펴보겠습니다"라면, 이 파일은 "이 책은 ~를 다룹니다"의 톤이다. 독자가 아직 책을 펴지 않은 상태를 가정한다.
 - **Toby 문체 강요 안 함:** 챕터 본문은 Toby 평어체로 쓰지만, 책 소개는 일반 마케팅 톤(존중·간결·정보 중심)이 더 적합하다. 다만 과장·홍보성 클리셰("당신의 인생이 바뀝니다")는 피한다.
-- **소스 일치성:** 모든 사실은 `02_plan.md`, `04_manuscript.md`, `book_manifest.json`에서만 가져온다. 새 사실을 지어내지 않는다.
+- **소스 일치성:**
+  - 기술서 모드: `02_plan.md`, `04_manuscript.md`, `book_manifest.json`에서만 사실 추출.
+  - 소설 모드: `02_story_bible.md`, `03_season_plan.md`, `04_chapter_plan.md`, `seasons/sNN/chapter_plan.md`, `04_manuscript.md`, `book_manifest.json`에서만 사실 추출.
+  새 사실을 지어내지 않는다.
 - **목차는 실제 manuscript 헤딩에서 추출:** plan과 manuscript가 다르면 manuscript가 정답이다.
 - **재빌드 시:** 같은 버전이면 덮어쓰지 말고 `_prev/`로 이전 파일을 옮긴 뒤 새로 쓴다 (EPUB과 동일 정책). 버전이 올라가면 새 stem으로 공존.
 
