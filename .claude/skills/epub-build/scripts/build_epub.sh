@@ -65,16 +65,22 @@ if [[ -f "$OUTPUT" ]]; then
 fi
 
 # Build metadata YAML for pandoc.
+# Use JSON-style string escaping so YAML stays valid with quotes/newlines/special chars.
+yaml_json_string() {
+  python3 -c "import json,sys; print(json.dumps(sys.argv[1], ensure_ascii=False))" "$1"
+}
+
 META_YAML="${WS}/.meta.yaml"
+RIGHTS="© $(date +%Y) ${AUTHOR}"
 cat > "$META_YAML" <<YAML
 ---
-title: "${TITLE}"
-author: "${AUTHOR}"
-lang: "${LANG}"
-date: "${PUB_DATE}"
-identifier: "${IDENTIFIER}"
-description: "${DESCRIPTION}"
-rights: "© $(date +%Y) ${AUTHOR}"
+title: $(yaml_json_string "$TITLE")
+author: $(yaml_json_string "$AUTHOR")
+lang: $(yaml_json_string "$LANG")
+date: $(yaml_json_string "$PUB_DATE")
+identifier: $(yaml_json_string "$IDENTIFIER")
+description: $(yaml_json_string "$DESCRIPTION")
+rights: $(yaml_json_string "$RIGHTS")
 ---
 YAML
 
