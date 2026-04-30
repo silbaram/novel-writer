@@ -207,7 +207,9 @@ description: Procedural guide for integrating finalized novel chapters into seas
 
 - `continuity_log.md`에 미해결 Critical 경고가 없는지 확인
 - `foreshadowing_tracker.md`에서 이번 시즌 회수 예정 복선이 모두 `회수 완료`인지 확인
-- Critical 미해결 항목이 있으면 `04_manuscript.md`는 생성하되 `build_log.md`에 경고 항목을 명시하고 오케스트레이터에 수동 확인 요청
+- Critical 미해결 항목이 있으면 `season_manuscript.md`와 `04_manuscript.md` 초안 생성까지만 허용한다
+- 같은 경우 `build_log.md`에 경고를 명시하고 오케스트레이터에 수동 확인을 요청한다
+- **최종 EPUB 빌드(Phase 9)는 금지**하며, Critical 해소 확인 전에는 `epub-builder`를 호출하지 않는다
 
 ---
 
