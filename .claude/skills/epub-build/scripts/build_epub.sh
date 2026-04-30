@@ -64,25 +64,43 @@ if [[ -f "$OUTPUT" ]]; then
   mv "$OUTPUT" "_prev/$(basename "$OUTPUT" .epub)-$(date +%Y%m%d%H%M%S).epub"
 fi
 
-# Build metadata YAML for pandoc.
-# Use JSON-style string escaping so YAML stays valid with quotes/newlines/special chars.
-yaml_json_string() {
-  python3 -c "import json,sys; print(json.dumps(sys.argv[1], ensure_ascii=False))" "$1"
-}
-
 META_YAML="${WS}/.meta.yaml"
 RIGHTS="© $(date +%Y) ${AUTHOR}"
-cat > "$META_YAML" <<YAML
----
-title: $(yaml_json_string "$TITLE")
-author: $(yaml_json_string "$AUTHOR")
-lang: $(yaml_json_string "$LANG")
-date: $(yaml_json_string "$PUB_DATE")
-identifier: $(yaml_json_string "$IDENTIFIER")
-description: $(yaml_json_string "$DESCRIPTION")
-rights: $(yaml_json_string "$RIGHTS")
----
-YAML
+
+# Build metadata YAML for pandoc using Python stdlib only.
+# This avoids YAML breakage when values contain quotes/newlines/special chars.
+python3 - "$META_YAML" "$TITLE" "$AUTHOR" "$LANG" "$PUB_DATE" "$IDENTIFIER" "$DESCRIPTION" "$RIGHTS" <<'PY'
+from pathlib import Path
+import sys
+
+def yaml_single_quoted(value: str) -> str:
+    # YAML single-quoted scalar: escape single quote by doubling it.
+    return "'" + value.replace("'", "''") + "'"
+
+out_path = Path(sys.argv[1])
+title, author, lang, pub_date, identifier, description, rights = sys.argv[2:]
+
+fields = [
+    ("title", title),
+    ("author", author),
+    ("lang", lang),
+    ("date", pub_date),
+    ("identifier", identifier),
+    ("description", description),
+    ("rights", rights),
+]
+
+lines = ["---"]
+for key, value in fields:
+    if "\n" in value:
+        lines.append(f"{key}: |-")
+        for line in value.splitlines():
+            lines.append(f"  {line}")
+    else:
+        lines.append(f"{key}: {yaml_single_quoted(value)}")
+lines.append("---")
+out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+PY
 
 # Build cover arg (optional).
 COVER_ARG=()

@@ -20,7 +20,7 @@ description: Procedural guide for integrating finalized novel chapters into seas
 | `{slug}/seasons/sNN/chapters/{CCC}_final.md` (전체) | 모든 챕터 최종본이 존재하는지 확인 |
 | `{slug}/continuity/continuity_log.md` | 미해결 Critical 경고가 있는지 확인 |
 | `{slug}/continuity/character_state_table.md` | 최신 인물 상태 확인 |
-| `{slug}/continuity/foreshadowing_tracker.md` | 미회수 복선이 의도적 유보인지 누락인지 확인 |
+| `{slug}/continuity/foreshadowing_tracker.md` | 미회수 복선은 내부 트래커용으로만 유지하고, 독자 노출 대상이 아님을 확인 |
 | `{slug}/02_story_bible.md` | 작품 제목 후보, 저자, 언어 확인 |
 | `{slug}/seasons/sNN/season_bible.md` (전체 시즌) | 시즌 제목, 시즌 역할 확인 |
 
@@ -124,7 +124,7 @@ description: Procedural guide for integrating finalized novel chapters into seas
 
 ## 작가 후기
 {시리즈 완결 또는 이번 시즌을 마치며. 인물과 세계에 대한 애정을 담은 짧은 글.
-다음 시즌에 대한 힌트를 조심스럽게 남겨도 좋다.}
+필요 시 다음 시즌에 대한 힌트를 조심스럽게 남길 수 있으나, 내부 복선 추적 내역을 직접 노출하지 않는다.}
 ```
 
 **서문 작성 원칙:**
@@ -207,9 +207,9 @@ description: Procedural guide for integrating finalized novel chapters into seas
 
 - `continuity_log.md`에 미해결 Critical 경고가 없는지 확인
 - `foreshadowing_tracker.md`에서 이번 시즌 회수 예정 복선이 모두 `회수 완료`인지 확인
-- Critical 미해결 항목이 있으면 `season_manuscript.md`와 `04_manuscript.md` 초안 생성까지만 허용한다
-- 같은 경우 `build_log.md`에 경고를 명시하고 오케스트레이터에 수동 확인을 요청한다
-- **최종 EPUB 빌드(Phase 9)는 금지**하며, Critical 해소 확인 전에는 `epub-builder`를 호출하지 않는다
+- Critical 미해결 항목이 있으면 `season_manuscript.md`와 `04_manuscript.md` **초안 생성은 허용**한다
+- 같은 경우 `build_log.md`에 경고를 명시하고 오케스트레이터에 **수동 확인 또는 수정 완료 확인**을 요청한다
+- **최종 EPUB 빌드(Phase 9)는 금지**하며, Critical 해소 또는 사용자 수동 승인 전에는 `epub-builder`를 호출하지 않는다
 
 ---
 
