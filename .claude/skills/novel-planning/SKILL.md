@@ -17,7 +17,7 @@ description: Procedural guide for planning a Korean light novel or fiction proje
 |-------|-------------|------------------------|
 | **Phase 2** | `story-bible-planner` | 스토리 바이블 전체 + 시즌 씨앗만. 챕터 플롯 ❌ 시즌 상세 아크 ❌ |
 | **Phase 3** | `season-planner` | 시즌 아크 확장. 챕터별 플롯 비트 ❌ 장면 묘사 ❌ |
-| **Phase 4** | 오케스트레이터 직접 | 챕터 플롯 설계. 산문 집필 ❌ |
+| **Phase 4** | `chapter-plotter` | 챕터 플롯 설계. 산문 집필 ❌ |
 
 ---
 
