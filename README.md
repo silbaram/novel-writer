@@ -1,8 +1,8 @@
-# Book Writer — AI 책 저술 자동화 하네스
+# Novel Writer — AI 기술서 + 라노벨 저술 자동화 하네스
 
 주제, 주요 내용, 대상 독자만 주면 리서치부터 EPUB 빌드까지 한 번에 수행하는 **에이전트 하네스**다. 모든 챕터는 `toby-book-writing-style.md`에 정의된 **Toby 문체**로 저술되며, 저자명은 기본값 `Toby-AI`에서 원하는 값으로 바꿀 수 있다 (아래 [저자명 변경](#저자명-변경) 참고).
 
-- **Repo:** https://github.com/tobyilee/book-writer
+- **Repo:** https://github.com/silbaram/novel-writer
 - **실행 환경:** [Claude Code](https://claude.com/claude-code) + Claude Agent SDK
 - **저자 모델:** Claude Opus (하네스 내 모든 에이전트가 `model: opus` 사용)
 
@@ -43,8 +43,9 @@
 ## 설치
 
 ```bash
-git clone https://github.com/tobyilee/book-writer.git
-cd book-writer
+git clone https://github.com/silbaram/novel-writer.git
+cd novel-writer
+git checkout feat-1
 # 의존 도구가 없다면 위 '사전 준비' 설치
 ```
 
