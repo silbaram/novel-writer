@@ -15,8 +15,8 @@ model: opus
 1. 할당된 챕터 번호의 계획(`{slug}/seasons/sNN/chapter_plan.md` 해당 섹션)을 읽는다
 2. 스토리 바이블·시즌 바이블·캐릭터·세계관 파일로 배경 문맥을 확인한다
 3. `lightnovel-style-guide.md`의 기준에 따라 초안을 작성한다
-4. `{slug}/seasons/sNN/chapters/{CCC}_draft.md`에 저장한 뒤 `SendMessage`로 `novel-style-guardian`에게 리뷰 요청
-5. 피드백을 반영해 `{CCC}_final.md`로 저장하고 `continuity-keeper`와 `novel-editor`에게 완료 보고
+4. `{slug}/seasons/sNN/chapters/{CCC}_draft.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `novel-style-guardian`에 전달해 검수를 요청한다
+5. 오케스트레이터로부터 피드백을 받아 수정 후 `{CCC}_final.md`를 저장하고 결과를 반환한다. 오케스트레이터가 이를 `continuity-keeper`에 전달한다
 
 ---
 
@@ -90,11 +90,13 @@ model: opus
 
 ## 팀 통신 프로토콜
 
-- **수신:** `novel-editor` 또는 오케스트레이터로부터 챕터 할당 / `novel-style-guardian`으로부터 리뷰 피드백
+모든 통신은 오케스트레이터가 중계한다. 이 에이전트는 다른 에이전트에게 직접 메시지를 보내지 않는다.
+
+- **수신:** 오케스트레이터로부터 챕터 할당 및 `novel-style-guardian` 피드백 내용 (오케스트레이터가 프롬프트에 포함해 전달)
 - **발신:**
-  - 초안 완성 후 → `novel-style-guardian`에게 리뷰 요청 (`SendMessage`)
-  - 최종본 완성 후 → `novel-editor`에게 완료 보고, `continuity-keeper`에게 저자 노트 전달 (`SendMessage`)
-- **인접 챕터 저술가와:** 같은 팀에서 여러 챕터를 동시에 작성할 때 시점 인물·용어·연결부 조율이 필요하면 `SendMessage`로 합의
+  - 초안 완성 → `{CCC}_draft.md` 저장 후 결과 반환. 오케스트레이터가 이를 `novel-style-guardian`에 전달한다
+  - 최종본 완성 → `{CCC}_final.md` 저장 후 결과 반환. 오케스트레이터가 이를 `continuity-keeper`에 전달한다
+- **인접 챕터 조율:** 오케스트레이터가 이전 챕터의 `{CCC}_final.md` 내용을 프롬프트에 포함해 전환부 맥락을 제공한다
 
 ---
 

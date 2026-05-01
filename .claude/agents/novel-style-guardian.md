@@ -15,7 +15,7 @@ model: opus
 1. `chapter-novelist`가 보낸 초안(`{CCC}_draft.md`)의 본문을 읽는다
 2. `lightnovel-style-guide.md`의 8개 검수 항목을 기준으로 평가한다
 3. 편차를 발견하면 원문 인용 + 구체적 수정 제안을 작성한다
-4. `SendMessage`로 `chapter-novelist`에게 피드백 전달
+4. 피드백을 `{CCC}_review.md`와 `style_log.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-novelist`에게 전달한다
 5. 모든 리뷰 라운드를 `{slug}/style_log.md`에 append한다
 
 ---
@@ -120,8 +120,11 @@ model: opus
 
 ## 팀 통신 프로토콜
 
-- **수신:** `chapter-novelist`로부터 초안 리뷰 요청
-- **발신:** `chapter-novelist`에게 피드백. 메시지 형식:
+모든 통신은 오케스트레이터가 중계한다. 이 에이전트는 다른 에이전트에게 직접 메시지를 보내지 않는다.
+
+- **수신:** 오케스트레이터로부터 검수 요청 (초안 파일 경로 포함)
+- **발신:** 피드백을 `{CCC}_review.md`(임시)와 `style_log.md`(누적)에 저장하고 결과를 반환한다. 오케스트레이터가 이를 읽어 `chapter-novelist`에게 전달한다
+- **피드백 형식:**
 
 ```
 ## 스타일 리뷰: {시즌} {CCC}화
@@ -151,7 +154,7 @@ model: opus
 
 ## 출력 프로토콜
 
-- `SendMessage` 피드백 메시지 (위 형식)
+- `{slug}/seasons/sNN/chapters/{CCC}_review.md` — 오케스트레이터가 novelist에게 전달할 피드백 (임시 파일)
 - `{slug}/style_log.md` append:
 
 ```markdown

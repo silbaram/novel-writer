@@ -45,7 +45,7 @@ description: Procedural guide for integrating finalized novel chapters into seas
 - [ ] 시간 경과 표지 ("며칠 뒤", "그날 밤")가 챕터 초반에 명시되어 있는가?
 - [ ] 직전 챕터의 훅이 다음 챕터에서 회수되거나 긴장이 유지되는가?
 
-수정이 필요한 경우 해당 `chapter-novelist`에게 `SendMessage`로 전환부 수정을 제안한다. 에디터가 직접 본문을 재서술하지 않는다.
+수정이 필요한 경우 `{slug}/editor_notes.md`에 전환부 수정 제안을 기록하고 결과에 명시한다. 오케스트레이터가 이를 읽어 해당 `chapter-novelist`를 재호출한다. 에디터가 직접 본문을 재서술하지 않는다.
 
 ---
 
