@@ -15,7 +15,7 @@ description: Use to build EPUB 3 plus paired intro markdown from manuscript, cov
    - `{slug}/book_manifest.json`
 2. **매니페스트 필드 점검**
    - `title` 비어있지 않음
-   - `author` 필드 존재 (기본값 `Toby-AI`, 사용자 지정 시 매니페스트 값을 그대로 사용)
+   - `author` 필드 존재 (사용자 지정 시 매니페스트 값을 그대로 사용. 비어 있으면 기술서는 `Toby-AI`, 라노벨/소설은 `AI-Author`)
    - `language` 존재 (`ko`)
    - `version` 존재 (예: `1.0.0`)
 3. **스크립트 실행** — `scripts/build_epub.sh {slug}`

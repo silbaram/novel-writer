@@ -1,6 +1,6 @@
 ---
 name: book-planning
-description: Design the overall book structure — title candidates, characteristics, chapter list with main content per chapter, and narrative arc. Use when turning research into a writing plan, drafting a book outline, planning chapter sequence, or revising a book plan based on review feedback. Triggers on "저술 계획", "책 아웃라인", "챕터 구성", "book outline".
+description: Use for book outlines, title candidates, audience fit, chapter sequence, narrative arc, and plan revisions from research or feedback.
 ---
 
 # Book Planning

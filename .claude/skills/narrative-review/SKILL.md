@@ -1,6 +1,6 @@
 ---
 name: narrative-review
-description: Procedural guide for reviewing story bibles, chapter drafts, and continuity in a Korean light novel project. Supports story-bible-reviewer, novel-style-guardian, and continuity-keeper. Defines review axes, severity levels (Critical / Should / Nice), and tracking procedures for POV, dialogue voice, emotional progression, foreshadowing, and season-to-season continuity.
+description: Use to review Korean fiction story bibles, chapter drafts, continuity, POV, dialogue voice, pacing, foreshadowing, and severity logs.
 ---
 
 # Narrative Review

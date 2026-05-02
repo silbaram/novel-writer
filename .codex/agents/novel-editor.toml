@@ -115,13 +115,13 @@ EPUB 빌더가 직접 소비하는 전체 통합 원고. 기술서 하네스와 
 
 `build_epub.sh`가 직접 파싱하는 메타데이터 파일. 기술서 하네스의 필수 필드를 모두 포함하며, 소설 전용 선택 필드를 추가한다.
 
-오케스트레이터가 사용자 지정 저자를 전달했다면 `"author"`를 그 값으로, 없으면 기본값 `Toby-AI`를 사용한다.
+오케스트레이터가 사용자 지정 저자를 전달했다면 `"author"`를 그 값으로, 없으면 라노벨/소설 기본값 `AI-Author`를 사용한다.
 
 ```json
 {
   "title": "...",
   "subtitle": "...",
-  "author": "Toby-AI",
+  "author": "AI-Author",
   "language": "ko",
   "pub_date": "YYYY-MM-DD",
   "identifier": "urn:uuid:...",

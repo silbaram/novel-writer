@@ -1,6 +1,6 @@
 ---
 name: novel-planning
-description: Procedural guide for planning a Korean light novel or fiction project. Supports story-bible-planner and season-planner. Covers input normalization, concept/genre/protagonist/character/worldbuilding cards, relationship map, conflict card, canon status, season seeds, and season arc structure. Phase boundaries are enforced: Phase 2 = story bible + season seeds only, Phase 3 = season arcs only, Phase 4 = chapter plots only.
+description: Use to plan 소설/라노벨 Korean fiction, including premise, genre, protagonist, cast, world rules, conflicts, relationships, canon, and seasons.
 ---
 
 # Novel Planning

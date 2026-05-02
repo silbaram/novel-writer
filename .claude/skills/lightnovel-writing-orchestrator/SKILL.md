@@ -1,7 +1,6 @@
 ---
 name: lightnovel-writing-orchestrator
-description: |
-  Orchestrates a Korean light novel or fiction writing workflow from premise to finished EPUB. Use when the user asks to write a 라노벨, 소설, 웹소설, 판타지, 로맨스 판타지, 이세계물, 회귀물, 학원물, 시즌제 소설, serialized fiction, or EPUB fiction project. Supports single-volume and multi-season structures.
+description: Use for 소설/라노벨 Korean fiction workflows from premise to EPUB, including story bible, seasons, chapters, review, cover, and build.
 ---
 
 # Lightnovel Writing Orchestrator
@@ -61,7 +60,7 @@ description: |
 | 시즌 수 | 시즌제 미지정 시 `1` |
 | 권/챕터 수 | 미지정 시 시즌당 20챕터 기본값 |
 | 시점 | 미지정 시 "1인칭 주인공" 기본값 |
-| 저자명 | 미지정 시 기본값 `Toby-AI` |
+| 저자명 | 미지정 시 기본값 `AI-Author` |
 
 **슬러그 생성:** 작품 핵심 키워드로 영문 슬러그를 만든다. 예: `회귀한 마검사` → `regression-swordmaster`.
 
@@ -258,7 +257,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 3. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
 
 **EPUB 메타데이터:**
-- 저자: Phase 0에서 추출한 값, 없으면 기본값 `Toby-AI`
+- 저자: Phase 0에서 추출한 값, 없으면 기본값 `AI-Author`
 - 제목: Phase 2에서 확정된 작품 제목
 - 버전: 초기 실행 `1.0.0`, 재실행 시 증가
 - 언어: `ko`

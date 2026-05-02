@@ -1,13 +1,13 @@
 ---
 name: book-writing-orchestrator
-description: Use for 책 쓰기/전자책 Korean technical book workflows from topic to EPUB, including research, planning, Toby-style chapters, editing, cover, and build.
+description: Use for non-fiction/technical 책 쓰기 or 전자책 workflows to EPUB. Do not use for 소설/라노벨 fiction; use lightnovel-writing-orchestrator.
 ---
 
 # Book Writing Orchestrator
 
 > Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
 
-주제·주요 내용·대상 독자를 받아 Toby 스타일의 완성된 EPUB을 산출하는 전 과정을 조율한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
+주제·주요 내용·대상 독자를 받아 **논픽션/기술서** EPUB을 산출하는 전 과정을 조율한다. 라노벨·소설·웹소설 요청에는 이 스킬을 쓰지 말고 `lightnovel-writing-orchestrator`를 사용한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
 
 ## 실행 모드
 
@@ -86,7 +86,7 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 
 **챕터 수가 3개를 초과하면** chapter-writer를 챕터 수만큼 만들지 않고, 3명으로 시작해 각자 여러 챕터를 순차 처리한다(풀 방식). 너무 많은 팀원은 조율 오버헤드를 만든다.
 
-**스타일 가이드:** `toby-book-writing-style.md`를 모든 chapter-writer가 참조한다. `chapter-writing` 스킬 내 `references/toby-style-guide.md`에 확장된 가이드가 있다.
+**스타일 가이드:** 모든 chapter-writer는 `chapter-writing` 스킬 내 `references/toby-style-guide.md`를 참조한다.
 
 ## Phase 5: 표지 + EPUB 빌드 (팬아웃)
 

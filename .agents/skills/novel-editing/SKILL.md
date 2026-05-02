@@ -146,7 +146,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 |------|------|------|
 | `title` | 확정된 작품 제목 | 비어 있으면 슬러그로 대체 |
 | `subtitle` | 부제 (없으면 빈 문자열) | |
-| `author` | 저자명 (기본값 `Toby-AI`) | Phase 0 지정값 우선 |
+| `author` | 저자명 (기본값 `AI-Author`) | Phase 0 지정값 우선 |
 | `language` | `"ko"` | 고정 |
 | `pub_date` | `"YYYY-MM-DD"` | 생성일 기준 |
 | `identifier` | `"urn:uuid:{UUID}"` | 재빌드 시 동일 UUID 유지 |
@@ -222,7 +222,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 | `identifier`가 비어 있음 | Python `uuid.uuid4()`로 새 UUID 생성 |
 | `title`이 비어 있음 | 슬러그를 사용하고 경고 기록 |
 | `version`이 비어 있음 | `"1.0.0"` 기본값 적용 |
-| `author`가 비어 있음 | `"Toby-AI"` 기본값 적용 |
+| `author`가 비어 있음 | `"AI-Author"` 기본값 적용 |
 
 ---
 

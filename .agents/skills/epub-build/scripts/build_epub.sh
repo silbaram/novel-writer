@@ -41,10 +41,15 @@ VERSION=$(read_field version)
 PUB_DATE=$(read_field pub_date)
 IDENTIFIER=$(read_field identifier)
 DESCRIPTION=$(read_field description)
+STRUCTURE_TYPE=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print((d.get('structure') or {}).get('type', ''))" "$MANIFEST")
 
 if [[ -z "$AUTHOR" ]]; then
-  AUTHOR="Toby-AI"
-  echo "info: manifest author empty — falling back to default 'Toby-AI'" >&2
+  if [[ "$STRUCTURE_TYPE" == "light_novel" || -f "${WS}/02_story_bible.md" ]]; then
+    AUTHOR="AI-Author"
+  else
+    AUTHOR="Toby-AI"
+  fi
+  echo "info: manifest author empty — falling back to default '${AUTHOR}'" >&2
 fi
 
 # Slugify title for filename.

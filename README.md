@@ -1,6 +1,6 @@
 # Novel Writer — AI 기술서 + 라노벨 저술 자동화 하네스
 
-주제, 주요 내용, 대상 독자만 주면 리서치부터 EPUB 빌드까지 한 번에 수행하는 **에이전트 하네스**다. 모든 챕터는 `toby-book-writing-style.md`에 정의된 **Toby 문체**로 저술되며, 저자명은 기본값 `Toby-AI`에서 원하는 값으로 바꿀 수 있다 (아래 [저자명 변경](#저자명-변경) 참고).
+주제, 주요 내용, 대상 독자만 주면 리서치부터 EPUB 빌드까지 한 번에 수행하는 **에이전트 하네스**다. 기술서/논픽션 챕터는 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 Toby 문체를 따르고, 라노벨/소설 챕터는 `lightnovel-style-guide.md`를 따른다.
 
 - **Repo:** https://github.com/silbaram/novel-writer
 - **실행 환경:** [Claude Code](https://claude.com/claude-code) + Claude Agent SDK
@@ -154,7 +154,7 @@ Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력
 
 ### 문체 조정
 
-프로젝트 루트의 `toby-book-writing-style.md`가 모든 챕터 저술의 제약 조건이다. 여기를 수정하면 저술 톤이 바뀐다. 확장 가이드는 `.claude/skills/chapter-writing/references/toby-style-guide.md`에 있다.
+기술서/논픽션은 `.claude/skills/chapter-writing/references/toby-style-guide.md`가 챕터 저술의 제약 조건이다. 라노벨/소설은 `lightnovel-style-guide.md`가 기준이다. 각 파일을 수정하면 해당 워크플로우의 저술 톤이 바뀐다.
 
 ### 저자명 변경
 
@@ -197,7 +197,7 @@ Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력
 novel-writer/
 ├── CLAUDE.md                        # 하네스 포인터 + 변경 이력 (새 세션 자동 로드)
 ├── README.md                        # 이 파일
-├── toby-book-writing-style.md       # Toby 문체 기본 가이드
+├── lightnovel-style-guide.md        # 라노벨/웹소설 문체 가이드
 ├── .gitignore                       # .omc 등 툴 로컬 파일 제외 (책 산출물은 버전 관리 대상)
 └── .claude/
     ├── agents/                      # 11개 에이전트 정의
@@ -361,7 +361,7 @@ brew install pandoc
 EPUB은 생성되지만 표준 위반 사항이 있다. `{slug}/.epubcheck.log`를 읽고 문제 구절을 수정한다. 대부분 `<script>` 태그나 금지된 네임스페이스 같은 마크다운 소스 문제다.
 
 ### 챕터 초안이 Toby 문체와 달라 보임
-`style-guardian`이 몇 번 왕복했는지 `{slug}/style_log.md`에서 확인. 3회 왕복에도 합의가 안 되면 저술가 결정이 채택된다. 이 경우 `toby-book-writing-style.md`나 `references/toby-style-guide.md`의 규칙이 너무 모호할 수 있으니 구체적 예시를 보강하자.
+`style-guardian`이 몇 번 왕복했는지 `{slug}/style_log.md`에서 확인. 3회 왕복에도 합의가 안 되면 저술가 결정이 채택된다. 이 경우 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 규칙이 너무 모호할 수 있으니 구체적 예시를 보강하자.
 
 ### 표지 이미지 생성 실패
 1. 이미지 생성 MCP/API가 연결되어 있지 않으면 ImageMagick 폴백 사용 → 단순 타이포그래피 표지가 생성됨

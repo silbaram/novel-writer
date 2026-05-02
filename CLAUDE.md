@@ -21,7 +21,7 @@
 
 **트리거:** 기술서·논픽션·실용서 저술 관련 작업 요청 시 `book-writing-orchestrator` 스킬을 사용하라. 특정 Phase만 재실행하거나 챕터 수정 요청도 동일 스킬이 처리한다. 단순 질문(예: "책 저술이 뭐야?")은 직접 응답 가능. **라노벨·소설·웹소설 요청은 이 스킬이 아니라 아래 `lightnovel-writing-orchestrator`가 처리한다.**
 
-**스타일 가이드:** 프로젝트 루트의 `toby-book-writing-style.md`가 모든 챕터 저술의 제약 조건이다. 챕터 저술가와 스타일 가디언은 반드시 이를 준수한다.
+**스타일 가이드:** `.claude/skills/chapter-writing/references/toby-style-guide.md`가 기술서/논픽션 챕터 저술의 제약 조건이다. 챕터 저술가와 스타일 가디언은 반드시 이를 준수한다.
 
 **산출 경로:**
 - 중간 산출물: `{book-slug}/`
@@ -45,4 +45,3 @@
 - 최종 산출물(프로젝트 루트, 같은 폴더에 짝으로 산출):
   - `{작품-제목}-v{version}.epub` — 본문 EPUB
   - `{작품-제목}-v{version}.md` — 외부 독자용 책 소개 markdown
-

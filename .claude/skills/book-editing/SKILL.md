@@ -1,6 +1,6 @@
 ---
 name: book-editing
-description: Integrate all finished chapters into a single book-ready manuscript — polish chapter transitions, unify terminology, insert cross-chapter callbacks, and write front/back matter (preface, epilogue, references). Produce a manuscript + book_manifest.json for EPUB build. Use when chapters are individually complete and need to become a coherent book.
+description: Use when finished chapters need integration into a coherent manuscript, front/back matter, book_manifest.json, and EPUB-ready polish.
 ---
 
 # Book Editing

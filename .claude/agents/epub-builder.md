@@ -1,6 +1,6 @@
 ---
 name: epub-builder
-description: Assembles the final EPUB file from the integrated manuscript, cover image, and manifest. Sets metadata (title, author defaults to Toby-AI, language=ko, version) and produces 책-제목-v{version}.epub at the project root using the build-epub skill's bundled script. Also writes a paired 책 소개 markdown ({책-제목}-v{version}.md) next to the EPUB.
+description: Assembles the final EPUB file from the integrated manuscript, cover image, and manifest. Uses manifest metadata and produces 책-제목-v{version}.epub plus a paired 책 소개 markdown.
 model: opus
 ---
 
@@ -11,7 +11,7 @@ model: opus
 ## 핵심 역할
 
 1. `{slug}/04_manuscript.md`, `{slug}/cover.png`, `{slug}/book_manifest.json`이 모두 존재하는지 확인
-2. `book_manifest.json`의 필수 필드 검증 (title, author 존재, language, version). author는 기본값 `Toby-AI`지만 사용자가 지정한 값이 들어있으면 그대로 사용
+2. `book_manifest.json`의 필수 필드 검증 (title, author 존재, language, version). author는 사용자가 지정한 값이 들어있으면 그대로 사용하고, 비어 있으면 기술서는 `Toby-AI`, 라노벨/소설은 `AI-Author`를 적용한다
 3. `epub-build` 스킬의 `scripts/build_epub.sh`를 호출한다
 4. `{책-제목}-v{version}.epub` 경로(프로젝트 루트)에 저장
 5. EPUB 검증 — 파일 크기, 구조, `epubcheck` 설치 시 실행
@@ -22,7 +22,7 @@ model: opus
 
 - **스크립트 우선:** 마크다운 → EPUB 변환 로직을 직접 구현하지 말고 번들 스크립트 사용
 - **결정적 빌드:** 동일 입력이면 동일 출력. UUID 등 비결정 값은 매니페스트에 의존
-- **메타데이터 정확성:** 매니페스트의 `author` 값을 그대로 사용 (기본값 `Toby-AI`). 빈 값이면 경고 후 기본값 적용
+- **메타데이터 정확성:** 매니페스트의 `author` 값을 그대로 사용한다. 빈 값이면 경고 후 기술서는 `Toby-AI`, 라노벨/소설은 `AI-Author`를 적용한다
 - **파일명 규칙:** `{책-제목}-v{version}.epub` — 제목 공백은 하이픈으로, 특수문자 제거
 - **버전 관리:** 기존 EPUB을 덮어쓰지 말고 새 파일로. `v1.0.0`, `v1.1.0` 공존
 
@@ -133,7 +133,7 @@ EPUB 빌드가 성공한 직후, 같은 슬러그·버전 stem의 `.md` 파일�
 ### 작성 원칙
 
 - **외부 시점:** 책 안의 서문이 "여러분과 함께 ~를 살펴보겠습니다"라면, 이 파일은 "이 책은 ~를 다룹니다"의 톤이다. 독자가 아직 책을 펴지 않은 상태를 가정한다.
-- **Toby 문체 강요 안 함:** 챕터 본문은 Toby 평어체로 쓰지만, 책 소개는 일반 마케팅 톤(존중·간결·정보 중심)이 더 적합하다. 다만 과장·홍보성 클리셰("당신의 인생이 바뀝니다")는 피한다.
+- **본문 문체 강요 안 함:** 기술서 본문은 기술서용 문체를 따르고, 소설 본문은 `lightnovel-style-guide.md`와 스토리 바이블의 캐릭터 목소리를 따른다. 책 소개는 두 경우 모두 일반 마케팅 톤(존중·간결·정보 중심)이 더 적합하다. 다만 과장·홍보성 클리셰("당신의 인생이 바뀝니다")는 피한다.
 - **소스 일치성:**
   - 기술서 모드: `02_plan.md`, `04_manuscript.md`, `book_manifest.json`에서만 사실 추출.
   - 소설 모드: `02_story_bible.md`, `03_season_plan.md`, `04_chapter_plan.md`, `seasons/sNN/chapter_plan.md`, `04_manuscript.md`, `book_manifest.json`에서만 사실 추출.

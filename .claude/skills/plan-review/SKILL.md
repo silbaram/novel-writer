@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Critically review a book plan against the reference document and audience fit. Check coverage, narrative flow, audience alignment, chapter balance, and redundancy. Use when reviewing a book outline, auditing a chapter structure, or giving structured feedback on a writing plan. Triggers on "계획 리뷰", "아웃라인 평가", "review the plan", "critique the outline".
+description: Use to critique a book outline against references and audience fit, checking coverage, flow, balance, redundancy, and missing topics.
 ---
 
 # Plan Review

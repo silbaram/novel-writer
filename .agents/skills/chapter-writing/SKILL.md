@@ -1,11 +1,11 @@
 ---
 name: chapter-writing
-description: Use to draft or revise 챕터 in Toby-style Korean technical prose, with 평어체, 청유형, rhetorical questions, empathy, and practical examples.
+description: Use only for non-fiction/technical book chapters in Toby-style Korean prose. Do not use for 소설/라노벨 fiction chapters.
 ---
 
 # Chapter Writing (Toby Style)
 
-하나의 챕터를 Toby의 문체로 저술한다. 이 스킬의 목적은 단순한 정보 전달이 아니라, **독자와 함께 사고하는 듯한 친근한 논리 전개**를 구현하는 것이다.
+하나의 **논픽션/기술서 챕터**를 Toby의 문체로 저술한다. 라노벨·소설·웹소설 챕터에는 이 스킬을 사용하지 않는다. 그런 작업은 `novel-chapter-writing`을 사용한다. 이 스킬의 목적은 단순한 정보 전달이 아니라, **독자와 함께 사고하는 듯한 친근한 논리 전개**를 구현하는 것이다.
 
 ## 핵심 원칙
 

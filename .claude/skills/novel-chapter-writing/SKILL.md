@@ -1,6 +1,6 @@
 ---
 name: novel-chapter-writing
-description: Procedural guide for writing a single Korean light novel chapter. Supports chapter-novelist. Covers reading story bible / season bible / chapter plan / character files / worldbuilding files / lightnovel-style-guide.md, writing scene-action-dialogue-based prose, preserving POV and character voice, avoiding exposition dumps, chapter ending hook, and the required author note section.
+description: Use to write or revise a Korean light novel chapter from story bible, season bible, chapter plan, characters, world files, and POV voice.
 ---
 
 # Novel Chapter Writing

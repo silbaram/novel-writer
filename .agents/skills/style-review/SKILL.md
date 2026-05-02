@@ -1,18 +1,18 @@
 ---
 name: style-review
-description: Use to review Korean Toby-style chapter drafts for tone, 청유형, meta openings, empathy, foreign-word overuse, and concrete rewrites.
+description: Use only to review non-fiction/technical Toby-style chapter drafts. Do not use for 소설/라노벨; use narrative-review instead.
 ---
 
 # Style Review
 
 > Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
 
-챕터 초안을 Toby 문체 기준으로 검수한다. 발견한 편차에 대해 **구체적 대체 문장**을 제안한다.
+논픽션/기술서 챕터 초안을 Toby 문체 기준으로 검수한다. 라노벨·소설·웹소설 원고에는 이 스킬을 사용하지 않는다. 발견한 편차에 대해 **구체적 대체 문장**을 제안한다.
 
 ## 절차
 
 1. **원문 읽기** — `{NN}_draft.md`를 처음부터 끝까지
-2. **기준 재확인** — `toby-book-writing-style.md`와 `chapter-writing/references/toby-style-guide.md`
+2. **기준 재확인** — `chapter-writing/references/toby-style-guide.md`
 3. **체크리스트 순회** — 아래 10개 항목 점검
 4. **편차 기록** — 원문 인용 + 대안 제시 + 이유
 5. **우선순위** — Critical / Should / Nice

@@ -1,6 +1,6 @@
 ---
 name: paper-research
-description: Search academic sources (arXiv, Google Scholar, Semantic Scholar, ACM, IEEE) for research papers and extract theoretical foundations, methods, empirical findings, and citation-worthy claims. Use when the user asks for "논문 리서치", "학술 자료", "arXiv에서 찾아줘", "papers on", or when a book/article needs rigorous academic backing.
+description: Use for 논문 리서치, finding academic papers from arXiv, Scholar, Semantic Scholar, ACM, or IEEE with DOI/arXiv IDs.
 ---
 
 # Paper Research
