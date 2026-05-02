@@ -39,7 +39,7 @@ description: Use only for non-fiction/technical book chapters in Toby-style Kore
 - "그렇다면 어떻게 해야 할까?"
 - "물론 ~다. 하지만 ~"
 
-상세 가이드와 예시는 `references/toby-style-guide.md` 참조.
+기본 문체 기준은 프로젝트 루트의 `style-guides/toby-book-writing-style.md`를 따르고, 상세 가이드와 예시는 `references/toby-style-guide.md`를 참조한다.
 
 ## 챕터 구성 절차
 

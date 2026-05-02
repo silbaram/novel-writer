@@ -1,6 +1,6 @@
 # Novel Writer — AI 기술서 + 라노벨 저술 자동화 하네스
 
-주제, 주요 내용, 대상 독자만 주면 리서치부터 EPUB 빌드까지 한 번에 수행하는 **에이전트 하네스**다. 기술서/논픽션 챕터는 `toby-book-writing-style.md`의 Toby 문체를 기본 기준으로 삼고 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 확장 규칙을 따르며, 라노벨/소설 챕터는 `lightnovel-style-guide.md`를 따른다.
+주제, 주요 내용, 대상 독자만 주면 리서치부터 EPUB 빌드까지 한 번에 수행하는 **에이전트 하네스**다. 기술서/논픽션 챕터는 `style-guides/toby-book-writing-style.md`의 Toby 문체를 기본 기준으로 삼고 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 확장 규칙을 따르며, 라노벨/소설 챕터는 `style-guides/lightnovel-style-guide.md`를 따른다.
 
 - **Repo:** https://github.com/silbaram/novel-writer
 - **실행 환경:** [Claude Code](https://claude.com/claude-code) + Claude Agent SDK
@@ -154,7 +154,7 @@ Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력
 
 ### 문체 조정
 
-기술서/논픽션은 `toby-book-writing-style.md`가 기본 문체 기준이고, `.claude/skills/chapter-writing/references/toby-style-guide.md`가 확장 체크리스트다. 라노벨/소설은 `lightnovel-style-guide.md`가 기준이다. 각 파일을 수정하면 해당 워크플로우의 저술 톤이 바뀐다.
+기술서/논픽션은 `style-guides/toby-book-writing-style.md`가 기본 문체 기준이고, `.claude/skills/chapter-writing/references/toby-style-guide.md`가 확장 체크리스트다. 라노벨/소설은 `style-guides/lightnovel-style-guide.md`가 기준이다. 각 파일을 수정하면 해당 워크플로우의 저술 톤이 바뀐다.
 
 ### 저자명 변경
 
@@ -197,8 +197,9 @@ Claude Code 프롬프트에 주제·내용·대상 독자를 자연어로 입력
 novel-writer/
 ├── CLAUDE.md                        # 하네스 포인터 + 변경 이력 (새 세션 자동 로드)
 ├── README.md                        # 이 파일
-├── toby-book-writing-style.md        # 기술서/논픽션용 Toby 기본 문체 가이드
-├── lightnovel-style-guide.md        # 라노벨/웹소설 문체 가이드
+├── style-guides/                    # 문체 가이드 모음
+│   ├── toby-book-writing-style.md   # 기술서/논픽션용 Toby 기본 문체 가이드
+│   └── lightnovel-style-guide.md    # 라노벨/웹소설 문체 가이드
 ├── .gitignore                       # .omc 등 툴 로컬 파일 제외 (책 산출물은 버전 관리 대상)
 └── .claude/
     ├── agents/                      # 11개 에이전트 정의
@@ -247,7 +248,7 @@ novel-writer/
 4. **세계관 카드 작성** — 세계 핵심 규칙·마법/시스템·세력·장소를 별도 파일로 분리
 5. **시즌 구조 설계** — 시즌별 핵심 질문·아크·피날레·다음 시즌 훅·복선 흐름 설계
 6. **챕터 플롯 작성** — 챕터 목적·감정 변화·복선 사용/회수·엔딩 훅을 챕터별로 설계
-7. **챕터 집필** — `lightnovel-style-guide.md` 기준으로 팀 에이전트가 최대 3챕터 동시 집필
+7. **챕터 집필** — `style-guides/lightnovel-style-guide.md` 기준으로 팀 에이전트가 최대 3챕터 동시 집필
 8. **문체/대사/시점/연속성 검수** — `novel-style-guardian`(8개 항목)과 `continuity-keeper`가 실시간·시즌 전체 관점으로 검수
 9. **통합 편집** — 저자 노트 제거, 전환부·용어 정리, 서문·작가 후기 작성, manifest 생성
 10. **표지 + EPUB 빌드** — 기존 `cover-designer`·`epub-builder`·`build_epub.sh`를 그대로 재사용
@@ -362,7 +363,7 @@ brew install pandoc
 EPUB은 생성되지만 표준 위반 사항이 있다. `{slug}/.epubcheck.log`를 읽고 문제 구절을 수정한다. 대부분 `<script>` 태그나 금지된 네임스페이스 같은 마크다운 소스 문제다.
 
 ### 챕터 초안이 Toby 문체와 달라 보임
-`style-guardian`이 몇 번 왕복했는지 `{slug}/style_log.md`에서 확인. 3회 왕복에도 합의가 안 되면 저술가 결정이 채택된다. 이 경우 `toby-book-writing-style.md`의 기본 원칙이나 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 확장 규칙이 너무 모호할 수 있으니 구체적 예시를 보강하자.
+`style-guardian`이 몇 번 왕복했는지 `{slug}/style_log.md`에서 확인. 3회 왕복에도 합의가 안 되면 저술가 결정이 채택된다. 이 경우 `style-guides/toby-book-writing-style.md`의 기본 원칙이나 `.claude/skills/chapter-writing/references/toby-style-guide.md`의 확장 규칙이 너무 모호할 수 있으니 구체적 예시를 보강하자.
 
 ### 표지 이미지 생성 실패
 1. 이미지 생성 MCP/API가 연결되어 있지 않으면 ImageMagick 폴백 사용 → 단순 타이포그래피 표지가 생성됨

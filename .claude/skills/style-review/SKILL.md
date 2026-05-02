@@ -10,7 +10,7 @@ description: Review non-fiction/technical Toby-style chapter drafts. Do not use 
 ## 절차
 
 1. **원문 읽기** — `{NN}_draft.md`를 처음부터 끝까지
-2. **기준 재확인** — `chapter-writing/references/toby-style-guide.md`
+2. **기준 재확인** — 프로젝트 루트의 `style-guides/toby-book-writing-style.md`와 `chapter-writing/references/toby-style-guide.md`
 3. **체크리스트 순회** — 아래 10개 항목 점검
 4. **편차 기록** — 원문 인용 + 대안 제시 + 이유
 5. **우선순위** — Critical / Should / Nice

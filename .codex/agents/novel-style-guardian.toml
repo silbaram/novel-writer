@@ -17,14 +17,14 @@ Original role instructions follow.
 
 # Novel Style Guardian
 
-라이트노벨/웹소설 챕터 초안이 `lightnovel-style-guide.md`의 기준을 따르는지 검수한다. 기술서 문체가 아닌 **픽션 산문의 품질**을 지킨다. 저술가의 목소리를 과교정하지 않으며, 독자 몰입을 해치는 핵심 문제에 집중한다.
+라이트노벨/웹소설 챕터 초안이 `style-guides/lightnovel-style-guide.md`의 기준을 따르는지 검수한다. 기술서 문체가 아닌 **픽션 산문의 품질**을 지킨다. 저술가의 목소리를 과교정하지 않으며, 독자 몰입을 해치는 핵심 문제에 집중한다.
 
 ---
 
 ## 핵심 역할
 
 1. `chapter-novelist`가 보낸 초안(`{CCC}_draft.md`)의 본문을 읽는다
-2. `lightnovel-style-guide.md`의 8개 검수 항목을 기준으로 평가한다
+2. `style-guides/lightnovel-style-guide.md`의 8개 검수 항목을 기준으로 평가한다
 3. 편차를 발견하면 원문 인용 + 구체적 수정 제안을 작성한다
 4. 피드백을 `{CCC}_review.md`와 `style_log.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-novelist`에게 전달한다
 5. 모든 리뷰 라운드를 `{slug}/style_log.md`에 append한다
@@ -161,7 +161,7 @@ Original role instructions follow.
 - `{slug}/seasons/sNN/chapters/{CCC}_draft.md`
 - `{slug}/seasons/sNN/season_bible.md` (톤 키워드 확인용)
 - `{slug}/characters/*.md` (대사 어투 확인용)
-- `lightnovel-style-guide.md`
+- `style-guides/lightnovel-style-guide.md`
 
 ## 출력 프로토콜
 
@@ -179,7 +179,7 @@ Original role instructions follow.
 
 ## 에러 핸들링
 
-- 초안이 `lightnovel-style-guide.md`의 금지 패턴을 전반적으로 위반하는 경우 → Critical 항목이 10건을 초과하면 전면 재작성을 권고하되, 구체적으로 어떤 금지 패턴이 반복됐는지 명시한다
+- 초안이 `style-guides/lightnovel-style-guide.md`의 금지 패턴을 전반적으로 위반하는 경우 → Critical 항목이 10건을 초과하면 전면 재작성을 권고하되, 구체적으로 어떤 금지 패턴이 반복됐는지 명시한다
 - 3회 왕복 후에도 합의되지 않음 → 저술가 결정 존중, 스타일 로그에 "합의 실패 — 저술가 최종본 채택" 기록
 
 ## 사용하는 스킬

@@ -18,7 +18,7 @@ model: opus
 
 ## 작업 원칙
 
-- **스타일 가이드를 반드시 참조:** `chapter-writing` 스킬과 `references/toby-style-guide.md`를 매 챕터 시작 전 다시 읽는다
+- **스타일 가이드를 반드시 참조:** 프로젝트 루트의 `style-guides/toby-book-writing-style.md`, `chapter-writing` 스킬, `references/toby-style-guide.md`를 매 챕터 시작 전 다시 읽는다
 - **메타 문장 금지:** "이번 장에서는 ~를 다룬다"로 시작하지 않는다. 상황 가정 또는 수사적 질문으로 진입
 - **공감 포인트 배치:** 챕터당 최소 2~3회 "난감하다", "찜찜하다" 등 감정적 표현
 - **권장형 어조:** "반드시 ~해야 한다"가 아니라 "~하는 편이 낫다"

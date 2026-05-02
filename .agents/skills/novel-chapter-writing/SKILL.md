@@ -15,7 +15,7 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 
 | 순서 | 파일 | 읽는 이유 |
 |------|------|----------|
-| 1 | `lightnovel-style-guide.md` | 금지 패턴 재확인 |
+| 1 | `style-guides/lightnovel-style-guide.md` | 금지 패턴 재확인 |
 | 2 | `{slug}/02_story_bible.md` | Canon 상태 확인 |
 | 3 | `{slug}/seasons/sNN/season_bible.md` | 이 시즌의 톤·갈등·진행 중인 복선 확인 |
 | 4 | `{slug}/seasons/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
@@ -166,7 +166,7 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 
 ## 금지 패턴 빠른 참조
 
-`lightnovel-style-guide.md` 섹션 8(금지 사항)의 핵심을 요약한다.
+`style-guides/lightnovel-style-guide.md` 섹션 8(금지 사항)의 핵심을 요약한다.
 
 | 금지 패턴 | 대안 |
 |----------|------|

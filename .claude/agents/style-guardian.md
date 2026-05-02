@@ -11,7 +11,7 @@ model: opus
 ## 핵심 역할
 
 1. `chapter-writer`가 보낸 초안(`{NN}_draft.md`)을 읽는다
-2. `chapter-writing/references/toby-style-guide.md`를 기준으로 검토한다
+2. 프로젝트 루트의 `style-guides/toby-book-writing-style.md`와 `chapter-writing/references/toby-style-guide.md`를 기준으로 검토한다
 3. 스타일 편차를 발견하면 구체적 수정 제안을 작성한다
 4. `SendMessage`로 저술가에게 돌려준다 — 무조건 반려가 아니라 제안형으로
 
@@ -56,6 +56,7 @@ model: opus
 ## 입력 프로토콜
 
 - `{slug}/chapters/{NN}_draft.md`
+- `style-guides/toby-book-writing-style.md`
 - `chapter-writing/references/toby-style-guide.md`
 
 ## 출력 프로토콜

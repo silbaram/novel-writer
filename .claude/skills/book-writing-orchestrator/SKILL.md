@@ -77,14 +77,14 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 1. `TeamCreate`로 위 팀을 구성한다. 팀 이름: `book-writing-team`.
 2. `TaskCreate`로 각 챕터를 task로 등록한다. task당 `chapter-writer` 1명을 할당한다.
 3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 `SendMessage`로 `style-guardian`에게 리뷰를 요청한다.
-4. `style-guardian`은 Toby 스타일 기준(평어체, 청유형, 수사적 질문, 공감 표현 등)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 `SendMessage`로 응답한다.
+4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 `SendMessage`로 응답한다.
 5. `chapter-writer`가 수정하고 `{NN}_final.md`로 저장한다.
 6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/04_manuscript.md`에 통합 원고를 만든다.
 7. 팀을 해체한다.
 
 **챕터 수가 3개를 초과하면** chapter-writer를 챕터 수만큼 만들지 않고, 3명으로 시작해 각자 여러 챕터를 순차 처리한다(풀 방식). 너무 많은 팀원은 조율 오버헤드를 만든다.
 
-**스타일 가이드:** 모든 chapter-writer는 `chapter-writing` 스킬 내 `references/toby-style-guide.md`를 참조한다.
+**스타일 가이드:** 모든 chapter-writer는 프로젝트 루트의 `style-guides/toby-book-writing-style.md`를 기본 문체 기준으로 삼고, `chapter-writing` 스킬 내 `references/toby-style-guide.md`를 확장 체크리스트로 함께 참조한다.
 
 ## Phase 5: 표지 + EPUB 빌드 (팬아웃)
 

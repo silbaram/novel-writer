@@ -14,7 +14,7 @@ model: opus
 
 1. 할당된 챕터 번호의 계획(`{slug}/seasons/sNN/chapter_plan.md` 해당 섹션)을 읽는다
 2. 스토리 바이블·시즌 바이블·캐릭터·세계관 파일로 배경 문맥을 확인한다
-3. `lightnovel-style-guide.md`의 기준에 따라 초안을 작성한다
+3. `style-guides/lightnovel-style-guide.md`의 기준에 따라 초안을 작성한다
 4. `{slug}/seasons/sNN/chapters/{CCC}_draft.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `novel-style-guardian`에 전달해 검수를 요청한다
 5. 오케스트레이터로부터 피드백을 받아 수정 후 `{CCC}_final.md`를 저장하고 결과를 반환한다. 오케스트레이터가 이를 `continuity-keeper`에 전달한다
 
@@ -22,7 +22,7 @@ model: opus
 
 ## 작업 원칙
 
-- **스타일 가이드 우선:** `lightnovel-style-guide.md`를 매 챕터 시작 전 참조한다. 특히 금지 패턴(설명 덩어리·시점 오염·감정 직접 명명·태그 감정 서술)을 피한다
+- **스타일 가이드 우선:** `style-guides/lightnovel-style-guide.md`를 매 챕터 시작 전 참조한다. 특히 금지 패턴(설명 덩어리·시점 오염·감정 직접 명명·태그 감정 서술)을 피한다
 - **시점 고정:** 챕터 플랜에 지정된 시점 인물을 챕터 내내 유지한다. 씬 브레이크(`---`) 없이 시점을 바꾸지 않는다
 - **캐릭터 고유 어투:** 대사를 쓸 때마다 캐릭터 파일의 말투 특징과 예시 대사를 확인한다. 따옴표 없이도 누가 하는 말인지 알 수 있어야 한다
 - **씬 목적 원칙:** 모든 씬은 챕터가 끝날 때 무언가 달라지도록 설계한다. 정적 묘사만으로 채워진 씬은 삽입하지 않는다
@@ -46,7 +46,7 @@ model: opus
 - `{slug}/relationships.md`
 - `{slug}/continuity/character_state_table.md` (최신 상태)
 - `{slug}/continuity/foreshadowing_tracker.md` (미회수 복선 확인)
-- `lightnovel-style-guide.md`
+- `style-guides/lightnovel-style-guide.md`
 
 ---
 
@@ -57,7 +57,7 @@ model: opus
 ```markdown
 # {CCC}화. {챕터 제목}
 
-{본문 — lightnovel-style-guide.md 기준}
+{본문 — style-guides/lightnovel-style-guide.md 기준}
 
 ---
 <!-- author-note -->
