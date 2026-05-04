@@ -37,6 +37,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | 6 | 챕터 집필 | 오케스트레이터 주도 순환 (최대 3개 병렬 초안 → 순차 검수) |
 | 7 | 문체/연속성 검수 | 순차 서브 에이전트 (시즌 전체 관점) |
 | 8 | 통합 편집 | 단일 서브 |
+| 8.5 | 본문 삽화 프롬프트/파일 계약 | 서브 에이전트 (삽화 슬롯 → 외부 생성용 프롬프트/경로) |
 | 9 | 표지 + EPUB 빌드 | 서브 에이전트 (표지 먼저, 완료 후 EPUB) |
 
 ---
@@ -262,6 +263,31 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 ---
 
+## Phase 8.5: 본문 삽화 프롬프트/파일 계약
+
+**실행 모드:** 서브 에이전트
+
+`interior-illustrator`를 호출한다. 표지가 아니라 라노벨 본문 중간 삽화의 장면 선정, 외부 이미지 생성용 프롬프트, 저장 파일 경로 계약을 담당한다. 이미지는 Codex/Claude가 직접 생성하지 않는다. 사용자가 OpenAI API, Claude, 웹 LLM, Midjourney, Stable Diffusion, NovelAI 등에서 프롬프트로 이미지를 생성한 뒤 약속된 경로에 PNG로 저장하면 삽화가 포함된다.
+
+챕터 플랜 기준의 예비 슬롯이 있더라도, Phase 6의 최종 원고와 Phase 8의 통합 원고를 우선해 장면 위치와 스포일러 강도를 보정한다.
+
+**절차:**
+1. `interior-illustrator`가 `novel-illustration` 스킬을 사용해 `{slug}/illustrations/illustration_plan.md`를 작성 또는 갱신한다
+2. 단권 20챕터 기준 기본값은 컬러 프론트피스 1장 + 본문 삽화 6~10장이다. 사용자 지정이 있으면 그 수량을 따른다
+3. 캐릭터 외형·의상·소품 일관성을 `{slug}/illustrations/style_sheet.md`에 기록한다
+4. 각 이미지의 외부 생성 프롬프트를 `{slug}/illustrations/sNN/*_prompt.md`에 저장하고, 저장해야 할 PNG 경로를 명시한다
+5. PNG 파일이 아직 없으면 상태를 `prompt_ready` 또는 `image_missing`으로 표시한다. Phase 9 전에 사용자가 해당 경로에 PNG를 저장하면 EPUB에 포함한다
+6. `novel-editor` 또는 오케스트레이터가 `04_manuscript.md`에 Markdown 이미지 마커를 삽입한다
+
+**출력:**
+- `{slug}/illustrations/illustration_plan.md`
+- `{slug}/illustrations/style_sheet.md`
+- `{slug}/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
+- `{slug}/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 도구가 저장해야 하는 대상 파일)
+- 삽화가 포함되도록 갱신된 `{slug}/04_manuscript.md`
+
+---
+
 ## Phase 9: 표지 + EPUB 빌드
 
 **실행 모드:** 서브 에이전트 (표지 먼저, 완료 후 EPUB 빌드)
@@ -271,8 +297,9 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 > **게이트 규칙(강제):** `continuity/continuity_log.md`에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 오케스트레이터는 수동 확인 요청을 사용자에게 전달하고, 승인/수정 완료 전까지 EPUB 빌드를 호출하지 않는다.
 
 1. `cover-designer` → `{slug}/cover.png` 생성 (MCP > API > ImageMagick 폴백)
-2. 표지 생성 완료 후 `epub-builder` 호출 → `epub-build/scripts/build_epub.sh` 실행
-3. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
+2. 본문 삽화 마커가 있으면 `04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
+3. 표지 생성 완료 후 `epub-builder` 호출 → `epub-build/scripts/build_epub.sh` 실행
+4. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
 
 **EPUB 메타데이터:**
 - 저자: Phase 0에서 추출한 값, 없으면 기본값 `AI-Author`
@@ -327,6 +354,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 스토리 바이블 수정 | Phase 2 → 3 → 4 → 5 재실행 | `02_story_bible.md` → `02_story_bible_v{N}.md` |
 | 시즌 구조 수정 | Phase 3 → 4 → 5 재실행 | `03_season_plan.md` → `03_season_plan_v{N}.md` |
 | 단일 챕터 재작성 | Phase 6 (해당 챕터만) → Phase 7 | `{CCC}_draft.md` → `{CCC}_draft_v{N}.md` |
+| 본문 삽화 추가/교체 | Phase 8.5 | 기존 PNG → `{name}_v{N}.png` |
 | 표지 교체 | Phase 9 (`cover-designer`만) | `cover.png` → `cover_v{N}.png` |
 | EPUB 재빌드 | Phase 9 (`epub-builder`만) | 기존 EPUB → `_prev/` 이동 |
 
