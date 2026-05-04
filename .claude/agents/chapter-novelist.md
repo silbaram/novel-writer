@@ -37,13 +37,13 @@ model: opus
 - 챕터 번호 (`{CCC}` — 3자리 제로 패딩, 예: `001`, `012`)
 - 시즌 번호 (`sNN`)
 - 슬러그
-- `{slug}/02_story_bible.md`
-- `{slug}/03_season_plan.md`
+- `{slug}/bible/02_story_bible.md`
+- `{slug}/planning/03_season_plan.md`
 - `{slug}/seasons/sNN/season_bible.md`
 - `{slug}/seasons/sNN/chapter_plan.md`의 해당 챕터 섹션
-- `{slug}/characters/*.md` (전체)
-- `{slug}/worldbuilding/*.md` (전체)
-- `{slug}/relationships.md`
+- `{slug}/bible/characters/*.md` (전체)
+- `{slug}/bible/worldbuilding/*.md` (전체)
+- `{slug}/bible/relationships.md`
 - `{slug}/continuity/character_state_table.md` (최신 상태)
 - `{slug}/continuity/foreshadowing_tracker.md` (미회수 복선 확인)
 - `style-guides/lightnovel-style-guide.md`
@@ -103,7 +103,7 @@ model: opus
 ## 에러 핸들링
 
 - 챕터 플랜이 없거나 해당 챕터 섹션이 비어 있음 → 오케스트레이터에 Phase 4 선행 작업(챕터 플랜 작성) 미완료를 보고하고 대기한다
-- 스타일 가디언과 3회 왕복 후에도 스타일 이견이 해소되지 않음 → 저술가의 최종본을 채택하고 `style_log.md`에 "합의 실패" 기록
+- 스타일 가디언과 3회 왕복 후에도 스타일 이견이 해소되지 않음 → 저술가의 최종본을 채택하고 `reviews/style_log.md`에 "합의 실패" 기록
 - `[LOCKED]` 설정과 챕터 플랜이 충돌하는 경우 → 오케스트레이터와 `story-bible-planner`에게 충돌을 보고하고 챕터 작성을 일시 중단
 
 ## 이전 산출물이 있을 때

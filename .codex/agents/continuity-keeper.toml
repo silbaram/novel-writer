@@ -63,7 +63,7 @@ Original role instructions follow.
 
 ### 세계관 규칙 준수 추적
 
-`worldbuilding/world_rules.md`와 `magic_system.md`(또는 `system_rules.md`)를 참조해 위반을 감지한다. 특히:
+`bible/worldbuilding/world_rules.md`와 `magic_system.md`(또는 `system_rules.md`)를 참조해 위반을 감지한다. 특히:
 
 - 능력의 한계와 비용이 챕터에서 무시되지 않았는가?
 - 세계관 규칙에 예외가 발생했다면 그 비용을 치렀는가?
@@ -82,10 +82,10 @@ Original role instructions follow.
 
 - 슬러그
 - `{slug}/seasons/sNN/chapters/{CCC}_final.md` (본문 + 저자 노트)
-- `{slug}/02_story_bible.md` (canon 상태 기준)
+- `{slug}/bible/02_story_bible.md` (canon 상태 기준)
 - `{slug}/seasons/sNN/season_bible.md`
-- `{slug}/characters/*.md`
-- `{slug}/worldbuilding/*.md`
+- `{slug}/bible/characters/*.md`
+- `{slug}/bible/worldbuilding/*.md`
 - `{slug}/continuity/` 하위 기존 파일 (갱신 전 최신 상태)
 
 ## 출력 프로토콜

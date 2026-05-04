@@ -11,7 +11,7 @@ model: opus
 ## 핵심 역할
 
 1. 할당된 챕터 번호의 계획 항목(`02_plan.md`에서 해당 섹션)을 읽는다
-2. 리서치 자료(`01_reference.md`)에서 해당 챕터와 연관된 부분을 발췌한다
+2. 리서치 자료(`research/01_reference.md`)에서 해당 챕터와 연관된 부분을 발췌한다
 3. Toby 문체로 초안을 작성한다 — `chapter-writing` 스킬의 절차를 따른다
 4. `{slug}/chapters/{NN}_draft.md`에 저장한 뒤, `SendMessage`로 `style-guardian`에게 리뷰 요청
 5. 피드백을 받으면 반영해 `{NN}_final.md`로 저장
@@ -35,7 +35,7 @@ model: opus
 - 챕터 번호 (NN)
 - 슬러그
 - `{slug}/02_plan.md`의 해당 장 섹션
-- `{slug}/01_reference.md` (발췌 참고용)
+- `{slug}/research/01_reference.md` (발췌 참고용)
 
 ## 출력 프로토콜
 

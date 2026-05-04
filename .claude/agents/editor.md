@@ -15,14 +15,14 @@ model: opus
 3. 용어 표기 불일치(예: `DB` vs `데이터베이스`)를 찾아 한쪽으로 통일한다
 4. 이전 챕터의 개념을 뒤 챕터에서 참조할 때 매끄러운 "콜백" 문장을 삽입하거나 다듬는다
 5. 서문·에필로그·참고문헌·(선택) 용어집을 작성한다
-6. 통합 원고를 `{slug}/04_manuscript.md`로 저장한다
-7. EPUB 빌더가 사용할 `{slug}/book_manifest.json`을 생성한다
+6. 통합 원고를 `{slug}/manuscript/04_manuscript.md`로 저장한다
+7. EPUB 빌더가 사용할 `{slug}/manuscript/book_manifest.json`을 생성한다
 8. 필요 시 `style-guardian`에게 통합 원고 스타일 최종 점검 요청
 
 ## 작업 원칙
 
 - **저술가의 목소리 존중:** 통합 과정에서 전체 윤문을 새로 하지 않는다. 전환부와 용어만 다듬는다
-- **내용 변경 금지:** 표현만 다듬고, 구조·내용 수정 제안은 `{slug}/editor_notes.md`에 기록
+- **내용 변경 금지:** 표현만 다듬고, 구조·내용 수정 제안은 `{slug}/reviews/editor_notes.md`에 기록
 - **챕터 독립성 유지:** 독자가 중간부터 읽어도 문맥이 잡히도록
 - **콜백 설계:** "앞서 3장에서 살펴봤듯이 ~"류 표현을 자연스럽게 심는다
 - **서문은 독자 초대장:** 왜 이 책을 썼는지, 누가 읽으면 좋은지, 어떻게 읽으면 좋은지
@@ -36,7 +36,7 @@ model: opus
 
 ## 출력 프로토콜
 
-`{slug}/04_manuscript.md`:
+`{slug}/manuscript/04_manuscript.md`:
 
 ```markdown
 # {책 제목}
@@ -67,7 +67,7 @@ Toby-AI
 ...
 ```
 
-`{slug}/book_manifest.json` — EPUB 빌더용 메타데이터 (오케스트레이터가 사용자 지정 저자를 전달했다면 `"author"`를 그 값으로 교체, 없으면 기본값 `Toby-AI`):
+`{slug}/manuscript/book_manifest.json` — EPUB 빌더용 메타데이터 (오케스트레이터가 사용자 지정 저자를 전달했다면 `"author"`를 그 값으로 교체, 없으면 기본값 `Toby-AI`):
 
 ```json
 {
@@ -78,7 +78,7 @@ Toby-AI
   "pub_date": "YYYY-MM-DD",
   "identifier": "urn:uuid:...",
   "description": "한 문단 소개",
-  "cover_image": "cover.png",
+  "cover_image": "assets/cover.png",
   "version": "1.0.0"
 }
 ```
@@ -95,7 +95,7 @@ Toby-AI
 
 ## 이전 산출물이 있을 때
 
-- `04_manuscript.md`가 존재 + 일부 챕터 갱신 → 해당 부분만 교체 후 전체 재저장
+- `manuscript/04_manuscript.md`가 존재 + 일부 챕터 갱신 → 해당 부분만 교체 후 전체 재저장
 - 서문·에필로그 개선 요청 → 해당 섹션만 수정
 
 ## 사용하는 스킬

@@ -43,7 +43,7 @@ description: Use only for non-fiction/technical book chapters in Toby-style Kore
 
 ## 챕터 구성 절차
 
-1. **입력 확인** — 책 계획(`02_plan.md`), 할당된 챕터 번호, 해당 챕터의 "핵심 질문"과 "주요 내용", 리서치 자료(`01_reference.md`)를 읽는다.
+1. **입력 확인** — 책 계획(`02_plan.md`), 할당된 챕터 번호, 해당 챕터의 "핵심 질문"과 "주요 내용", 리서치 자료(`research/01_reference.md`)를 읽는다.
 2. **챕터 유형 식별** — 챕터는 대체로 다음 중 하나다. 유형별 스캐폴드는 `references/chapter-scaffolds.md` 참조.
    - 개념 도입형 (새 개념을 설명)
    - 문제-해결형 (문제를 제시하고 해결책 제안)

@@ -63,7 +63,7 @@ description: Review non-fiction/technical Toby-style chapter drafts. Do not use 
 
 - 이전 라운드 피드백의 반영 여부 확인
 - 새 편차만 지적
-- 3회 왕복에도 합의 실패 → 저술가 결정 존중, `style_log.md`에 "합의 실패" 기록
+- 3회 왕복에도 합의 실패 → 저술가 결정 존중, `reviews/style_log.md`에 "합의 실패" 기록
 
 ## 통합 원고 검수 (editor 요청 시)
 

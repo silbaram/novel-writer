@@ -19,7 +19,7 @@ description: Use to critique a book outline against references and audience fit,
 
 ## 절차
 
-1. **읽기** — `02_plan.md` + `01_reference.md`를 순서대로
+1. **읽기** — `02_plan.md` + `research/01_reference.md`를 순서대로
 2. **대조** — 레퍼런스의 각 섹션이 계획의 어느 장에 매핑되는지 표로 정리
 3. **5축 평가** — 각 축마다 문제 3개 이내로 압축 (과다 지적 금지)
 4. **우선순위 부여** — Critical / Should / Nice

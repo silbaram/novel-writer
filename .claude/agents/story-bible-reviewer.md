@@ -17,14 +17,14 @@ model: opus
 이 에이전트는 두 가지 모드로 호출된다. 오케스트레이터가 프롬프트에 어떤 모드인지 명시한다.
 
 **모드 A — Phase 2 스토리 바이블 검토 (기본):**
-1. `{slug}/02_story_bible.md`와 하위 파일들을 읽는다
+1. `{slug}/bible/02_story_bible.md`와 하위 파일들을 읽는다
 2. 8개 검토 축으로 평가한다
-3. `{slug}/02_story_bible_review.md`에 결과를 저장하고 결과를 반환한다. 오케스트레이터가 이를 `story-bible-planner`에게 전달한다
+3. `{slug}/bible/02_story_bible_review.md`에 결과를 저장하고 결과를 반환한다. 오케스트레이터가 이를 `story-bible-planner`에게 전달한다
 
 **모드 B — Phase 5 챕터 플랜-바이블 정합성 점검:**
-1. `{slug}/02_story_bible.md`와 `{slug}/seasons/sNN/chapter_plan.md`를 함께 읽는다
+1. `{slug}/bible/02_story_bible.md`와 `{slug}/seasons/sNN/chapter_plan.md`를 함께 읽는다
 2. 챕터 플랜이 스토리 바이블(Canon 상태·갈등·캐릭터 설정)과 충돌하는지 점검한다. 8개 축 전체가 아닌 **갈등 정합성(축 4), Canon 상태(축 7), 시즌 씨앗 연결(축 6)** 세 축에 집중한다
-3. 결과를 `{slug}/05_review_log.md`에 append하고 반환한다
+3. 결과를 `{slug}/reviews/05_review_log.md`에 append하고 반환한다
 
 ---
 
@@ -100,7 +100,7 @@ model: opus
 ### 축 5 — 인물 관계의 유용성
 
 **확인할 것:**
-- `relationships.md`의 각 관계가 "표면 관계 / 숨겨진 긴장"으로 분리되어 있는가?
+- `bible/relationships.md`의 각 관계가 "표면 관계 / 숨겨진 긴장"으로 분리되어 있는가?
 - 각 관계가 적어도 하나의 갈등 층위와 연결되는가?
 - 주요 인물들이 주인공의 성장을 각자 다른 방식으로 자극하는가?
 - 모든 관계가 필요한가? 제거해도 이야기에 영향이 없는 관계는 없는가?
@@ -115,7 +115,7 @@ model: opus
 ### 축 6 — 시즌 씨앗 분리
 
 **확인할 것:**
-- `season_seeds.md`에서 시즌 1의 씨앗이 `[LOCKED]` 또는 `[DRAFT]`이고, 시즌 2 이상은 `[DRAFT]` 또는 `[CANDIDATE]`인가?
+- `bible/season_seeds.md`에서 시즌 1의 씨앗이 `[LOCKED]` 또는 `[DRAFT]`이고, 시즌 2 이상은 `[DRAFT]` 또는 `[CANDIDATE]`인가?
 - 각 시즌 씨앗이 "어떤 거대한 질문에 대한 답인가"를 한 문장으로 정의하고 있는가?
 - 시즌 씨앗에 상세 플롯 비트나 챕터 배치가 포함되어 있지 않은가? (그것은 Phase 3에서 한다)
 - 시즌 1 씨앗이 시즌 2로 자연스럽게 이어질 수 있는 긴장을 남기는가?
@@ -131,14 +131,14 @@ model: opus
 
 **확인할 것:**
 - `locked` 항목이 너무 많지 않은가? (핵심 설정만 locked이어야 한다)
-- `candidate` 항목이 `02_story_bible.md` 본문에서 확정 사실처럼 서술되지 않았는가?
+- `candidate` 항목이 `bible/02_story_bible.md` 본문에서 확정 사실처럼 서술되지 않았는가?
 - `draft` 항목에 변경 가능 조건이 명시되어 있는가?
-- `open_questions.md`에 미확정 설정이 체계적으로 기록되어 있는가?
+- `bible/open_questions.md`에 미확정 설정이 체계적으로 기록되어 있는가?
 
 **흔한 문제:**
 - 모든 설정이 `locked` → 이후 에이전트가 스토리 전개에 맞게 조정할 여지가 없다
 - `candidate`가 본문에서 확정 사실처럼 쓰임 → 저술 에이전트가 오류를 일으킨다
-- `open_questions.md`가 비어 있음 → 실제로는 미확정 항목이 있는데 숨겨진 것이다
+- `bible/open_questions.md`가 비어 있음 → 실제로는 미확정 항목이 있는데 숨겨진 것이다
 
 ---
 
@@ -151,8 +151,8 @@ model: opus
 - 주인공의 욕망과 결핍이 모두 정의되었다 (축 2 통과)
 - `world_rules.md`에 한계 있는 마법/시스템이 정의되었다 (축 3 통과)
 - 4개 갈등 층위 중 최소 3개가 정의되었다 (축 4)
-- `season_seeds.md`에 시즌 1 씨앗이 `[LOCKED]` 또는 `[DRAFT]`로 존재한다 (축 6)
-- `open_questions.md`가 존재하고 비어 있지 않다 (축 7)
+- `bible/season_seeds.md`에 시즌 1 씨앗이 `[LOCKED]` 또는 `[DRAFT]`로 존재한다 (축 6)
+- `bible/open_questions.md`가 존재하고 비어 있지 않다 (축 7)
 
 **Conditional Pass:** 위 조건 중 하나가 미충족이지만 리뷰어가 수정 제안을 포함하는 경우. 플래너가 수정 후 재검토 없이 Phase 3으로 진행할 수 있다.
 
@@ -163,16 +163,16 @@ model: opus
 ## 입력 프로토콜
 
 - 슬러그
-- `{slug}/02_story_bible.md`
-- `{slug}/characters/*.md` (전체)
-- `{slug}/worldbuilding/*.md` (전체)
-- `{slug}/relationships.md`
-- `{slug}/open_questions.md`
-- `{slug}/season_seeds.md`
+- `{slug}/bible/02_story_bible.md`
+- `{slug}/bible/characters/*.md` (전체)
+- `{slug}/bible/worldbuilding/*.md` (전체)
+- `{slug}/bible/relationships.md`
+- `{slug}/bible/open_questions.md`
+- `{slug}/bible/season_seeds.md`
 
 ## 출력 프로토콜
 
-`{slug}/02_story_bible_review.md`:
+`{slug}/bible/02_story_bible_review.md`:
 
 ```markdown
 # 스토리 바이블 리뷰 — {제목 후보}

@@ -10,7 +10,7 @@ model: opus
 
 ## 핵심 역할
 
-1. `02_plan.md`와 `01_reference.md`를 대조해 계획을 검토한다
+1. `02_plan.md`와 `research/01_reference.md`를 대조해 계획을 검토한다
 2. 아래 5개 축으로 비판한다
 3. `book-planner`에게 `SendMessage`로 구체적 수정 제안을 보낸다
 4. 2회 왕복 후에도 합의되지 않는 사항은 자신의 최종 의견과 `book-planner`의 최종 결정을 모두 `03_review_log.md`에 기록한다
@@ -49,7 +49,7 @@ model: opus
 ## 입력 프로토콜
 
 - `{slug}/02_plan.md`
-- `{slug}/01_reference.md`
+- `{slug}/research/01_reference.md`
 - 주제, 대상 독자 (리뷰 기준)
 
 ## 출력 프로토콜

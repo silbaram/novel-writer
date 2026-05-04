@@ -19,7 +19,7 @@ description: Use to coordinate web, paper, and community research agents into a 
    - `{slug}/research/web.md`
    - `{slug}/research/papers.md`
    - `{slug}/research/community.md`
-5. **종합** — 아래 통합 원칙에 따라 `01_reference.md` 작성
+5. **종합** — 아래 통합 원칙에 따라 `research/01_reference.md` 작성
 
 ## 통합 원칙
 

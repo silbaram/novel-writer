@@ -37,7 +37,7 @@ description: Use for non-fiction/technical 책 쓰기 or 전자책 workflows to 
 `research-lead` 에이전트를 호출하고, 내부에서 `web-researcher`, `paper-researcher`, `community-researcher`를 병렬 서브에이전트로 호출한 뒤 결과를 종합하도록 지시한다.
 
 **입력:** 주제, 주요 내용, 대상 독자
-**출력:** `{slug}/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
+**출력:** `{slug}/research/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
 
 Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
 
@@ -47,7 +47,7 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 
 `book-planner` 에이전트를 호출한다.
 
-**입력:** 주제, 주요 내용, 대상 독자, `{slug}/01_reference.md`
+**입력:** 주제, 주요 내용, 대상 독자, `{slug}/research/01_reference.md`
 **출력:** `{slug}/02_plan.md` — 책 구조 설계 문서
 - 책 제목 후보 3개
 - 책 특성 (장르, 분량, 난이도, 독자 여정)
@@ -81,7 +81,7 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 부모 Codex 세션에 `style-guardian` 리뷰 요청을 보고한다.
 4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 부모 Codex 세션에 응답한다.
 5. `chapter-writer`가 수정하고 `{NN}_final.md`로 저장한다.
-6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/04_manuscript.md`에 통합 원고를 만든다.
+6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/manuscript/04_manuscript.md`에 통합 원고를 만든다.
 7. 팀을 해체한다.
 
 **챕터 수가 3개를 초과하면** chapter-writer를 챕터 수만큼 만들지 않고, 3명으로 시작해 각자 여러 챕터를 순차 처리한다(풀 방식). 너무 많은 팀원은 조율 오버헤드를 만든다.
@@ -94,7 +94,7 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 
 두 작업이 독립적이므로 병렬로 호출한다.
 
-- `cover-designer` → 표지 이미지 생성, `{slug}/cover.png` 저장
+- `cover-designer` → 표지 이미지 생성, `{slug}/assets/cover.png` 저장
 - `epub-builder`는 cover가 준비된 후에 호출 (순서 의존) → `{책-제목}-v{version}.epub` 생성 (프로젝트 루트) **+ 같은 폴더에 책 소개 markdown `{책-제목}-v{version}.md` 동시 산출**
 
 **EPUB 메타데이터:**

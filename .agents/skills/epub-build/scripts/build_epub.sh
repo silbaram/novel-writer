@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Build EPUB 3 from manuscript + cover + manifest.
 # Usage: build_epub.sh <slug>
-#   Reads: <slug>/04_manuscript.md
-#          <slug>/cover.png
-#          <slug>/book_manifest.json
+#   Reads: <slug>/manuscript/04_manuscript.md
+#          <slug>/assets/cover.png
+#          <slug>/manuscript/book_manifest.json
 #   Writes: <title-slug>-v<version>.epub (project root)
-#           <slug>/build_log.md
+#           <slug>/reviews/build_log.md
 
 set -euo pipefail
 
@@ -16,10 +16,11 @@ if [[ -z "$SLUG" ]]; then
 fi
 
 WS="${SLUG}"
-MANUSCRIPT="${WS}/04_manuscript.md"
-COVER="${WS}/cover.png"
-MANIFEST="${WS}/book_manifest.json"
-LOG="${WS}/build_log.md"
+MANUSCRIPT="${WS}/manuscript/04_manuscript.md"
+COVER="${WS}/assets/cover.png"
+MANIFEST="${WS}/manuscript/book_manifest.json"
+LOG="${WS}/reviews/build_log.md"
+mkdir -p "$(dirname "$LOG")"
 
 for f in "$MANUSCRIPT" "$MANIFEST"; do
   [[ -f "$f" ]] || { echo "missing: $f" >&2; exit 3; }
@@ -44,7 +45,7 @@ DESCRIPTION=$(read_field description)
 STRUCTURE_TYPE=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print((d.get('structure') or {}).get('type', ''))" "$MANIFEST")
 
 if [[ -z "$AUTHOR" ]]; then
-  if [[ "$STRUCTURE_TYPE" == "light_novel" || -f "${WS}/02_story_bible.md" ]]; then
+  if [[ "$STRUCTURE_TYPE" == "light_novel" || -f "${WS}/bible/02_story_bible.md" ]]; then
     AUTHOR="AI-Author"
   else
     AUTHOR="Toby-AI"
@@ -69,7 +70,7 @@ if [[ -f "$OUTPUT" ]]; then
   mv "$OUTPUT" "_prev/$(basename "$OUTPUT" .epub)-$(date +%Y%m%d%H%M%S).epub"
 fi
 
-META_YAML="${WS}/.meta.yaml"
+META_YAML="${WS}/manuscript/.meta.yaml"
 RIGHTS="© $(date +%Y) ${AUTHOR}"
 
 # Build metadata YAML for pandoc using Python stdlib only.

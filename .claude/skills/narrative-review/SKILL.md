@@ -91,7 +91,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 5 — 관계의 유용성
 
 **확인 절차:**
-1. `relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
+1. `bible/relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
 2. 각 관계가 최소 하나의 갈등 층위와 연결되는지 확인한다
 3. 제거해도 이야기에 영향 없는 관계가 있는지 확인한다
 
@@ -100,7 +100,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 6 — 시즌 씨앗 분리
 
 **확인 절차:**
-1. `season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
+1. `bible/season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
 2. 시즌 2 이상이 `[CANDIDATE]` 또는 `[DRAFT]`인지 확인한다
 3. 시즌 씨앗에 플롯 비트·챕터 배치가 포함되어 있지 않은지 확인한다
 
@@ -111,7 +111,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 **확인 절차:**
 1. `[LOCKED]` 항목이 핵심 설정에만 집중되어 있는지 확인한다 (너무 많으면 유연성 손실)
 2. `[CANDIDATE]` 항목이 바이블 본문에서 확정 사실처럼 서술되지 않았는지 확인한다
-3. `open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
+3. `bible/open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
 
 **흔한 패턴:**
 - `[Critical]` `[CANDIDATE]` 설정이 본문에서 확정 사실로 서술됨
@@ -127,7 +127,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - [ ] 세계관에 한계 있는 마법/시스템 정의됨
 - [ ] 4개 갈등 층위 중 최소 3개 정의됨
 - [ ] 시즌 1 씨앗이 `[LOCKED]` 또는 `[DRAFT]`로 존재
-- [ ] `open_questions.md` 존재하고 비어 있지 않음
+- [ ] `bible/open_questions.md` 존재하고 비어 있지 않음
 
 **판정:**
 - **Pass:** 위 조건 모두 충족
@@ -267,10 +267,10 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 
 ### 검토 대상 파일
 
-- `{slug}/03_season_plan.md`
+- `{slug}/planning/03_season_plan.md`
 - `{slug}/seasons/s01/season_bible.md`
-- `{slug}/02_story_bible.md` (Canon·금지 클리셰 확인용)
-- `{slug}/characters/protagonist.md` (인물 아크 기준선)
+- `{slug}/bible/02_story_bible.md` (Canon·금지 클리셰 확인용)
+- `{slug}/bible/characters/protagonist.md` (인물 아크 기준선)
 
 ---
 
@@ -294,7 +294,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 2 — 3막 챕터 배분 균형
 
 **확인 절차:**
-1. `03_season_plan.md`의 챕터 배분표를 읽는다
+1. `planning/03_season_plan.md`의 챕터 배분표를 읽는다
 2. 각 막의 챕터 비율을 계산한다
 3. 권장 범위: 1막 20~30% / 2막 45~55% / 3막 20~30%
 
@@ -353,7 +353,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 1. `season_bible.md`의 피날레 메커니즘을 읽는다
 2. 피날레 해소가 로그라인·갈등 설계에서 논리적으로 도출되는가?
 3. 피날레에 사용되는 요소가 이전 챕터에서 충분히 복선으로 준비되었는가?
-4. `02_story_bible.json`의 `forbidden_cliches`에 해당하는 해소 방식을 쓰고 있지 않은가?
+4. `bible/02_story_bible.json`의 `forbidden_cliches`에 해당하는 해소 방식을 쓰고 있지 않은가?
 
 **판정 기준:**
 
@@ -385,7 +385,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 7 — 금지 클리셰 노출 위험
 
 **확인 절차:**
-1. `02_story_bible.json`의 `forbidden_cliches` 목록을 읽는다
+1. `bible/02_story_bible.json`의 `forbidden_cliches` 목록을 읽는다
 2. 시즌 아크에서 해당 클리셰가 발생할 위험이 있는 챕터·장면을 식별한다
 3. 위험 징후가 있으면 구체적 챕터 번호와 함께 경고한다
 
@@ -407,7 +407,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 | **Conditional Pass** | Critical 0개, Should 3개 이상 — 수정 제안 포함 시 Phase 6 진행 가능 |
 | **Fail** | Critical 1개 이상 — Phase 3 재실행 필요 |
 
-결과는 `{slug}/05_review_log.md`의 "시즌 구조 검토" 섹션에 append한다.
+결과는 `{slug}/reviews/05_review_log.md`의 "시즌 구조 검토" 섹션에 append한다.
 
 ---
 
@@ -418,7 +418,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 | 위반 유형 | 심각도 | 처리 |
 |----------|--------|------|
 | `[LOCKED]` 항목이 무단 변경됨 | Critical | 즉시 오케스트레이터에 보고. 챕터 finalizing 중단 |
-| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `open_questions.md` 기록 요청 |
+| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `bible/open_questions.md` 기록 요청 |
 | `[CANDIDATE]` 항목이 본문에서 확정 사실로 서술됨 | Critical | 저술가에게 `(설정 확인 필요)` 표기로 대체 요청 |
 
 **새로운 설정 제안 시:** 반드시 `[SUGGESTION]` 태그를 붙인다. 이 태그 없는 새 설정은 확정 Canon으로 오해될 수 있다.

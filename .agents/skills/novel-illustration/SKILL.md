@@ -19,7 +19,7 @@ description: Use to plan interior illustrations for Korean light novels or web n
 ## 절차
 
 1. **입력 확인**
-   - `02_story_bible.md`, `characters/*.md`, `worldbuilding/*.md`, `seasons/sNN/chapter_plan.md`를 읽는다.
+   - `bible/02_story_bible.md`, `bible/characters/*.md`, `bible/worldbuilding/*.md`, `seasons/sNN/chapter_plan.md`를 읽는다.
    - 챕터 본문이 있으면 `{CCC}_final.md`를 우선하고, 없으면 챕터 플랜 기준으로 후보 장면을 잡는다.
 2. **삽화 슬롯 선정**
    - 단권 20챕터 기준 권장: 컬러 프론트피스 1장, 본문 흑백/단색 삽화 6~10장.
@@ -37,7 +37,7 @@ description: Use to plan interior illustrations for Korean light novels or web n
    - `_prompt.md`에 권장 도구, 프롬프트, 네거티브 프롬프트, 비율/해상도, 저장 파일명을 기록한다.
    - 이미지 파일이 아직 없으면 상태를 `prompt_ready` 또는 `image_missing`으로 둔다.
 6. **원고 삽입 준비**
-   - `04_manuscript.md` 또는 시즌 원고에 다음 형태의 마커를 넣을 수 있게 기록한다.
+   - `manuscript/04_manuscript.md` 또는 시즌 원고에 다음 형태의 마커를 넣을 수 있게 기록한다.
 
 ```markdown
 ![삽화 설명](illustrations/s01/001_guild_registration.png)
@@ -94,7 +94,7 @@ Generate the image externally and save the final PNG exactly here:
 - [ ] 스포일러 강도가 해당 삽입 위치보다 앞서가지 않는다.
 - [ ] 주요 인물 외형이 캐릭터 카드와 모순되지 않는다.
 - [ ] 이미지 파일명은 소문자 영문·숫자·언더스코어만 사용한다.
-- [ ] EPUB 상대 경로가 `{slug}/04_manuscript.md` 기준으로 맞다.
+- [ ] EPUB 상대 경로가 `{slug}/manuscript/04_manuscript.md` 기준으로 맞다.
 - [ ] `illustration_plan.md`의 파일 경로와 실제 저장된 PNG 경로가 일치한다.
 
 ## 재생성 규칙

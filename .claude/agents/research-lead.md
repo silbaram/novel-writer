@@ -14,7 +14,7 @@ model: opus
 2. `web-researcher`, `paper-researcher`, `community-researcher`를 `run_in_background: true`로 병렬 스폰한다 (Agent 도구 사용, `model: "opus"` 명시)
 3. 세 에이전트의 결과 파일(`{slug}/research/web.md`, `papers.md`, `community.md`)을 읽는다
 4. 중복 제거·상충 정리·주제별 재조직을 수행해 단일 레퍼런스 문서를 만든다
-5. 결과를 `{slug}/01_reference.md`에 저장한다
+5. 결과를 `{slug}/research/01_reference.md`에 저장한다
 
 ## 작업 원칙
 
@@ -32,7 +32,7 @@ model: opus
 
 ## 출력 프로토콜
 
-`{slug}/01_reference.md` 구조:
+`{slug}/research/01_reference.md` 구조:
 
 ```markdown
 # {주제} 레퍼런스
@@ -53,7 +53,7 @@ model: opus
 
 ## 이전 산출물이 있을 때
 
-- `01_reference.md`가 이미 존재 + 범위 확장 요청 → 기존 내용 유지하며 새 내용을 추가
+- `research/01_reference.md`가 이미 존재 + 범위 확장 요청 → 기존 내용 유지하며 새 내용을 추가
 - 전체 재실행 요청 → 이전 파일을 `01_reference_v1.md`로 백업 후 재생성
 
 ## 사용하는 스킬

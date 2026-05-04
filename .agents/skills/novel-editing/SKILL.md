@@ -7,7 +7,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 
 라이트노벨/웹소설의 챕터 최종본을 시즌 원고와 전체 EPUB 원고로 통합하는 절차 가이드다. `novel-editor`가 이 스킬을 참조한다.
 
-> **호환성 원칙:** 이 스킬의 최종 산출물(`{slug}/04_manuscript.md` + `{slug}/book_manifest.json`)은 기술서 하네스와 **동일한** `epub-builder` → `epub-build/scripts/build_epub.sh` 파이프라인으로 처리된다. 포맷 호환성을 항상 유지한다.
+> **호환성 원칙:** 이 스킬의 최종 산출물(`{slug}/manuscript/04_manuscript.md` + `{slug}/manuscript/book_manifest.json`)은 기술서 하네스와 **동일한** `epub-builder` → `epub-build/scripts/build_epub.sh` 파이프라인으로 처리된다. 포맷 호환성을 항상 유지한다.
 
 ---
 
@@ -21,7 +21,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 | `{slug}/continuity/continuity_log.md` | 미해결 Critical 경고가 있는지 확인 |
 | `{slug}/continuity/character_state_table.md` | 최신 인물 상태 확인 |
 | `{slug}/continuity/foreshadowing_tracker.md` | 미회수 복선은 내부 트래커용으로만 유지하고, 독자 노출 대상이 아님을 확인 |
-| `{slug}/02_story_bible.md` | 작품 제목 후보, 저자, 언어 확인 |
+| `{slug}/bible/02_story_bible.md` | 작품 제목 후보, 저자, 언어 확인 |
 | `{slug}/seasons/sNN/season_bible.md` (전체 시즌) | 시즌 제목, 시즌 역할 확인 |
 
 ---
@@ -45,7 +45,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 - [ ] 시간 경과 표지 ("며칠 뒤", "그날 밤")가 챕터 초반에 명시되어 있는가?
 - [ ] 직전 챕터의 훅이 다음 챕터에서 회수되거나 긴장이 유지되는가?
 
-수정이 필요한 경우 `{slug}/editor_notes.md`에 전환부 수정 제안을 기록하고 결과에 명시한다. 오케스트레이터가 이를 읽어 해당 `chapter-novelist`를 재호출한다. 에디터가 직접 본문을 재서술하지 않는다.
+수정이 필요한 경우 `{slug}/reviews/editor_notes.md`에 전환부 수정 제안을 기록하고 결과에 명시한다. 오케스트레이터가 이를 읽어 해당 `chapter-novelist`를 재호출한다. 에디터가 직접 본문을 재서술하지 않는다.
 
 ---
 
@@ -62,9 +62,9 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 **처리 원칙:**
 - 결정 가능한 경우: 더 자주 쓰인 표기로 통일
 - 결정 불가능한 경우: 서문에 "이 작품에서는 {개념}을 {표기}로 쓴다" 정의 삽입
-- 변경 내용은 `{slug}/editor_notes.md`에 기록
+- 변경 내용은 `{slug}/reviews/editor_notes.md`에 기록
 
-**내용 변경 금지:** 용어 표기 통일 외에 문장 재서술이나 플롯 수정을 하지 않는다. 구조·내용 수정 제안은 `editor_notes.md`에 메모만 한다.
+**내용 변경 금지:** 용어 표기 통일 외에 문장 재서술이나 플롯 수정을 하지 않는다. 구조·내용 수정 제안은 `reviews/editor_notes.md`에 메모만 한다.
 
 ---
 
@@ -91,9 +91,9 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 
 ---
 
-## 절차 5 — 전체 통합 원고 생성 (`04_manuscript.md`)
+## 절차 5 — 전체 통합 원고 생성 (`manuscript/04_manuscript.md`)
 
-`epub-builder`가 직접 소비하는 파일이다. 기술서 하네스의 `04_manuscript.md`와 동일한 최상위 구조를 따른다.
+`epub-builder`가 직접 소비하는 파일이다. 기술서 하네스의 `manuscript/04_manuscript.md`와 동일한 최상위 구조를 따른다.
 
 ```markdown
 # {작품 제목}
@@ -136,7 +136,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 
 ---
 
-## 절차 6 — `book_manifest.json` 생성
+## 절차 6 — `manuscript/book_manifest.json` 생성
 
 `build_epub.sh`가 직접 파싱하는 메타데이터 파일이다.
 
@@ -151,7 +151,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 | `pub_date` | `"YYYY-MM-DD"` | 생성일 기준 |
 | `identifier` | `"urn:uuid:{UUID}"` | 재빌드 시 동일 UUID 유지 |
 | `description` | 한 문단 소개 | 책 소개 markdown과 연동 |
-| `cover_image` | `"cover.png"` | 고정 경로 |
+| `cover_image` | `"assets/cover.png"` | 고정 경로 |
 | `version` | `"1.0.0"` | 재빌드 시 증가 |
 
 ### 선택 필드 (소설 전용 — build_epub.sh는 무시, 호환성 영향 없음)
@@ -172,7 +172,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 }
 ```
 
-### 완전한 `book_manifest.json` 예시
+### 완전한 `manuscript/book_manifest.json` 예시
 
 ```json
 {
@@ -183,7 +183,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
   "pub_date": "2026-04-29",
   "identifier": "urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
   "description": "현실의 서버 개발자였던 주인공이 이세계에 이전되어 마법 시스템의 버그를 수정하는 이야기.",
-  "cover_image": "cover.png",
+  "cover_image": "assets/cover.png",
   "version": "1.0.0",
   "genre": "이세계 판타지",
   "series": {
@@ -207,8 +207,8 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 
 - `continuity_log.md`에 미해결 Critical 경고가 없는지 확인
 - `foreshadowing_tracker.md`에서 이번 시즌 회수 예정 복선이 모두 `회수 완료`인지 확인
-- Critical 미해결 항목이 있으면 `season_manuscript.md`와 `04_manuscript.md` **초안 생성은 허용**한다
-- 같은 경우 `build_log.md`에 경고를 명시하고 오케스트레이터에 **수동 확인 또는 수정 완료 확인**을 요청한다
+- Critical 미해결 항목이 있으면 `season_manuscript.md`와 `manuscript/04_manuscript.md` **초안 생성은 허용**한다
+- 같은 경우 `reviews/build_log.md`에 경고를 명시하고 오케스트레이터에 **수동 확인 또는 수정 완료 확인**을 요청한다
 - **최종 EPUB 빌드(Phase 9)는 금지**하며, Critical 해소 또는 사용자 수동 승인 전에는 `epub-builder`를 호출하지 않는다
 
 ---
@@ -230,7 +230,7 @@ description: Use to integrate finalized fiction chapters into season/full manusc
 
 | 요청 | 처리 |
 |------|------|
-| 일부 챕터 갱신 | 해당 챕터 섹션만 교체, 시즌 원고 동기화, `04_manuscript.md` 전체 재저장 |
+| 일부 챕터 갱신 | 해당 챕터 섹션만 교체, 시즌 원고 동기화, `manuscript/04_manuscript.md` 전체 재저장 |
 | 서문·작가 후기 수정 | 해당 섹션만 수정 |
-| 버전 업 | `book_manifest.json`의 `version` 증가 (패치: `1.0.1`, 마이너: `1.1.0`) |
+| 버전 업 | `manuscript/book_manifest.json`의 `version` 증가 (패치: `1.0.1`, 마이너: `1.1.0`) |
 | 기존 EPUB 보존 | `build_epub.sh`가 자동으로 `_prev/`에 이동 처리 |

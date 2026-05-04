@@ -15,8 +15,8 @@ description: Use when finished chapters need integration into a coherent manuscr
 4. **용어 통일** — 불일치 발견 시 한쪽으로 정렬 (기준은 `02_plan.md`의 용어 표기를 따름)
 5. **콜백 삽입** — 뒤 챕터가 앞 개념을 언급할 때 자연스러운 참조 추가
 6. **부속 자료 작성** — 서문, 에필로그, 참고문헌, (선택) 용어집
-7. **통합** — `04_manuscript.md`로 합본 저장
-8. **매니페스트 생성** — `book_manifest.json` 작성
+7. **통합** — `manuscript/04_manuscript.md`로 합본 저장
+8. **매니페스트 생성** — `manuscript/book_manifest.json` 작성
 9. **스타일 점검 요청** — 필요 시 `style-guardian`에게 전체 훑기
 
 ## 전환부 체크
@@ -55,7 +55,7 @@ description: Use when finished chapters need integration into a coherent manuscr
 
 ## 출력 형식
 
-`04_manuscript.md`:
+`manuscript/04_manuscript.md`:
 
 ```markdown
 # {책 제목}
@@ -87,7 +87,7 @@ description: Use when finished chapters need integration into a coherent manuscr
 ...
 ```
 
-`book_manifest.json`:
+`manuscript/book_manifest.json`:
 
 ```json
 {
@@ -98,7 +98,7 @@ description: Use when finished chapters need integration into a coherent manuscr
   "pub_date": "YYYY-MM-DD",
   "identifier": "urn:uuid:...",
   "description": "한 문단 소개",
-  "cover_image": "cover.png",
+  "cover_image": "assets/cover.png",
   "version": "1.0.0"
 }
 ```
@@ -107,4 +107,4 @@ description: Use when finished chapters need integration into a coherent manuscr
 
 - 일부 챕터만 갱신 → 해당 섹션만 교체 후 전체 재저장
 - 서문·에필로그 개선 요청 → 해당 섹션만 다시 작성, 버전 증가
-- 내용 변경 제안은 반드시 `editor_notes.md`에 기록 (직접 수정 금지)
+- 내용 변경 제안은 반드시 `reviews/editor_notes.md`에 기록 (직접 수정 금지)

@@ -16,11 +16,11 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 순서 | 파일 | 읽는 이유 |
 |------|------|----------|
 | 1 | `style-guides/lightnovel-style-guide.md` | 금지 패턴 재확인 |
-| 2 | `{slug}/02_story_bible.md` | Canon 상태 확인 |
+| 2 | `{slug}/bible/02_story_bible.md` | Canon 상태 확인 |
 | 3 | `{slug}/seasons/sNN/season_bible.md` | 이 시즌의 톤·갈등·진행 중인 복선 확인 |
 | 4 | `{slug}/seasons/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
-| 5 | 등장인물 파일 (`{slug}/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
-| 6 | `{slug}/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
+| 5 | 등장인물 파일 (`{slug}/bible/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
+| 6 | `{slug}/bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
 | 7 | `{slug}/continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
 | 8 | `{slug}/continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
 
@@ -188,4 +188,4 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 챕터 플랜이 없거나 해당 섹션 비어 있음 | 오케스트레이터에 Phase 4 미완료 보고, 집필 대기 |
 | `[LOCKED]` 설정과 챕터 플랜 충돌 | 오케스트레이터와 `story-bible-planner`에게 보고, 집필 중단 |
 | 레퍼런스에 없는 사실이 필요한 경우 | `(설정 확인 필요)` 표기 후 계속 작성, 저자 노트에 기록 |
-| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `style_log.md`에 "합의 실패" 기록 |
+| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `reviews/style_log.md`에 "합의 실패" 기록 |

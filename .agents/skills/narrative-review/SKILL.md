@@ -91,7 +91,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 5 — 관계의 유용성
 
 **확인 절차:**
-1. `relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
+1. `bible/relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
 2. 각 관계가 최소 하나의 갈등 층위와 연결되는지 확인한다
 3. 제거해도 이야기에 영향 없는 관계가 있는지 확인한다
 
@@ -100,7 +100,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 6 — 시즌 씨앗 분리
 
 **확인 절차:**
-1. `season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
+1. `bible/season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
 2. 시즌 2 이상이 `[CANDIDATE]` 또는 `[DRAFT]`인지 확인한다
 3. 시즌 씨앗에 플롯 비트·챕터 배치가 포함되어 있지 않은지 확인한다
 
@@ -111,7 +111,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 **확인 절차:**
 1. `[LOCKED]` 항목이 핵심 설정에만 집중되어 있는지 확인한다 (너무 많으면 유연성 손실)
 2. `[CANDIDATE]` 항목이 바이블 본문에서 확정 사실처럼 서술되지 않았는지 확인한다
-3. `open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
+3. `bible/open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
 
 **흔한 패턴:**
 - `[Critical]` `[CANDIDATE]` 설정이 본문에서 확정 사실로 서술됨
@@ -127,7 +127,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - [ ] 세계관에 한계 있는 마법/시스템 정의됨
 - [ ] 4개 갈등 층위 중 최소 3개 정의됨
 - [ ] 시즌 1 씨앗이 `[LOCKED]` 또는 `[DRAFT]`로 존재
-- [ ] `open_questions.md` 존재하고 비어 있지 않음
+- [ ] `bible/open_questions.md` 존재하고 비어 있지 않음
 
 **판정:**
 - **Pass:** 위 조건 모두 충족
@@ -360,7 +360,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 ### 축 7 — 금지 클리셰 노출 위험
 
 **확인 절차:**
-1. `{slug}/02_story_bible.md` 또는 `02_story_bible.json`에서 `forbidden_cliches` 목록을 읽는다
+1. `{slug}/bible/02_story_bible.md` 또는 `bible/02_story_bible.json`에서 `forbidden_cliches` 목록을 읽는다
 2. 시즌 바이블의 사건 비트·피날레·캐릭터 아크를 순서대로 읽으며 금지 클리셰에 해당하는 패턴이 있는지 확인한다
 
 **흔한 패턴:**
@@ -377,7 +377,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 | **Conditional Pass** | Critical 0개, Should 3~4개 — 수정 제안 포함하여 진행 가능 |
 | **Fail** | Critical 1개 이상 — 해당 Phase(3 또는 4) 재실행 필요 |
 
-판정 결과와 항목별 피드백을 오케스트레이터에게 반환한다. `{slug}/05_review_log.md`에 "섹션 4 — 시즌 구조 검토" 항목으로 기록된다.
+판정 결과와 항목별 피드백을 오케스트레이터에게 반환한다. `{slug}/reviews/05_review_log.md`에 "섹션 4 — 시즌 구조 검토" 항목으로 기록된다.
 
 ---
 
@@ -388,7 +388,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 | 위반 유형 | 심각도 | 처리 |
 |----------|--------|------|
 | `[LOCKED]` 항목이 무단 변경됨 | Critical | 즉시 오케스트레이터에 보고. 챕터 finalizing 중단 |
-| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `open_questions.md` 기록 요청 |
+| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `bible/open_questions.md` 기록 요청 |
 | `[CANDIDATE]` 항목이 본문에서 확정 사실로 서술됨 | Critical | 저술가에게 `(설정 확인 필요)` 표기로 대체 요청 |
 
 **새로운 설정 제안 시:** 반드시 `[SUGGESTION]` 태그를 붙인다. 이 태그 없는 새 설정은 확정 Canon으로 오해될 수 있다.

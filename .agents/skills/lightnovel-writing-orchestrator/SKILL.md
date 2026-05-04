@@ -13,6 +13,28 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 ---
 
+## 산출물 디렉터리 원칙
+
+라노벨 프로젝트는 `{slug}/` 루트에 Phase 파일을 직접 흩뿌리지 않는다. 목적별 묶음 디렉터리에 저장한다.
+
+| 경로 | 역할 | 대표 파일 |
+|------|------|-----------|
+| `{slug}/research/` | Phase 1 리서치 | `01_reference.md` |
+| `{slug}/bible/` | Phase 2 스토리 바이블과 설정 | `02_story_bible.md`, `02_story_bible.json`, `relationships.md`, `open_questions.md`, `season_seeds.md` |
+| `{slug}/bible/characters/` | 인물 카드 | `protagonist.md`, `heroine.md`, `supporting.md` |
+| `{slug}/bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
+| `{slug}/planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
+| `{slug}/seasons/` | 시즌별 바이블, 챕터 원고, 시즌 통합본 | `s01/chapter_plan.md`, `s01/chapters/*_final.md`, `s01/season_manuscript.md` |
+| `{slug}/continuity/` | 연속성 추적 | `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`, `character_state_table.md` |
+| `{slug}/reviews/` | 검수/편집/빌드 로그 | `05_review_log.md`, `style_log.md`, `editor_notes.md`, `build_log.md` |
+| `{slug}/illustrations/` | 본문 삽화 계획, 프롬프트, 외부 생성 이미지 | `illustration_plan.md`, `style_sheet.md`, `s01/*_prompt.md` |
+| `{slug}/assets/` | 표지 등 출판용 공용 이미지 | `cover.png` |
+| `{slug}/manuscript/` | 출판/EPUB용 최종 원고와 메타데이터 | `04_manuscript.md`, `book_manifest.json` |
+
+새 프로젝트 생성 시 이 디렉터리를 먼저 만들고, `PROJECT_LAYOUT.md`에 현재 구조를 기록한다.
+
+---
+
 ## 에이전트 통신 원칙
 
 **모든 에이전트 간 통신은 오케스트레이터가 중계한다.** 서브에이전트는 다른 에이전트에게 직접 메시지를 보낼 수 없다. 에이전트는 결과를 파일에 저장하고 반환값(result)으로 오케스트레이터에게 돌려준다. 오케스트레이터가 그 결과를 다음 에이전트 프롬프트에 실어 순차적으로 호출한다.
@@ -82,10 +104,10 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 - `web-researcher`와 `community-researcher`를 병렬 서브에이전트로 호출한다
 - 논픽션 소재가 포함된 경우(역사물·SF·무협 등) `paper-researcher`를 추가 호출한다
-- 순수 창작 세계관이고 사용자가 "리서치 없이 바로 진행"을 요청한 경우 이 Phase를 건너뛰고 빈 `01_reference.md`를 생성한 뒤 Phase 2로 이동한다
+- 순수 창작 세계관이고 사용자가 "리서치 없이 바로 진행"을 요청한 경우 이 Phase를 건너뛰고 빈 `research/01_reference.md`를 생성한 뒤 Phase 2로 이동한다
 
 **입력:** 장르, 핵심 아이디어, 배경 설정 키워드
-**출력:** `{slug}/01_reference.md` — 세계관·소재 레퍼런스 (섹션: 장르 관행, 배경 자료, 독자 기대, 유사 작품 분석, 참고문헌)
+**출력:** `{slug}/research/01_reference.md` — 세계관·소재 레퍼런스 (섹션: 장르 관행, 배경 자료, 독자 기대, 유사 작품 분석, 참고문헌)
 
 Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
 
@@ -102,19 +124,19 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 **절차:**
 
 1. `story-bible-planner`를 호출한다. 10단계 내부 절차를 통해 스토리 바이블을 작성하고 파일로 저장한다
-2. `story-bible-reviewer`를 호출한다. 8개 검토 축으로 바이블을 평가해 `{slug}/02_story_bible_review.md`에 저장하고 결과를 반환한다
+2. `story-bible-reviewer`를 호출한다. 8개 검토 축으로 바이블을 평가해 `{slug}/bible/02_story_bible_review.md`에 저장하고 결과를 반환한다
 3. 오케스트레이터가 리뷰 결과를 읽어 `story-bible-planner`를 재호출한다 (피드백 내용을 프롬프트에 포함). 최대 2회 왕복
 4. `story-bible-reviewer`의 최종 판정이 **Fail**이면 사용자에게 보고하고 재작업을 요청한다. **Pass** 또는 **Conditional Pass**면 Phase 3으로 진행한다
 5. 사용자에게 스토리 바이블을 제시하고 승인을 받는다. 피드백이 있으면 `story-bible-planner`를 한 번 더 호출해 반영한다
 
 **출력:**
-- `{slug}/02_story_bible.md` + `{slug}/02_story_bible.json`
-- `{slug}/characters/*.md`
-- `{slug}/worldbuilding/*.md`
-- `{slug}/relationships.md`
-- `{slug}/open_questions.md`
-- `{slug}/season_seeds.md`
-- `{slug}/02_story_bible_review.md`
+- `{slug}/bible/02_story_bible.md` + `{slug}/bible/02_story_bible.json`
+- `{slug}/bible/characters/*.md`
+- `{slug}/bible/worldbuilding/*.md`
+- `{slug}/bible/relationships.md`
+- `{slug}/bible/open_questions.md`
+- `{slug}/bible/season_seeds.md`
+- `{slug}/bible/02_story_bible_review.md`
 
 ---
 
@@ -127,9 +149,9 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 - 단권 소설은 `s01`로 처리한다
 - 시즌 1은 완전 상세로 작성하고, 시즌 2 이후는 사용자가 명시적으로 요청하지 않는 한 방향/씨앗 수준으로만 작성한다
 
-**입력:** `{slug}/02_story_bible.md`, `{slug}/02_story_bible.json`, `{slug}/season_seeds.md`, 캐릭터·세계관 파일 전체, 요청 시즌 수
+**입력:** `{slug}/bible/02_story_bible.md`, `{slug}/bible/02_story_bible.json`, `{slug}/bible/season_seeds.md`, 캐릭터·세계관 파일 전체, 요청 시즌 수
 **출력:**
-- `{slug}/03_season_plan.md`
+- `{slug}/planning/03_season_plan.md`
 - `{slug}/seasons/s01/season_bible.md` (시즌 1 완전 상세)
 - `{slug}/seasons/s02/season_bible.md` (시즌 2 존재 시, 방향 수준)
 - 이후 시즌도 동일 패턴
@@ -163,7 +185,7 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 | 챕터 엔딩 | 훅 유형과 구체적 장치 |
 
 **출력:**
-- `{slug}/04_chapter_plan.md` — 전체 챕터 플랜 요약
+- `{slug}/planning/04_chapter_plan.md` — 전체 챕터 플랜 요약
 - `{slug}/seasons/s01/chapter_plan.md`
 - `{slug}/seasons/s02/chapter_plan.md` (시즌 2 이상 존재 시)
 
@@ -193,12 +215,12 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 **통합 판정 및 출력:**
 
-- 네 단계 결과를 `{slug}/05_review_log.md`에 통합 기록한다
+- 네 단계 결과를 `{slug}/reviews/05_review_log.md`에 통합 기록한다
 - Critical 문제가 하나라도 있으면 사용자에게 보고하고 해당 Phase(2, 3, 또는 4)를 재실행한다
 - Should 이하는 리뷰 로그에 기록하고 Phase 6으로 진행한다
 - 모든 단계 Pass 또는 Conditional Pass이면 오케스트레이터가 사용자에게 "집필 전 종합 검증 완료 — Phase 6 집필을 시작합니다"를 보고한다
 
-**출력:** `{slug}/05_review_log.md`
+**출력:** `{slug}/reviews/05_review_log.md`
 
 ---
 
@@ -214,7 +236,7 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 1. Codex 작업 계획으로 해당 시즌의 챕터 목록을 태스크로 등록한다
 2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다 (병렬 서브에이전트 호출). 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다
-3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 검수한다. 스타일 가디언은 피드백을 `{CCC}_review.md`(임시)와 `style_log.md`(누적)에 저장하고 결과를 반환한다
+3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 검수한다. 스타일 가디언은 피드백을 `{CCC}_review.md`(임시)와 `reviews/style_log.md`(누적)에 저장하고 결과를 반환한다
 4. 오케스트레이터가 피드백을 읽어 해당 `chapter-novelist`를 재호출해 수정을 요청한다 (피드백 내용을 프롬프트에 포함). `chapter-novelist`가 `{CCC}_final.md`를 저장하고 반환한다
 5. 오케스트레이터가 `continuity-keeper`를 호출한다 (`{CCC}_final.md` 경로 전달). `continuity-keeper`가 연속성 레코드를 갱신하고 결과를 반환한다
 6. Critical 경고가 반환되면 오케스트레이터가 해당 `chapter-novelist`를 재호출해 수정을 지시한다
@@ -243,7 +265,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 5. Critical 이슈가 해소되거나 사용자 수동 확인이 완료되면 Phase 9로 진행한다
 
 **출력:**
-- `{slug}/style_log.md` (누적 append)
+- `{slug}/reviews/style_log.md` (누적 append)
 - `{slug}/continuity/continuity_log.md`
 - `{slug}/continuity/timeline.md`
 - `{slug}/continuity/foreshadowing_tracker.md`
@@ -255,12 +277,12 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 **실행 모드:** 단일 서브 에이전트
 
-`novel-editor`를 호출한다. 모든 챕터 최종본을 시즌 원고로, 전체 원고(`04_manuscript.md`)로 통합한다. 저자 노트 제거, 전환부 정리, 용어 통일, 서문·작가 후기 작성, `book_manifest.json` 생성을 수행한다.
+`novel-editor`를 호출한다. 모든 챕터 최종본을 시즌 원고로, 전체 원고(`manuscript/04_manuscript.md`)로 통합한다. 저자 노트 제거, 전환부 정리, 용어 통일, 서문·작가 후기 작성, `manuscript/book_manifest.json` 생성을 수행한다.
 
 **출력:**
 - `{slug}/seasons/sNN/season_manuscript.md`
-- `{slug}/04_manuscript.md`
-- `{slug}/book_manifest.json`
+- `{slug}/manuscript/04_manuscript.md`
+- `{slug}/manuscript/book_manifest.json`
 
 ---
 
@@ -278,14 +300,14 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 3. 캐릭터 외형·의상·소품 일관성을 `{slug}/illustrations/style_sheet.md`에 기록한다
 4. 각 이미지의 외부 생성 프롬프트를 `{slug}/illustrations/sNN/*_prompt.md`에 저장하고, 저장해야 할 PNG 경로를 명시한다
 5. PNG 파일이 아직 없으면 상태를 `prompt_ready` 또는 `image_missing`으로 표시한다. Phase 9 전에 사용자가 해당 경로에 PNG를 저장하면 EPUB에 포함한다
-6. `novel-editor` 또는 오케스트레이터가 `04_manuscript.md`에 Markdown 이미지 마커를 삽입한다
+6. `novel-editor` 또는 오케스트레이터가 `manuscript/04_manuscript.md`에 Markdown 이미지 마커를 삽입한다
 
 **출력:**
 - `{slug}/illustrations/illustration_plan.md`
 - `{slug}/illustrations/style_sheet.md`
 - `{slug}/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
 - `{slug}/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 도구가 저장해야 하는 대상 파일)
-- 삽화가 포함되도록 갱신된 `{slug}/04_manuscript.md`
+- 삽화가 포함되도록 갱신된 `{slug}/manuscript/04_manuscript.md`
 
 ---
 
@@ -297,8 +319,8 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 > **게이트 규칙(강제):** `continuity/continuity_log.md`에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 오케스트레이터는 수동 확인 요청을 사용자에게 전달하고, 승인/수정 완료 전까지 EPUB 빌드를 호출하지 않는다.
 
-1. `cover-designer` → `{slug}/cover.png` 생성 (Codex 이미지 생성 도구/스킬 > API > ImageMagick 폴백)
-2. 본문 삽화 마커가 있으면 `04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
+1. `cover-designer` → `{slug}/assets/cover.png` 생성 (Codex 이미지 생성 도구/스킬 > API > ImageMagick 폴백)
+2. 본문 삽화 마커가 있으면 `manuscript/04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
 3. 표지 생성 완료 후 `epub-builder` 호출 → `epub-build/scripts/build_epub.sh` 실행
 4. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
 
@@ -311,8 +333,8 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 **출력:**
 - `{작품-제목}-v{version}.epub` (프로젝트 루트)
 - `{작품-제목}-v{version}.md` (프로젝트 루트 — 책 소개 markdown)
-- `{slug}/cover.png`
-- `{slug}/build_log.md`
+- `{slug}/assets/cover.png`
+- `{slug}/reviews/build_log.md`
 
 ---
 
@@ -320,13 +342,13 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 | 시나리오 | 대응 |
 |---------|------|
-| 리서치 에이전트 타임아웃 | 가용 결과만으로 `01_reference.md` 작성, 누락 섹션 명시 후 진행 |
+| 리서치 에이전트 타임아웃 | 가용 결과만으로 `research/01_reference.md` 작성, 누락 섹션 명시 후 진행 |
 | `story-bible-reviewer` Fail 판정 | 사용자에게 보고, `story-bible-planner` 재작업 요청 |
 | `continuity-keeper` Critical 경고 | 해당 챕터 finalizing 중단, 저술가에게 수정 지시 |
-| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `style_log.md`에 "합의 실패" 기록 |
+| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `reviews/style_log.md`에 "합의 실패" 기록 |
 | `[LOCKED]` Canon 위반 감지 | `continuity-keeper`가 차단, `story-bible-planner`에게 공식 개정 절차 요청 |
 | 표지 생성 실패 | ImageMagick 폴백 → 단순 타이포그래피 표지. 폴백도 실패 시 사용자 알림 후 표지 없이 빌드 |
-| EPUB 빌드 실패 | pandoc 에러 메시지 그대로 보고, `04_manuscript.md`는 보존 |
+| EPUB 빌드 실패 | pandoc 에러 메시지 그대로 보고, `manuscript/04_manuscript.md`는 보존 |
 
 ---
 
@@ -352,11 +374,11 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 | 요청 유형 | 재실행 Phase | 백업 규칙 |
 |----------|------------|---------|
-| 스토리 바이블 수정 | Phase 2 → 3 → 4 → 5 재실행 | `02_story_bible.md` → `02_story_bible_v{N}.md` |
-| 시즌 구조 수정 | Phase 3 → 4 → 5 재실행 | `03_season_plan.md` → `03_season_plan_v{N}.md` |
+| 스토리 바이블 수정 | Phase 2 → 3 → 4 → 5 재실행 | `bible/02_story_bible.md` → `02_story_bible_v{N}.md` |
+| 시즌 구조 수정 | Phase 3 → 4 → 5 재실행 | `planning/03_season_plan.md` → `03_season_plan_v{N}.md` |
 | 단일 챕터 재작성 | Phase 6 (해당 챕터만) → Phase 7 | `{CCC}_draft.md` → `{CCC}_draft_v{N}.md` |
 | 본문 삽화 추가/교체 | Phase 8.5 | 기존 PNG → `{name}_v{N}.png` |
-| 표지 교체 | Phase 9 (`cover-designer`만) | `cover.png` → `cover_v{N}.png` |
+| 표지 교체 | Phase 9 (`cover-designer`만) | `assets/cover.png` → `cover_v{N}.png` |
 | EPUB 재빌드 | Phase 9 (`epub-builder`만) | 기존 EPUB → `_prev/` 이동 |
 
 ---

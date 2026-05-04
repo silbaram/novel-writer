@@ -9,7 +9,7 @@ description: Use for book outlines, title candidates, audience fit, chapter sequ
 
 ## 절차
 
-1. **입력 소화** — `01_reference.md`와 주제·대상 독자·분량 힌트를 읽는다
+1. **입력 소화** — `research/01_reference.md`와 주제·대상 독자·분량 힌트를 읽는다
 2. **독자 여정 설계**
    - 진입 상태: 독자가 이 책을 펼 때 어떤 지식·고민·기대를 가지고 있는가?
    - 출구 상태: 다 읽었을 때 무엇을 할 수 있고, 어떤 관점이 바뀌어 있는가?

@@ -62,7 +62,7 @@ model: opus
 ## 출력 프로토콜
 
 - `SendMessage` 피드백 메시지
-- `{slug}/style_log.md`에 모든 리뷰 라운드 append
+- `{slug}/reviews/style_log.md`에 모든 리뷰 라운드 append
 
 ## 에러 핸들링
 
