@@ -9,16 +9,6 @@ Thumbs.db
 # OMC session state (tool-local, not source)
 .omc/
 
-# # Private book artifacts
-# #
-# # Keep generated manuscripts, bibles, plans, reviews, prompts, covers, and EPUBs
-# # out of the public harness repository. Store new book projects under books/ or
-# # _books/ unless they are meant to be published as examples.
-# books/
-# _books/
-# _workspace/
-# _workspace_prev*/
-
 # Build output
 output/
 *.epub
