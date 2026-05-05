@@ -1,6 +1,6 @@
 ---
 name: community-research
-description: Mine developer/practitioner communities (Reddit, Hacker News, StackOverflow, GitHub Discussions, OKKY, velog, 네이버 카페) for real-world pain points, debates, and field-tested heuristics. Use when the user asks for "커뮤니티 의견", "실무자 목소리", "Reddit·HN 뒤져줘", "현장 경험담 모아줘", or when a book needs authentic pain-point material for chapter openings.
+description: Use for 커뮤니티 리서치, collecting practitioner pain points from Reddit, HN, StackOverflow, GitHub, OKKY, velog, or cafes.
 ---
 
 # Community Research

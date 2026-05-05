@@ -1,11 +1,11 @@
 ---
 name: book-writing-orchestrator
-description: Orchestrate a full book-writing workflow from topic to finished EPUB with cover image. Use when the user asks to "write a book", "draft a book", "author a book", "책 쓰기", "책 저술해줘", "책 만들어줘", "전자책 만들어줘", "EPUB 생성", provides a topic/audience/outline and asks to turn it into a book, or says "~에 대한 책을 써줘". Also triggers on follow-ups like "다시 저술", "계획 수정", "챕터 다시 써줘", "표지 바꿔", "책 업데이트", "특정 챕터 보완", "이전 책 개선", "리서치만 다시". Coordinates research, planning, review, chapter writing in Toby's style, style enforcement, editing, cover design, and EPUB assembly. Author defaults to Toby-AI (overridable via user prompt — include "저자: {이름}").
+description: Orchestrate a non-fiction/technical Korean book workflow from topic to EPUB. Do not use for 소설/라노벨 fiction; use lightnovel-writing-orchestrator.
 ---
 
 # Book Writing Orchestrator
 
-주제·주요 내용·대상 독자를 받아 Toby 스타일의 완성된 EPUB을 산출하는 전 과정을 조율한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
+주제·주요 내용·대상 독자를 받아 **논픽션/기술서** EPUB을 산출하는 전 과정을 조율한다. 라노벨·소설·웹소설 요청에는 이 스킬을 쓰지 말고 `lightnovel-writing-orchestrator`를 사용한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
 
 ## 실행 모드
 
@@ -35,7 +35,7 @@ description: Orchestrate a full book-writing workflow from topic to finished EPU
 `research-lead` 에이전트를 호출하고, 내부에서 `web-researcher`, `paper-researcher`, `community-researcher`를 `run_in_background: true`로 병렬 스폰한 뒤 결과를 종합하도록 지시한다.
 
 **입력:** 주제, 주요 내용, 대상 독자
-**출력:** `{slug}/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
+**출력:** `{slug}/research/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
 
 Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
@@ -45,7 +45,7 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
 `book-planner` 에이전트를 호출한다.
 
-**입력:** 주제, 주요 내용, 대상 독자, `{slug}/01_reference.md`
+**입력:** 주제, 주요 내용, 대상 독자, `{slug}/research/01_reference.md`
 **출력:** `{slug}/02_plan.md` — 책 구조 설계 문서
 - 책 제목 후보 3개
 - 책 특성 (장르, 분량, 난이도, 독자 여정)
@@ -77,14 +77,14 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 1. `TeamCreate`로 위 팀을 구성한다. 팀 이름: `book-writing-team`.
 2. `TaskCreate`로 각 챕터를 task로 등록한다. task당 `chapter-writer` 1명을 할당한다.
 3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 `SendMessage`로 `style-guardian`에게 리뷰를 요청한다.
-4. `style-guardian`은 Toby 스타일 기준(평어체, 청유형, 수사적 질문, 공감 표현 등)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 `SendMessage`로 응답한다.
+4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 `SendMessage`로 응답한다.
 5. `chapter-writer`가 수정하고 `{NN}_final.md`로 저장한다.
-6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/04_manuscript.md`에 통합 원고를 만든다.
+6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/manuscript/04_manuscript.md`에 통합 원고를 만든다.
 7. 팀을 해체한다.
 
 **챕터 수가 3개를 초과하면** chapter-writer를 챕터 수만큼 만들지 않고, 3명으로 시작해 각자 여러 챕터를 순차 처리한다(풀 방식). 너무 많은 팀원은 조율 오버헤드를 만든다.
 
-**스타일 가이드:** `toby-book-writing-style.md`를 모든 chapter-writer가 참조한다. `chapter-writing` 스킬 내 `references/toby-style-guide.md`에 확장된 가이드가 있다.
+**스타일 가이드:** 모든 chapter-writer는 프로젝트 루트의 `style-guides/toby-book-writing-style.md`를 기본 문체 기준으로 삼고, `chapter-writing` 스킬 내 `references/toby-style-guide.md`를 확장 체크리스트로 함께 참조한다.
 
 ## Phase 5: 표지 + EPUB 빌드 (팬아웃)
 
@@ -92,7 +92,7 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
 두 작업이 독립적이므로 병렬로 호출한다.
 
-- `cover-designer` → 표지 이미지 생성, `{slug}/cover.png` 저장
+- `cover-designer` → 표지 이미지 생성, `{slug}/assets/cover.png` 저장
 - `epub-builder`는 cover가 준비된 후에 호출 (순서 의존) → `{책-제목}-v{version}.epub` 생성 (프로젝트 루트) **+ 같은 폴더에 책 소개 markdown `{책-제목}-v{version}.md` 동시 산출**
 
 **EPUB 메타데이터:**

@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Critically review a book plan against the reference document and audience fit. Check coverage, narrative flow, audience alignment, chapter balance, and redundancy. Use when reviewing a book outline, auditing a chapter structure, or giving structured feedback on a writing plan. Triggers on "계획 리뷰", "아웃라인 평가", "review the plan", "critique the outline".
+description: Use to critique a book outline against references and audience fit, checking coverage, flow, balance, redundancy, and missing topics.
 ---
 
 # Plan Review
@@ -19,7 +19,7 @@ description: Critically review a book plan against the reference document and au
 
 ## 절차
 
-1. **읽기** — `02_plan.md` + `01_reference.md`를 순서대로
+1. **읽기** — `02_plan.md` + `research/01_reference.md`를 순서대로
 2. **대조** — 레퍼런스의 각 섹션이 계획의 어느 장에 매핑되는지 표로 정리
 3. **5축 평가** — 각 축마다 문제 3개 이내로 압축 (과다 지적 금지)
 4. **우선순위 부여** — Critical / Should / Nice

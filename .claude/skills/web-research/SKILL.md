@@ -1,6 +1,6 @@
 ---
 name: web-research
-description: Search the general web (blogs, articles, official docs, tutorials) for topic-relevant content and compile findings with full citations. Use when the user asks to "웹 리서치", "블로그 자료 모아줘", "공식 문서 뒤져줘", "search the web for", "find articles on", or when gathering secondary material outside academic/community sources.
+description: Use for 웹 리서치, collecting official docs, blogs, articles, and tutorials with URLs, dates, credibility notes, and citations.
 ---
 
 # Web Research

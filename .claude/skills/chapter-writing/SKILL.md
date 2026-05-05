@@ -1,11 +1,11 @@
 ---
 name: chapter-writing
-description: Write a single book chapter in Toby's distinctive Korean writing style (평어체 기반, 청유형 적극 활용, 수사적 질문, 상황 가정, 감정적 공감 표현). Use when drafting or revising a book chapter, rewriting prose in Toby's voice, translating an outline into full chapter text, or polishing chapter drafts to match 토비 문체. Triggers on "챕터 써줘", "이 섹션 저술", "토비 스타일로 써줘", "write a chapter in Toby's voice", "rewrite in 평어체", or when a chapter outline needs to become full prose.
+description: Write or revise non-fiction/technical book chapters in Toby's Korean style. Do not use for 소설/라노벨 fiction chapters; use novel-chapter-writing.
 ---
 
 # Chapter Writing (Toby Style)
 
-하나의 챕터를 Toby의 문체로 저술한다. 이 스킬의 목적은 단순한 정보 전달이 아니라, **독자와 함께 사고하는 듯한 친근한 논리 전개**를 구현하는 것이다.
+하나의 **논픽션/기술서 챕터**를 Toby의 문체로 저술한다. 라노벨·소설·웹소설 챕터에는 이 스킬을 사용하지 않는다. 그런 작업은 `novel-chapter-writing`을 사용한다. 이 스킬의 목적은 단순한 정보 전달이 아니라, **독자와 함께 사고하는 듯한 친근한 논리 전개**를 구현하는 것이다.
 
 ## 핵심 원칙
 
@@ -39,11 +39,11 @@ description: Write a single book chapter in Toby's distinctive Korean writing st
 - "그렇다면 어떻게 해야 할까?"
 - "물론 ~다. 하지만 ~"
 
-상세 가이드와 예시는 `references/toby-style-guide.md` 참조.
+기본 문체 기준은 프로젝트 루트의 `style-guides/toby-book-writing-style.md`를 따르고, 상세 가이드와 예시는 `references/toby-style-guide.md`를 참조한다.
 
 ## 챕터 구성 절차
 
-1. **입력 확인** — 책 계획(`02_plan.md`), 할당된 챕터 번호, 해당 챕터의 "핵심 질문"과 "주요 내용", 리서치 자료(`01_reference.md`)를 읽는다.
+1. **입력 확인** — 책 계획(`02_plan.md`), 할당된 챕터 번호, 해당 챕터의 "핵심 질문"과 "주요 내용", 리서치 자료(`research/01_reference.md`)를 읽는다.
 2. **챕터 유형 식별** — 챕터는 대체로 다음 중 하나다. 유형별 스캐폴드는 `references/chapter-scaffolds.md` 참조.
    - 개념 도입형 (새 개념을 설명)
    - 문제-해결형 (문제를 제시하고 해결책 제안)

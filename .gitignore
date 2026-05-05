@@ -9,12 +9,9 @@ Thumbs.db
 # OMC session state (tool-local, not source)
 .omc/
 
-# Workspace scratch (per-book intermediate artifacts)
-# _workspace/
-# _workspace_prev*/
-
 # Build output
-# output/
+output/
+*.epub
 
 # Python cache
 __pycache__/
@@ -23,3 +20,6 @@ __pycache__/
 # Logs and temp
 *.log
 .tmp/
+
+# Current private book project
+charm-allstat-isekai/

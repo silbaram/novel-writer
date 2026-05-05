@@ -1,6 +1,6 @@
 ---
 name: research-coordination
-description: Coordinate parallel research agents (web, paper, community) and synthesize findings into a unified reference document. Use when collecting background material for a book, whitepaper, or deep-dive article — triggers on "리서치 조율", "여러 소스에서 자료 모아줘", "reference 문서 만들어줘" style requests. De-duplicates, groups by theme, flags conflicts, preserves citations.
+description: Use to coordinate web, paper, and community research agents into a de-duplicated, citation-preserving reference document.
 ---
 
 # Research Coordination
@@ -19,7 +19,7 @@ description: Coordinate parallel research agents (web, paper, community) and syn
    - `{slug}/research/web.md`
    - `{slug}/research/papers.md`
    - `{slug}/research/community.md`
-5. **종합** — 아래 통합 원칙에 따라 `01_reference.md` 작성
+5. **종합** — 아래 통합 원칙에 따라 `research/01_reference.md` 작성
 
 ## 통합 원칙
 

@@ -1,16 +1,16 @@
 ---
 name: style-review
-description: Review chapter drafts against Toby's writing style guide — detects 지시적 어조, 메타 문장, 외래어 남용, 수동태 남발, 공감 표현 부족. Provides concrete before/after rewrite suggestions. Use when reviewing a chapter draft for style consistency, enforcing 토비 문체, or polishing prose in the Toby voice.
+description: Review non-fiction/technical Toby-style chapter drafts. Do not use for 소설/라노벨 fiction prose; use narrative-review.
 ---
 
 # Style Review
 
-챕터 초안을 Toby 문체 기준으로 검수한다. 발견한 편차에 대해 **구체적 대체 문장**을 제안한다.
+논픽션/기술서 챕터 초안을 Toby 문체 기준으로 검수한다. 라노벨·소설·웹소설 원고에는 이 스킬을 사용하지 않는다. 발견한 편차에 대해 **구체적 대체 문장**을 제안한다.
 
 ## 절차
 
 1. **원문 읽기** — `{NN}_draft.md`를 처음부터 끝까지
-2. **기준 재확인** — `toby-book-writing-style.md`와 `chapter-writing/references/toby-style-guide.md`
+2. **기준 재확인** — 프로젝트 루트의 `style-guides/toby-book-writing-style.md`와 `chapter-writing/references/toby-style-guide.md`
 3. **체크리스트 순회** — 아래 10개 항목 점검
 4. **편차 기록** — 원문 인용 + 대안 제시 + 이유
 5. **우선순위** — Critical / Should / Nice
@@ -63,7 +63,7 @@ description: Review chapter drafts against Toby's writing style guide — detect
 
 - 이전 라운드 피드백의 반영 여부 확인
 - 새 편차만 지적
-- 3회 왕복에도 합의 실패 → 저술가 결정 존중, `style_log.md`에 "합의 실패" 기록
+- 3회 왕복에도 합의 실패 → 저술가 결정 존중, `reviews/style_log.md`에 "합의 실패" 기록
 
 ## 통합 원고 검수 (editor 요청 시)
 
