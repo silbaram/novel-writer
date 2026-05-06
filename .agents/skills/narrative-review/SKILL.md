@@ -183,6 +183,8 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - 수동태 남발 → `[Should]`
 - 한 문단에 동일 어휘 3회 이상 반복 → `[Nice]`
 - 의도된 긴장/코미디가 아닌데 단문 4개 이상이 연속되어 평평하게 읽힘 → `[Nice]`, 챕터 전반에 반복되면 `[Should]`
+- 설명 문단이 `A였다. B였다. C였다.`처럼 목록식으로 끊겨 공간/상황 묘사가 딱딱하게 읽힘 → 1회성은 `[Nice]`, 챕터 전반에 반복되면 `[Should]`
+- 한 문단 안에서 `있었다`·`했다`·`였다` 같은 동일 종결이 3회 이상 반복되어 의도 없이 툭툭 끊김 → `[Nice]`, 핵심 장면에서 반복되면 `[Should]`
 
 **항목 7 — 챕터 엔딩**
 - 마지막 단락에 훅이 없음 → `[Critical]`

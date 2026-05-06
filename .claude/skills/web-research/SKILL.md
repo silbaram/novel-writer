@@ -11,9 +11,9 @@ description: Use for 웹 리서치, collecting official docs, blogs, articles, a
 
 1. **검색 키워드 설계** — 주제에서 3~5개 키워드 조합 생성 (한국어 + 영어)
 2. **검색 실행** — 우선순위:
-   - Firecrawl 스킬 (가능 시) — 전문 추출·인덱싱에 강함
-   - WebSearch 도구 → 상위 결과 링크 수집
-   - WebFetch 도구 → 각 페이지 본문 가져오기
+   - Codex 웹 검색 도구 (`--search` 또는 세션 제공 web search)
+   - Browser Use / 브라우저 도구가 있으면 페이지 확인·스크린샷·본문 검증에 활용
+   - Firecrawl 같은 외부 수집 도구는 해당 스킬·MCP가 설치된 경우에만 사용
 3. **소스 평가** — 신뢰성 등급 매기기
    - 최상: 공식 문서, 기술 저널, 확인된 저자 블로그
    - 중: 커뮤니티 블로그, 포털 기술 아티클
@@ -54,4 +54,4 @@ description: Use for 웹 리서치, collecting official docs, blogs, articles, a
 
 - 검색 결과 빈약 → 키워드 변형 (동의어, 영문 번역, 약어 ↔ 풀네임) 후 재시도
 - 특정 페이지 접근 실패 → 해당 자료 제외, 로그에 기록
-- Firecrawl·WebSearch 모두 실패 → 캐시된 아카이브(archive.org) 활용 시도
+- Codex 웹 검색·브라우저 접근이 모두 불가능 → 사용자에게 검색 활성화 필요성을 보고하고, 캐시된 아카이브(archive.org) 활용 시도

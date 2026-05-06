@@ -1,9 +1,11 @@
 ---
 name: book-writing-orchestrator
-description: Orchestrate a non-fiction/technical Korean book workflow from topic to EPUB. Do not use for 소설/라노벨 fiction; use lightnovel-writing-orchestrator.
+description: Use for non-fiction/technical 책 쓰기 or 전자책 workflows to EPUB. Do not use for 소설/라노벨 fiction; use lightnovel-writing-orchestrator.
 ---
 
 # Book Writing Orchestrator
+
+> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
 
 주제·주요 내용·대상 독자를 받아 **논픽션/기술서** EPUB을 산출하는 전 과정을 조율한다. 라노벨·소설·웹소설 요청에는 이 스킬을 쓰지 말고 `lightnovel-writing-orchestrator`를 사용한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
 
@@ -21,7 +23,7 @@ description: Orchestrate a non-fiction/technical Korean book workflow from topic
 
 워크플로우를 시작하기 전에 기존 산출물 존재 여부를 확인한다.
 
-1. 사용자 입력에서 **주제, 주요 내용, 대상 독자**를 추출한다. 셋 중 하나라도 불명확하면 사용자에게 짧게 질문한다 (AskUserQuestion 사용). 추가로 `저자: {이름}` 형태의 저자 지정이 있는지 확인한다 — 없으면 기본값 `Toby-AI`를 사용하고, 있으면 해당 값을 매니페스트·표지 메타까지 전파한다.
+1. 사용자 입력에서 **주제, 주요 내용, 대상 독자**를 추출한다. 셋 중 하나라도 불명확하면 사용자에게 짧게 질문한다 (사용자에게 짧게 확인). 추가로 `저자: {이름}` 형태의 저자 지정이 있는지 확인한다 — 없으면 기본값 `Toby-AI`를 사용하고, 있으면 해당 값을 매니페스트·표지 메타까지 전파한다.
 2. 책 제목 후보(슬러그 포함)를 만든다. 예: `AI 시대의 개발자 철학` → 슬러그 `ai-developer-philosophy`.
 3. `{slug}/`의 존재 여부를 확인한다.
    - **미존재** → 초기 실행, Phase 1부터 순차 실행
@@ -32,12 +34,12 @@ description: Orchestrate a non-fiction/technical Korean book workflow from topic
 
 **실행 모드:** 서브 에이전트 병렬 호출
 
-`research-lead` 에이전트를 호출하고, 내부에서 `web-researcher`, `paper-researcher`, `community-researcher`를 `run_in_background: true`로 병렬 스폰한 뒤 결과를 종합하도록 지시한다.
+`research-lead` 에이전트를 호출하고, 내부에서 `web-researcher`, `paper-researcher`, `community-researcher`를 병렬 서브에이전트로 호출한 뒤 결과를 종합하도록 지시한다.
 
 **입력:** 주제, 주요 내용, 대상 독자
 **출력:** `{slug}/research/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
 
-Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
+Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
 
 ## Phase 2: 저술 계획
 
@@ -56,7 +58,7 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
 **실행 모드:** 에이전트 팀 (생성-검증 왕복)
 
-`TeamCreate`로 `book-planner`와 `plan-reviewer`를 팀으로 구성한다. `plan-reviewer`가 계획을 비판적으로 읽고 `SendMessage`로 `book-planner`에게 피드백을 보낸다. `book-planner`는 피드백을 반영해 계획을 갱신한다. 합의에 도달하거나 최대 2회 왕복 후 팀을 해체한다.
+Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`와 `plan-reviewer`를 팀으로 구성한다. `plan-reviewer`가 계획을 비판적으로 읽고 부모 Codex 세션에 `book-planner`로 전달할 피드백을 보고한다. `book-planner`는 피드백을 반영해 계획을 갱신한다. 합의에 도달하거나 최대 2회 왕복 후 팀을 해체한다.
 
 **산출물:** `{slug}/02_plan.md` (갱신됨) + `{slug}/03_review_log.md` (리뷰 기록)
 
@@ -74,10 +76,10 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
 **절차:**
 
-1. `TeamCreate`로 위 팀을 구성한다. 팀 이름: `book-writing-team`.
-2. `TaskCreate`로 각 챕터를 task로 등록한다. task당 `chapter-writer` 1명을 할당한다.
-3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 `SendMessage`로 `style-guardian`에게 리뷰를 요청한다.
-4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 `SendMessage`로 응답한다.
+1. Codex 부모 세션에서 병렬 서브에이전트를 구성해 위 팀을 구성한다. 팀 이름: `book-writing-team`.
+2. Codex 작업 계획으로 각 챕터를 task로 등록한다. task당 `chapter-writer` 1명을 할당한다.
+3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 부모 Codex 세션에 `style-guardian` 리뷰 요청을 보고한다.
+4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 부모 Codex 세션에 응답한다.
 5. `chapter-writer`가 수정하고 `{NN}_final.md`로 저장한다.
 6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/manuscript/04_manuscript.md`에 통합 원고를 만든다.
 7. 팀을 해체한다.
@@ -117,8 +119,8 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 | 전략 | 용도 |
 |------|------|
 | 파일 기반 (`{slug}/`) | 모든 Phase 간 산출물 전달, 감사 추적 |
-| 메시지 기반 (SendMessage) | Phase 3·4의 팀 내 실시간 조율 |
-| 태스크 기반 (TaskCreate) | Phase 4의 챕터 작업 할당 및 진행 추적 |
+| 메시지 기반 (Codex 부모 세션 라우팅) | Phase 3·4의 팀 내 실시간 조율 |
+| 태스크 기반 (Codex 작업 계획) | Phase 4의 챕터 작업 할당 및 진행 추적 |
 | 반환값 기반 | 서브 에이전트 모드(Phase 1·2·5)의 결과 수집 |
 
 파일명 컨벤션: `{NN}_{artifact}.md` (NN은 Phase 번호 2자리).

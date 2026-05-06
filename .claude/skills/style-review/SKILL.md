@@ -1,9 +1,11 @@
 ---
 name: style-review
-description: Review non-fiction/technical Toby-style chapter drafts. Do not use for 소설/라노벨 fiction prose; use narrative-review.
+description: Use only to review non-fiction/technical Toby-style chapter drafts. Do not use for 소설/라노벨; use narrative-review instead.
 ---
 
 # Style Review
+
+> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
 
 논픽션/기술서 챕터 초안을 Toby 문체 기준으로 검수한다. 라노벨·소설·웹소설 원고에는 이 스킬을 사용하지 않는다. 발견한 편차에 대해 **구체적 대체 문장**을 제안한다.
 
@@ -14,7 +16,7 @@ description: Review non-fiction/technical Toby-style chapter drafts. Do not use 
 3. **체크리스트 순회** — 아래 10개 항목 점검
 4. **편차 기록** — 원문 인용 + 대안 제시 + 이유
 5. **우선순위** — Critical / Should / Nice
-6. **메시지 전송** — `SendMessage`로 `chapter-writer`에게
+6. **메시지 전송** — 부모 Codex 세션에 `chapter-writer`로 전달할 피드백을 보고한다
 
 ## 검수 체크리스트
 

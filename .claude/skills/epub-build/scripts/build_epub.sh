@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Build EPUB 3 from manuscript + cover + manifest.
 # Usage: build_epub.sh <slug>
-#   Reads: <slug>/manuscript/04_manuscript.md
-#          <slug>/assets/cover.png
-#          <slug>/manuscript/book_manifest.json
+#   Reads: <slug>/P05_manuscript/04_manuscript.md
+#          <slug>/P06_publication/assets/cover.png
+#          <slug>/P05_manuscript/book_manifest.json
+#   Legacy paths <slug>/manuscript and <slug>/assets are also supported.
 #   Writes: <title-slug>-v<version>.epub (project root)
-#           <slug>/reviews/build_log.md
+#           <slug>/P00_meta/logs/build_log.md
 
 set -euo pipefail
 
@@ -16,10 +17,19 @@ if [[ -z "$SLUG" ]]; then
 fi
 
 WS="${SLUG}"
-MANUSCRIPT="${WS}/manuscript/04_manuscript.md"
-COVER="${WS}/assets/cover.png"
-MANIFEST="${WS}/manuscript/book_manifest.json"
-LOG="${WS}/reviews/build_log.md"
+if [[ -f "${WS}/P05_manuscript/04_manuscript.md" ]]; then
+  MANUSCRIPT="${WS}/P05_manuscript/04_manuscript.md"
+  MANIFEST="${WS}/P05_manuscript/book_manifest.json"
+  COVER="${WS}/P06_publication/assets/cover.png"
+  LOG="${WS}/P00_meta/logs/build_log.md"
+  BIBLE="${WS}/P02_bible/02_story_bible.md"
+else
+  MANUSCRIPT="${WS}/manuscript/04_manuscript.md"
+  MANIFEST="${WS}/manuscript/book_manifest.json"
+  COVER="${WS}/assets/cover.png"
+  LOG="${WS}/reviews/build_log.md"
+  BIBLE="${WS}/bible/02_story_bible.md"
+fi
 mkdir -p "$(dirname "$LOG")"
 
 for f in "$MANUSCRIPT" "$MANIFEST"; do
@@ -45,7 +55,7 @@ DESCRIPTION=$(read_field description)
 STRUCTURE_TYPE=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print((d.get('structure') or {}).get('type', ''))" "$MANIFEST")
 
 if [[ -z "$AUTHOR" ]]; then
-  if [[ "$STRUCTURE_TYPE" == "light_novel" || -f "${WS}/bible/02_story_bible.md" ]]; then
+  if [[ "$STRUCTURE_TYPE" == "light_novel" || -f "$BIBLE" ]]; then
     AUTHOR="AI-Author"
   else
     AUTHOR="Toby-AI"
@@ -70,7 +80,7 @@ if [[ -f "$OUTPUT" ]]; then
   mv "$OUTPUT" "_prev/$(basename "$OUTPUT" .epub)-$(date +%Y%m%d%H%M%S).epub"
 fi
 
-META_YAML="${WS}/manuscript/.meta.yaml"
+META_YAML="$(dirname "$MANIFEST")/.meta.yaml"
 RIGHTS="© $(date +%Y) ${AUTHOR}"
 
 # Build metadata YAML for pandoc using Python stdlib only.

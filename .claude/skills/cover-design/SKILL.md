@@ -1,6 +1,6 @@
 ---
 name: cover-design
-description: Generate a book cover image (1600x2560 PNG) based on title, genre, mood, audience, and author metadata. Supports both technical books and light novel/fiction covers.
+description: Use to design or generate a 1600x2560 book cover PNG and cover_prompt.md from title, mood, audience, and author metadata.
 ---
 
 # Cover Design
@@ -57,8 +57,8 @@ No stock photography. No generic tech gradient.
 
 ## 이미지 생성 도구 우선순위
 
-1. **이미지 생성 MCP** (설치되어 있으면) — 가장 선호
-2. **외부 API** — OpenAI `gpt-image-1`, Stability SDXL 등 (사용자 API 키 필요)
+1. **Codex 이미지 생성 도구/`imagegen` 스킬** (사용 가능하면) — 가장 선호
+2. **외부 API** — OpenAI 이미지 생성 API, Stability SDXL 등 (사용자 API 키 필요)
 3. **ImageMagick 폴백** — 단순 타이포그래피 플레이스홀더
 
 ## ImageMagick 폴백 명령

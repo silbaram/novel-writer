@@ -5,6 +5,8 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 # Lightnovel Writing Orchestrator
 
+> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
+
 장르·분위기·주인공 아이디어를 받아 스토리 바이블 → 시즌 구조 → 챕터 집필 → EPUB 빌드까지 전 과정을 조율한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
 
 > **저작권 원칙:** 기존 저작물(소설·웹툰·게임·애니메이션 등)의 캐릭터·세계관·고유 설정·문장을 허가 없이 복사하거나 직접 전용하지 않는다. 오마주·패러디를 의도하더라도 독립적 설정으로 치환한다. 이 원칙은 모든 Phase의 에이전트에 공통 적용된다.
@@ -42,7 +44,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 [오케스트레이터] → A의 반환값을 읽어 Agent(B) 프롬프트에 포함 → Agent(B) → 파일 저장 + 반환
 ```
 
-에이전트 파일의 "팀 통신 프로토콜" 섹션이 직접 SendMessage를 언급하더라도, 실제 실행에서는 이 원칙을 따른다. 오케스트레이터가 라우팅 책임을 전담한다.
+에이전트 파일의 "팀 통신 프로토콜" 섹션이 직접 메시지 전달을 언급하더라도, 실제 실행에서는 이 원칙을 따른다. 오케스트레이터가 라우팅 책임을 전담한다.
 
 ---
 
@@ -68,7 +70,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 **실행 모드:** 인라인
 
-사용자 입력에서 다음 항목을 추출한다. 항목이 불명확하거나 누락된 경우 `AskUserQuestion`으로 짧게 확인한다. 핵심 항목(장르·핵심 아이디어·주인공)이 없으면 Phase 1로 진행하지 않는다.
+사용자 입력에서 다음 항목을 추출한다. 항목이 불명확하거나 누락된 경우 사용자에게 짧게 확인한다. 핵심 항목(장르·핵심 아이디어·주인공)이 없으면 Phase 1로 진행하지 않는다.
 
 | 추출 항목 | 기본값 / 처리 |
 |----------|-------------|
@@ -100,14 +102,14 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 **목적:** 작품의 소재·배경과 관련된 실세계 자료(역사·신화·사회·과학·장르 관행 등)를 수집한다. 완전 창작 세계관이라면 같은 장르 독자 반응·선행 작품 트렌드 리서치로 대체한다.
 
-- `web-researcher`와 `community-researcher`를 `run_in_background: true`로 병렬 호출한다
+- `web-researcher`와 `community-researcher`를 병렬 서브에이전트로 호출한다
 - 논픽션 소재가 포함된 경우(역사물·SF·무협 등) `paper-researcher`를 추가 호출한다
 - 순수 창작 세계관이고 사용자가 "리서치 없이 바로 진행"을 요청한 경우 이 Phase를 건너뛰고 빈 `research/01_reference.md`를 생성한 뒤 Phase 2로 이동한다
 
 **입력:** 장르, 핵심 아이디어, 배경 설정 키워드
 **출력:** `{slug}/research/01_reference.md` — 세계관·소재 레퍼런스 (섹션: 장르 관행, 배경 자료, 독자 기대, 유사 작품 분석, 참고문헌)
 
-Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
+Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
 
 ---
 
@@ -193,31 +195,30 @@ Agent 도구 호출 시 반드시 `model: "opus"`를 명시한다.
 
 **실행 모드:** 순차 서브 에이전트 4단계
 
-Phase 2~4의 모든 산출물을 집필(Phase 6) 전에 통합 검증한다. 각 단계는 이전 단계 결과를 오케스트레이터가 읽은 뒤 순차 호출한다.
+Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)을 집필 전에 종합 검증한다. 이 Phase를 통과해야만 Phase 6 집필을 시작할 수 있다.
 
-**단계 1 — 스토리 바이블 최종 점검** (`story-bible-reviewer`, Mode A)
-- 목적: 집필 직전 바이블이 여전히 일관성을 갖추고 있는지 확인. Phase 2 이후 인물·설정 추가로 충돌이 생겼을 수 있다
-- 집중 축: 인물 관계(축 5), 갈등 강도(축 4), Canon 상태(축 7)
-- 결과를 반환한다
+**단계 1 — 스토리 바이블 최종 점검 (`story-bible-reviewer`, Mode A)**
 
-**단계 2 — 시즌 구조 서사 품질 점검** (`narrative-review` 스킬, 섹션 4 적용)
-- 목적: `season-planner`가 설계한 시즌 구조의 서사 완성도를 검토. 3막 균형·인물 아크 완결성·피날레 납득성·금지 클리셰 노출 여부를 확인한다
-- 단계 1 결과를 프롬프트에 포함해 호출한다
-- 결과를 반환한다
+오케스트레이터가 `story-bible-reviewer`를 호출한다. 목적: Phase 2 이후 수정 사항이 바이블 전체 정합성을 훼손하지 않았는지 최종 확인. 섹션 1의 8개 검토 축 전체를 적용한다. 결과를 반환한다.
 
-**단계 3 — 챕터 플랜-바이블 정합성 점검** (`story-bible-reviewer`, Mode B)
-- 목적: 챕터 플랜이 바이블 Canon·갈등·캐릭터 설정과 충돌하는지 확인
-- 집중 축: 갈등 정합성(축 4), Canon 상태(축 7), 시즌 씨앗 연결(축 6)
-- 결과를 반환한다
+**단계 2 — 시즌 구조 서사 품질 점검 (`narrative-review` 스킬, 섹션 4)**
 
-**단계 4 — 복선·연속성 사전 점검** (`continuity-keeper`)
-- 목적: 챕터 플랜 수준의 복선 심기/회수 계획과 캐릭터 초기 상태를 검증. 집필 중 발생할 연속성 오류를 사전에 차단한다
-- 결과를 반환한다
+오케스트레이터가 단계 1 결과를 읽은 뒤 `narrative-review` 스킬의 **섹션 4 — 시즌 구조 검토**를 실행한다. `{slug}/seasons/s01/season_bible.md`를 대상으로 7개 축을 점검하고 판정을 반환한다.
 
-**통합:**
-- 4개 단계 결과를 `{slug}/reviews/05_review_log.md`에 통합 기록한다
-- Critical 문제: 사용자에게 보고 후 해당 Phase(2, 3, 4 중 해당) 재실행
-- Should 이하: 리뷰 로그에 기록하고 Phase 6으로 진행
+**단계 3 — 챕터 플랜-바이블 정합성 점검 (`story-bible-reviewer`, Mode B)**
+
+오케스트레이터가 단계 2 결과를 읽은 뒤 `story-bible-reviewer`를 재호출한다. 목적: `{slug}/seasons/s01/chapter_plan.md`와 스토리 바이블 간의 갈등 정합성·Canon 상태 준수·시즌 씨앗 연결 집중 점검. 결과를 반환한다.
+
+**단계 4 — 복선·연속성 사전 점검 (`continuity-keeper`)**
+
+오케스트레이터가 단계 3 결과를 읽은 뒤 `continuity-keeper`를 호출한다. 목적: 챕터 플랜에 선언된 복선 심기/회수 계획이 물리적으로 실현 가능한지, 캐릭터 상태 초기값이 바이블과 일치하는지 사전 확인. Critical 경고 목록을 반환한다.
+
+**통합 판정 및 출력:**
+
+- 네 단계 결과를 `{slug}/reviews/05_review_log.md`에 통합 기록한다
+- Critical 문제가 하나라도 있으면 사용자에게 보고하고 해당 Phase(2, 3, 또는 4)를 재실행한다
+- Should 이하는 리뷰 로그에 기록하고 Phase 6으로 진행한다
+- 모든 단계 Pass 또는 Conditional Pass이면 오케스트레이터가 사용자에게 "집필 전 종합 검증 완료 — Phase 6 집필을 시작합니다"를 보고한다
 
 **출력:** `{slug}/reviews/05_review_log.md`
 
@@ -233,8 +234,8 @@ Phase 2~4의 모든 산출물을 집필(Phase 6) 전에 통합 검증한다. 각
 
 **절차:**
 
-1. `TodoWrite`로 해당 시즌의 챕터 목록을 태스크로 등록한다
-2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다 (`run_in_background: true`). 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다
+1. Codex 작업 계획으로 해당 시즌의 챕터 목록을 태스크로 등록한다
+2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다 (병렬 서브에이전트 호출). 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다
 3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 검수한다. 스타일 가디언은 피드백을 `{CCC}_review.md`(임시)와 `reviews/style_log.md`(누적)에 저장하고 결과를 반환한다
 4. 오케스트레이터가 피드백을 읽어 해당 `chapter-novelist`를 재호출해 수정을 요청한다 (피드백 내용을 프롬프트에 포함). `chapter-novelist`가 `{CCC}_final.md`를 저장하고 반환한다
 5. 오케스트레이터가 `continuity-keeper`를 호출한다 (`{CCC}_final.md` 경로 전달). `continuity-keeper`가 연속성 레코드를 갱신하고 결과를 반환한다
@@ -318,7 +319,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 > **게이트 규칙(강제):** `continuity/continuity_log.md`에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 오케스트레이터는 수동 확인 요청을 사용자에게 전달하고, 승인/수정 완료 전까지 EPUB 빌드를 호출하지 않는다.
 
-1. `cover-designer` → `{slug}/assets/cover.png` 생성 (MCP > API > ImageMagick 폴백)
+1. `cover-designer` → `{slug}/assets/cover.png` 생성 (Codex 이미지 생성 도구/스킬 > API > ImageMagick 폴백)
 2. 본문 삽화 마커가 있으면 `manuscript/04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
 3. 표지 생성 완료 후 `epub-builder` 호출 → `epub-build/scripts/build_epub.sh` 실행
 4. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
@@ -357,7 +358,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 |------|------|
 | 파일 기반 (`{slug}/`) | 모든 Phase 간 산출물 전달, 감사 추적 |
 | 반환값 + 오케스트레이터 중계 | 에이전트 간 피드백 전달 (Phase 2·5·6·7). 에이전트는 결과를 파일에 저장하고 반환하며, 오케스트레이터가 읽어 다음 에이전트 프롬프트에 포함한다 |
-| `TodoWrite` | Phase 6의 챕터 작업 분배·진행 추적 |
+| `Codex 작업 계획` | Phase 6의 챕터 작업 분배·진행 추적 |
 | 반환값 기반 | 서브 에이전트 모드(Phase 1·3·4·8·9)의 결과 수집 |
 
 파일명 컨벤션:

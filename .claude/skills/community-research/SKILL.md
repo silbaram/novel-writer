@@ -12,7 +12,7 @@ description: Use for 커뮤니티 리서치, collecting practitioner pain points
 1. **커뮤니티 선택** — 주제·대상 독자에 맞춰 플랫폼 조합:
    - 글로벌: Reddit (서브레딧), Hacker News, StackOverflow, GitHub Discussions
    - 한국: OKKY, velog, 지디넷, 네이버 개발자 카페, 디스코드 공개 채널 로그
-2. **검색 실행** — Firecrawl·WebSearch로 토론 페이지 수집
+2. **검색 실행** — Codex 웹 검색/브라우저 도구로 토론 페이지를 수집한다. Firecrawl 같은 외부 수집 도구는 설치되어 있을 때만 사용한다.
 3. **패턴 추출**
    - **반복되는 고통/질문** — 3명 이상이 비슷한 고민을 토로한 패턴
    - **실무 휴리스틱** — 답변 다수 추천 또는 "10년간 써봤는데~" 식 경험담
