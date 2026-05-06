@@ -91,7 +91,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 5 — 관계의 유용성
 
 **확인 절차:**
-1. `bible/relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
+1. `P02_bible/relationships.md`의 각 관계에 "표면 관계 / 숨겨진 긴장"이 분리되어 있는지 확인한다
 2. 각 관계가 최소 하나의 갈등 층위와 연결되는지 확인한다
 3. 제거해도 이야기에 영향 없는 관계가 있는지 확인한다
 
@@ -100,7 +100,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 축 6 — 시즌 씨앗 분리
 
 **확인 절차:**
-1. `bible/season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
+1. `P02_bible/season_seeds.md`에서 시즌 1 씨앗의 Canon 상태가 `[LOCKED]` 또는 `[DRAFT]`인지 확인한다
 2. 시즌 2 이상이 `[CANDIDATE]` 또는 `[DRAFT]`인지 확인한다
 3. 시즌 씨앗에 플롯 비트·챕터 배치가 포함되어 있지 않은지 확인한다
 
@@ -111,7 +111,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 **확인 절차:**
 1. `[LOCKED]` 항목이 핵심 설정에만 집중되어 있는지 확인한다 (너무 많으면 유연성 손실)
 2. `[CANDIDATE]` 항목이 바이블 본문에서 확정 사실처럼 서술되지 않았는지 확인한다
-3. `bible/open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
+3. `P02_bible/open_questions.md`에 미확정 항목이 체계적으로 기록되어 있는지 확인한다
 
 **흔한 패턴:**
 - `[Critical]` `[CANDIDATE]` 설정이 본문에서 확정 사실로 서술됨
@@ -127,7 +127,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - [ ] 세계관에 한계 있는 마법/시스템 정의됨
 - [ ] 4개 갈등 층위 중 최소 3개 정의됨
 - [ ] 시즌 1 씨앗이 `[LOCKED]` 또는 `[DRAFT]`로 존재
-- [ ] `bible/open_questions.md` 존재하고 비어 있지 않음
+- [ ] `P02_bible/open_questions.md` 존재하고 비어 있지 않음
 
 **판정:**
 - **Pass:** 위 조건 모두 충족
@@ -143,9 +143,9 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 ### 검수 전 준비
 
 초안을 읽기 전에 반드시:
-1. `{slug}/seasons/sNN/season_bible.md`의 톤 키워드를 확인한다
+1. `{slug}/P03_planning/sNN/season_bible.md`의 톤 키워드를 확인한다
 2. 해당 챕터의 시점 인물의 캐릭터 파일을 읽는다
-3. 챕터 초안의 `<!-- author-note -->` 저자 노트(챕터 목표·감정 변화)를 읽는다
+3. 챕터 초안의 `<!-- author-note -->` 저자 노트(챕터 목표·감정 변화·장면 밀도 패스)를 읽는다
 
 저자의 의도를 모른 채 표면만 지적하면 과교정이 된다.
 
@@ -159,7 +159,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 **항목 2 — 대사**
 - 태그에 감정이 서술된 경우(`"...", 그가 슬프게 말했다`) → `[Should]`
 - 독자를 위한 세계관 설명이 대사에 그대로 들어간 경우(브리핑 대사) → `[Should]`
-- 대화가 5줄 이상인데 중간 행동 묘사 없음 → `[Nice]`
+- 대화가 5줄 이상인데 중간 행동 묘사 없음 → 1회성은 `[Nice]`, 한 씬에서 반복되면 `[Should]`
 
 **항목 3 — 설명 과다(Infodump)**
 - 행동·대사 없이 300자 이상 설명 블록이 단독 존재 → `[Should]`
@@ -170,14 +170,19 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - 저자 노트의 "감정 변화"와 본문 감정 흐름 불일치 → `[Critical]`
 - 챕터 시작과 끝에서 감정 변화가 없음 → `[Should]`
 
-**항목 5 — 장면성**
+**항목 5 — 장면성/장면 밀도**
 - 씬이 끝났는데 아무것도 달라지지 않음 → `[Should]`
-- 씬 초반에 공간·시간·분위기 앵커 없음 → `[Nice]`
+- 씬 초반에 공간·시간·분위기 앵커 없음 → 1회성은 `[Nice]`, 챕터 내 반복되면 `[Should]`
+- 새 장소가 시각 정보만으로 처리되고 소리·냄새·온도·촉감 중 하나도 없음 → `[Should]`
+- 새 인물이 직업/역할 설명만 있고 외형·습관적 동작·시선/태도 중 2개 이상이 없음 → `[Should]`
+- 핵심 사물이 기능 설명만으로 끝나고 질감·소리·무게감·정서적 연상이 없음 → `[Should]`
+- 상황 설명이 사실 전달만 이어지고 POV 인물의 감정/신체 반응이 3문단 이상 빠짐 → `[Should]`
 
 **항목 6 — 리듬**
 - 긴장 씬에서 문장이 평균보다 짧아지지 않음 → `[Nice]`
 - 수동태 남발 → `[Should]`
 - 한 문단에 동일 어휘 3회 이상 반복 → `[Nice]`
+- 의도된 긴장/코미디가 아닌데 단문 4개 이상이 연속되어 평평하게 읽힘 → `[Nice]`, 챕터 전반에 반복되면 `[Should]`
 
 **항목 7 — 챕터 엔딩**
 - 마지막 단락에 훅이 없음 → `[Critical]`
@@ -192,6 +197,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - **원문 인용 필수:** 문제 구절을 원문 그대로 인용 후 대안 제시
 - **과교정 금지:** 챕터당 수정 제안 5~10건 상한
 - **저자 노트 참조:** 저술가의 의도를 확인한 뒤 피드백. 의도를 모른 채 지적하지 않는다
+- **태그 사용:** 장면 밀도 관련 지적에는 `[Scene Density]`, POV 감정 필터 부족에는 `[POV Filter]`, 문장 호흡 문제에는 `[Rhythm]` 태그를 붙인다.
 
 ---
 
@@ -255,7 +261,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 - [ ] 다음 시즌 훅이 심어졌는가?
 
 **시즌 시작 시:**
-- 이전 시즌 연속성 파일을 `continuity/s{NN}_archive/`로 이동
+- 이전 시즌 연속성 파일을 `P04_continuity/s{NN}_archive/`로 이동
 - `character_state_table.md`는 이전 시즌 종료 상태를 그대로 이어받아 새 시즌 시작
 - 미회수 복선은 새 시즌 추적 테이블로 이월
 
@@ -263,7 +269,7 @@ description: Use to review Korean fiction story bibles, chapter drafts, continui
 
 ## 섹션 4: 시즌 구조 검토
 
-Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: `{slug}/seasons/s01/season_bible.md` (이후 시즌은 해당 시즌 bible로 교체). 7개 축으로 점검한다.
+Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: `{slug}/P03_planning/s01/season_bible.md` (이후 시즌은 해당 시즌 bible로 교체). 7개 축으로 점검한다.
 
 ### 축 1 — 시즌 핵심 질문 강도
 
@@ -360,7 +366,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 ### 축 7 — 금지 클리셰 노출 위험
 
 **확인 절차:**
-1. `{slug}/bible/02_story_bible.md` 또는 `bible/02_story_bible.json`에서 `forbidden_cliches` 목록을 읽는다
+1. `{slug}/P02_bible/02_story_bible.md` 또는 `P02_bible/02_story_bible.json`에서 `forbidden_cliches` 목록을 읽는다
 2. 시즌 바이블의 사건 비트·피날레·캐릭터 아크를 순서대로 읽으며 금지 클리셰에 해당하는 패턴이 있는지 확인한다
 
 **흔한 패턴:**
@@ -377,7 +383,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 | **Conditional Pass** | Critical 0개, Should 3~4개 — 수정 제안 포함하여 진행 가능 |
 | **Fail** | Critical 1개 이상 — 해당 Phase(3 또는 4) 재실행 필요 |
 
-판정 결과와 항목별 피드백을 오케스트레이터에게 반환한다. `{slug}/reviews/05_review_log.md`에 "섹션 4 — 시즌 구조 검토" 항목으로 기록된다.
+판정 결과와 항목별 피드백을 오케스트레이터에게 반환한다. `{slug}/P00_meta/logs/05_review_log.md`에 "섹션 4 — 시즌 구조 검토" 항목으로 기록된다.
 
 ---
 
@@ -388,7 +394,7 @@ Phase 5 단계 2에서 오케스트레이터가 호출하는 절차다. 대상: 
 | 위반 유형 | 심각도 | 처리 |
 |----------|--------|------|
 | `[LOCKED]` 항목이 무단 변경됨 | Critical | 즉시 오케스트레이터에 보고. 챕터 finalizing 중단 |
-| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `bible/open_questions.md` 기록 요청 |
+| `[DRAFT]` 항목이 이유 기록 없이 변경됨 | Should | 저술가에게 `P02_bible/open_questions.md` 기록 요청 |
 | `[CANDIDATE]` 항목이 본문에서 확정 사실로 서술됨 | Critical | 저술가에게 `(설정 확인 필요)` 표기로 대체 요청 |
 
 **새로운 설정 제안 시:** 반드시 `[SUGGESTION]` 태그를 붙인다. 이 태그 없는 새 설정은 확정 Canon으로 오해될 수 있다.

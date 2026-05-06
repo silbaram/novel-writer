@@ -16,17 +16,17 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 순서 | 파일 | 읽는 이유 |
 |------|------|----------|
 | 1 | `style-guides/lightnovel-style-guide.md` | 금지 패턴 재확인 |
-| 2 | `{slug}/bible/02_story_bible.md` | Canon 상태 확인 |
-| 3 | `{slug}/seasons/sNN/season_bible.md` | 이 시즌의 톤·갈등·진행 중인 복선 확인 |
-| 4 | `{slug}/seasons/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
-| 5 | 등장인물 파일 (`{slug}/bible/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
-| 6 | `{slug}/bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
-| 7 | `{slug}/continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
-| 8 | `{slug}/continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
+| 2 | `{slug}/P02_bible/02_story_bible.md` | Canon 상태 확인 |
+| 3 | `{slug}/P03_planning/sNN/season_bible.md` | 이 시즌의 톤·갈등·진행 중인 복선 확인 |
+| 4 | `{slug}/P03_planning/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
+| 5 | 등장인물 파일 (`{slug}/P02_bible/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
+| 6 | `{slug}/P02_bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
+| 7 | `{slug}/P04_continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
+| 8 | `{slug}/P04_continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
 
 ---
 
-## 집필 절차 (5단계)
+## 집필 절차 (6단계)
 
 ### 단계 1 — 오프닝 작성
 
@@ -122,9 +122,31 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 
 ---
 
+### 단계 6 — 장면 밀도 패스
+
+엔딩 훅까지 포함한 전체 초안을 끝낸 뒤 반드시 한 번 더 읽으며 장면/사물/인물 묘사가 너무 기능적으로 끝난 곳을 보강한다. 목표는 웹소설 속도를 유지하면서 핵심 장면의 체감 밀도를 15~25% 높이는 것이다. 문예체로 늘리거나 수식어를 과도하게 붙이지 않는다.
+
+**보강 대상:**
+- **새 장소:** 시각 외 감각(소리·냄새·온도·촉감) 1개 이상과 POV 인물의 감정/신체 반응 1개 이상을 넣는다.
+- **새 인물:** 외형, 습관적 동작, 시선/태도 중 2개 이상을 첫 등장부에 심는다. 직업·역할 설명만으로 끝내지 않는다.
+- **핵심 사물:** 기능 설명 외에 질감, 무게감, 소리, 손에 닿는 느낌, 정서적 연상 중 1개 이상을 붙인다.
+- **핵심 상황 설명:** 사실 전달 뒤에 POV 필터를 붙인다. 설명 문단 3개 중 최소 1개는 피로, 불안, 기대, 안도 같은 감정 또는 신체 반응을 포함한다.
+
+**리듬 조정:**
+- 단문 4개 이상이 연속되면 의도된 긴장/코미디 박자인지 확인한다.
+- 긴장 장면이 아니면 단문-중문-단문 흐름으로 호흡을 조절한다.
+- 대화가 5줄 이상 이어지면 중간에 인물의 손, 시선, 자세, 주변 소리 중 하나를 끼워 넣는다.
+
+**금지:**
+- Canon이나 사건 순서를 바꾸는 보강
+- 시점 인물이 알 수 없는 정보로 분위기를 설명하는 보강
+- 형용사·부사를 늘려 문장을 무겁게 만드는 보강
+
+---
+
 ## 출력 파일
 
-### `{slug}/seasons/sNN/chapters/{CCC}_draft.md`
+### `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
 
 초안. 본문과 저자 노트를 함께 포함한다.
 
@@ -152,13 +174,16 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 ### 회수한 복선
 {이 챕터에서 회수한 복선 — 이름 및 회수 방식}
 
+### 장면 밀도 패스
+{보강한 장면 / 추가한 감각·정서 요소 / 리듬 조정 여부}
+
 ### 다음 챕터 연결
 {이 챕터 마지막 상태에서 다음 챕터가 어떻게 이어지는가 — 훅 포함}
 ```
 
 저자 노트는 독자에게 보이지 않는 내부 메타데이터다. `novel-editor`가 통합 원고 생성 시 제거하고, `continuity-keeper`가 복선·연속성 갱신에 활용한다.
 
-### `{slug}/seasons/sNN/chapters/{CCC}_final.md`
+### `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md`
 
 `novel-style-guardian`의 피드백을 반영한 최종본. 저자 노트는 그대로 유지한다.
 
@@ -176,6 +201,7 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 인포덤프 블록 | 설명을 행동·대사 사이에 분산 |
 | 시점 오염 | 씬 브레이크로 시점 전환 경계 명시 |
 | 목적 없는 씬 | 씬 전후 변화를 확인하고 없으면 삭제 |
+| 장면/사물/인물 묘사 부족 | 초안 후 장면 밀도 패스로 감각·정서·리듬 보강 |
 | 훅 없는 챕터 엔딩 | 4가지 훅 유형 중 하나 반드시 사용 |
 | Canon 무단 변경 | `[LOCKED]` 항목 확인 후 집필 |
 
@@ -188,4 +214,4 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 챕터 플랜이 없거나 해당 섹션 비어 있음 | 오케스트레이터에 Phase 4 미완료 보고, 집필 대기 |
 | `[LOCKED]` 설정과 챕터 플랜 충돌 | 오케스트레이터와 `story-bible-planner`에게 보고, 집필 중단 |
 | 레퍼런스에 없는 사실이 필요한 경우 | `(설정 확인 필요)` 표기 후 계속 작성, 저자 노트에 기록 |
-| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `reviews/style_log.md`에 "합의 실패" 기록 |
+| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `P00_meta/logs/style_log.md`에 "합의 실패" 기록 |
