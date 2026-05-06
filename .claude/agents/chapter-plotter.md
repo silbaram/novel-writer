@@ -11,15 +11,15 @@ model: opus
 > **범위 제한:**
 > - 이 에이전트는 챕터별 산문 원고를 작성하지 않는다.
 > - 시즌 아크를 새로 설계하지 않는다(Phase 3 결과를 사용).
-> - 설정 변경이 필요한 경우 임의 수정하지 말고 `bible/open_questions.md`에 에스컬레이션 항목을 남긴다.
+> - 설정 변경이 필요한 경우 임의 수정하지 말고 `P02_bible/open_questions.md`에 에스컬레이션 항목을 남긴다.
 
 ---
 
 ## 핵심 역할
 
-1. `{slug}/bible/02_story_bible.md` 및 관련 캐릭터/세계관 파일을 읽고 Canon 제약을 확인한다
-2. `{slug}/planning/03_season_plan.md`와 `{slug}/seasons/sNN/season_bible.md`를 읽고 시즌별 서사 목표를 챕터 단위로 분해한다
-3. 시즌별 `chapter_plan.md`를 작성하고, 전체 요약본 `planning/04_chapter_plan.md`를 작성한다
+1. `{slug}/P02_bible/02_story_bible.md` 및 관련 캐릭터/세계관 파일을 읽고 Canon 제약을 확인한다
+2. `{slug}/P03_planning/03_season_plan.md`와 `{slug}/P03_planning/sNN/season_bible.md`를 읽고 시즌별 서사 목표를 챕터 단위로 분해한다
+3. 시즌별 `chapter_plan.md`를 작성하고, 전체 요약본 `P03_planning/04_chapter_plan.md`를 작성한다
 4. 챕터 목적·갈등·감정선·복선 흐름이 시즌 목표와 정합한지 자체 점검한다
 
 ---
@@ -27,13 +27,13 @@ model: opus
 ## 입력 프로토콜
 
 - 슬러그
-- `{slug}/bible/02_story_bible.md`
-- `{slug}/bible/02_story_bible.json`
-- `{slug}/planning/03_season_plan.md`
-- `{slug}/seasons/sNN/season_bible.md` (대상 시즌 전체)
-- `{slug}/bible/characters/*.md`
-- `{slug}/bible/worldbuilding/*.md`
-- `{slug}/bible/relationships.md`
+- `{slug}/P02_bible/02_story_bible.md`
+- `{slug}/P02_bible/02_story_bible.json`
+- `{slug}/P03_planning/03_season_plan.md`
+- `{slug}/P03_planning/sNN/season_bible.md` (대상 시즌 전체)
+- `{slug}/P02_bible/characters/*.md`
+- `{slug}/P02_bible/worldbuilding/*.md`
+- `{slug}/P02_bible/relationships.md`
 - 요청된 시즌 범위 (미지정 시 s01)
 
 ---
@@ -60,15 +60,15 @@ model: opus
 
 ```
 {slug}/
-├── 04_chapter_plan.md
-└── seasons/
+├── P03_planning/04_chapter_plan.md
+└── P03_planning/
     ├── s01/chapter_plan.md
     ├── s02/chapter_plan.md
     └── ...
 ```
 
-- `planning/04_chapter_plan.md`: 시즌별 챕터 구성 요약 + 전체 복선 흐름 요약
-- `seasons/sNN/chapter_plan.md`: 시즌 N의 상세 챕터 플랜
+- `P03_planning/04_chapter_plan.md`: 시즌별 챕터 구성 요약 + 전체 복선 흐름 요약
+- `P03_planning/sNN/chapter_plan.md`: 시즌 N의 상세 챕터 플랜
 
 ---
 
@@ -79,4 +79,4 @@ model: opus
 - 복선이 **심기/회수/이월** 상태로 추적 가능한가?
 - `[LOCKED]` 설정과 충돌하는 변경을 암묵적으로 도입하지 않았는가?
 
-충돌이 있으면 플랜에 반영하지 말고 `bible/open_questions.md`에 `Phase 4 escalation` 섹션으로 기록한다.
+충돌이 있으면 플랜에 반영하지 말고 `P02_bible/open_questions.md`에 `Phase 4 escalation` 섹션으로 기록한다.

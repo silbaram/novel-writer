@@ -5,12 +5,12 @@ description: Use to design or generate a 1600x2560 book cover PNG and cover_prom
 
 # Cover Design
 
-책의 표지 이미지를 설계·생성한다. 결과는 `{slug}/assets/cover.png` (1600×2560 권장) + 재생성용 프롬프트 기록.
+책의 표지 이미지를 설계·생성한다. 결과는 `{slug}/P06_publication/assets/cover.png` (1600×2560 권장) + 재생성용 프롬프트 기록.
 
 ## 절차
 
 1. **입력 확인** — 책 제목, 부제(있으면), 주제 분위기, 대상 독자
-   - `{slug}/bible/02_story_bible.md`가 있으면 라노벨/소설 모드로 처리한다
+   - `{slug}/P02_bible/02_story_bible.md`가 있으면 라노벨/소설 모드로 처리한다
    - `{slug}/02_plan.md`만 있으면 기술서/논픽션 모드로 처리한다
 2. **콘셉트 3안 구상**
    - 라노벨/소설: 주인공 중심 캐릭터 일러스트, 핵심 갈등 장면, 세계관 상징
@@ -19,7 +19,7 @@ description: Use to design or generate a 1600x2560 book cover PNG and cover_prom
 4. **프롬프트 작성** — 영어 프롬프트 권장 (이미지 모델 대부분 영어 최적화)
 5. **이미지 생성** — 사용 가능한 도구 순서로 시도
 6. **결과 검증** — 해상도, 구도, 제목 가독성 확인
-7. **저장** — `assets/cover.png` + `cover_prompt.md`
+7. **저장** — `P06_publication/assets/cover.png` + `P06_publication/assets/cover_prompt.md`
 
 ## 콘셉트 선택 가이드
 
@@ -70,7 +70,7 @@ convert -size 1600x2560 \
   -annotate +0-400 "{책 제목}" \
   -pointsize 70 -fill '#c9b8d8' -annotate +0+600 "{부제}" \
   -pointsize 50 -fill white -annotate +0+1000 "{저자명}" \
-  {slug}/assets/cover.png
+  {slug}/P06_publication/assets/cover.png
 ```
 
 폰트가 없으면 `-font Helvetica` 또는 시스템 기본 폰트 사용.
@@ -96,7 +96,7 @@ convert -size 1600x2560 \
   ```
   ...
   ```
-- Result: assets/cover.png
+- Result: P06_publication/assets/cover.png
 - Notes: {성공/조정 필요 부분}
 
 ## Version 2 ...
@@ -110,6 +110,6 @@ convert -size 1600x2560 \
 
 ## 재생성 시
 
-- 이전 `assets/cover.png`를 `cover_v{N}.png`로 백업
+- 이전 `P06_publication/assets/cover.png`를 `cover_v{N}.png`로 백업
 - `cover_prompt.md`에 새 버전 append
 - 콘셉트 변경 요청 → 3안부터 다시

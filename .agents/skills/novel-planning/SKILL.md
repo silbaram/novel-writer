@@ -25,7 +25,7 @@ description: Use to plan 소설/라노벨 Korean fiction, including premise, gen
 
 ### 단계 1 — 입력 정규화
 
-사용자 입력과 `{slug}/research/01_reference.md`에서 다음을 추출·정리한다.
+사용자 입력과 `{slug}/P01_research/01_reference.md`에서 다음을 추출·정리한다.
 
 - 확정된 정보: 장르, 분위기, 주인공 아이디어, 독자 타겟
 - 미확정 정보: 구체적 설정이 없으면 `(미확정)` 표시 후 이후 단계에서 설계
@@ -161,10 +161,10 @@ description: Use to plan 소설/라노벨 Korean fiction, including premise, gen
 | 상태 | 태그 | 의미 |
 |------|------|------|
 | **locked** | `[LOCKED]` | 이후 에이전트가 명시적 개정 없이 변경 불가. 변경 시 오케스트레이터에 에스컬레이션 |
-| **draft** | `[DRAFT]` | 변경 가능. 변경 시 이유를 `bible/open_questions.md`에 기록 필수 |
+| **draft** | `[DRAFT]` | 변경 가능. 변경 시 이유를 `P02_bible/open_questions.md`에 기록 필수 |
 | **candidate** | `[CANDIDATE]` | 아이디어 수준. 원고에서 확정 사실로 서술 금지 |
 
-`bible/02_story_bible.md` 상단에 항목별 Canon 상태 요약 표를 작성한다.
+`P02_bible/02_story_bible.md` 상단에 항목별 Canon 상태 요약 표를 작성한다.
 
 ---
 
@@ -172,7 +172,7 @@ description: Use to plan 소설/라노벨 Korean fiction, including premise, gen
 
 ### 원칙
 
-- `bible/season_seeds.md`의 시즌 씨앗을 확장해 각 시즌의 아크를 설계한다
+- `P02_bible/season_seeds.md`의 시즌 씨앗을 확장해 각 시즌의 아크를 설계한다
 - **시즌 1은 완전 상세**, 시즌 2 이후는 방향/씨앗 수준이 기본. 사용자 명시 요청 시 완전 상세 가능
 - **챕터별 플롯 비트는 작성하지 않는다** — 그것은 Phase 4다
 
@@ -202,7 +202,7 @@ description: Use to plan 소설/라노벨 Korean fiction, including premise, gen
 
 ### 복선 흐름 추적
 
-`planning/03_season_plan.md`에 시즌 간 복선 추적 테이블을 포함한다:
+`P03_planning/03_season_plan.md`에 시즌 간 복선 추적 테이블을 포함한다:
 
 | 복선 이름 | 심은 시즌 | 회수 예정 시즌 | 현재 상태 |
 |----------|----------|--------------|---------|

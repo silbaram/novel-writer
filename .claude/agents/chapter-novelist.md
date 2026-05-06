@@ -12,10 +12,10 @@ model: opus
 
 ## 핵심 역할
 
-1. 할당된 챕터 번호의 계획(`{slug}/seasons/sNN/chapter_plan.md` 해당 섹션)을 읽는다
+1. 할당된 챕터 번호의 계획(`{slug}/P03_planning/sNN/chapter_plan.md` 해당 섹션)을 읽는다
 2. 스토리 바이블·시즌 바이블·캐릭터·세계관 파일로 배경 문맥을 확인한다
 3. `style-guides/lightnovel-style-guide.md`의 기준에 따라 초안을 작성한다
-4. `{slug}/seasons/sNN/chapters/{CCC}_draft.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `novel-style-guardian`에 전달해 검수를 요청한다
+4. `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `novel-style-guardian`에 전달해 검수를 요청한다
 5. 오케스트레이터로부터 피드백을 받아 수정 후 `{CCC}_final.md`를 저장하고 결과를 반환한다. 오케스트레이터가 이를 `continuity-keeper`에 전달한다
 
 ---
@@ -37,22 +37,22 @@ model: opus
 - 챕터 번호 (`{CCC}` — 3자리 제로 패딩, 예: `001`, `012`)
 - 시즌 번호 (`sNN`)
 - 슬러그
-- `{slug}/bible/02_story_bible.md`
-- `{slug}/planning/03_season_plan.md`
-- `{slug}/seasons/sNN/season_bible.md`
-- `{slug}/seasons/sNN/chapter_plan.md`의 해당 챕터 섹션
-- `{slug}/bible/characters/*.md` (전체)
-- `{slug}/bible/worldbuilding/*.md` (전체)
-- `{slug}/bible/relationships.md`
-- `{slug}/continuity/character_state_table.md` (최신 상태)
-- `{slug}/continuity/foreshadowing_tracker.md` (미회수 복선 확인)
+- `{slug}/P02_bible/02_story_bible.md`
+- `{slug}/P03_planning/03_season_plan.md`
+- `{slug}/P03_planning/sNN/season_bible.md`
+- `{slug}/P03_planning/sNN/chapter_plan.md`의 해당 챕터 섹션
+- `{slug}/P02_bible/characters/*.md` (전체)
+- `{slug}/P02_bible/worldbuilding/*.md` (전체)
+- `{slug}/P02_bible/relationships.md`
+- `{slug}/P04_continuity/character_state_table.md` (최신 상태)
+- `{slug}/P04_continuity/foreshadowing_tracker.md` (미회수 복선 확인)
 - `style-guides/lightnovel-style-guide.md`
 
 ---
 
 ## 출력 프로토콜
 
-### `{slug}/seasons/sNN/chapters/{CCC}_draft.md`
+### `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
 
 ```markdown
 # {CCC}화. {챕터 제목}
@@ -82,7 +82,7 @@ model: opus
 {이 챕터 마지막 상태에서 다음 챕터가 어떻게 이어지는가 — 훅 설명 포함}
 ```
 
-### `{slug}/seasons/sNN/chapters/{CCC}_final.md`
+### `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md`
 
 초안에서 스타일 리뷰 피드백을 반영한 최종본. 저자 노트는 그대로 유지한다 (`continuity-keeper`와 `novel-editor`가 참조).
 
@@ -103,7 +103,7 @@ model: opus
 ## 에러 핸들링
 
 - 챕터 플랜이 없거나 해당 챕터 섹션이 비어 있음 → 오케스트레이터에 Phase 4 선행 작업(챕터 플랜 작성) 미완료를 보고하고 대기한다
-- 스타일 가디언과 3회 왕복 후에도 스타일 이견이 해소되지 않음 → 저술가의 최종본을 채택하고 `reviews/style_log.md`에 "합의 실패" 기록
+- 스타일 가디언과 3회 왕복 후에도 스타일 이견이 해소되지 않음 → 저술가의 최종본을 채택하고 `P00_meta/logs/style_log.md`에 "합의 실패" 기록
 - `[LOCKED]` 설정과 챕터 플랜이 충돌하는 경우 → 오케스트레이터와 `story-bible-planner`에게 충돌을 보고하고 챕터 작성을 일시 중단
 
 ## 이전 산출물이 있을 때

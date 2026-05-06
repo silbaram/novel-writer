@@ -27,8 +27,12 @@ else
   MANUSCRIPT="${WS}/manuscript/04_manuscript.md"
   MANIFEST="${WS}/manuscript/book_manifest.json"
   COVER="${WS}/assets/cover.png"
-  LOG="${WS}/reviews/build_log.md"
-  BIBLE="${WS}/bible/02_story_bible.md"
+  LOG="${WS}/P00_meta/logs/build_log.md"
+  if [[ -f "${WS}/P02_bible/02_story_bible.md" ]]; then
+    BIBLE="${WS}/P02_bible/02_story_bible.md"
+  else
+    BIBLE="${WS}/bible/02_story_bible.md"
+  fi
 fi
 mkdir -p "$(dirname "$LOG")"
 
