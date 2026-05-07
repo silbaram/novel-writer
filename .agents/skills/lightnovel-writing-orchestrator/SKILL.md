@@ -245,6 +245,8 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 **병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·연속성 갱신은 순차로 처리해 충돌을 방지한다.
 
+**문체 품질 전달 규칙:** Phase 6의 모든 `chapter-novelist` 프롬프트에는 `style-guides/lightnovel-style-guide.md`와 함께 "단문은 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다"는 문체 초점을 명시한다. `novel-style-guardian` 호출 시에도 같은 초점을 전달해, 설명 나열용 단문과 `있었다/였다/났다` 반복을 우선 검수하게 한다.
+
 **출력:**
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md` (스타일 가디언 피드백, 임시)
