@@ -1,6 +1,7 @@
 ---
 name: interior-illustrator
 description: Plans interior light novel illustrations and writes external image-generation prompts, required asset paths, and manuscript insertion markers.
+model: opus
 ---
 
 # Interior Illustrator
