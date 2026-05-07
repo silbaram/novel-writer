@@ -11,15 +11,15 @@ description: Use to plan interior illustrations for Korean light novels or web n
 
 ## 산출물
 
-- `{slug}/illustrations/illustration_plan.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 도구가 저장해야 하는 대상 파일)
-- 필요 시 `{slug}/illustrations/style_sheet.md`
+- `{slug}/P06_publication/illustrations/illustration_plan.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 도구가 저장해야 하는 대상 파일)
+- 필요 시 `{slug}/P06_publication/illustrations/style_sheet.md`
 
 ## 절차
 
 1. **입력 확인**
-   - `bible/02_story_bible.md`, `bible/characters/*.md`, `bible/worldbuilding/*.md`, `seasons/sNN/chapter_plan.md`를 읽는다.
+   - `P02_bible/02_story_bible.md`, `P02_bible/characters/*.md`, `P02_bible/worldbuilding/*.md`, `P03_planning/sNN/chapter_plan.md`를 읽는다.
    - 챕터 본문이 있으면 `{CCC}_final.md`를 우선하고, 없으면 챕터 플랜 기준으로 후보 장면을 잡는다.
 2. **삽화 슬롯 선정**
    - 단권 20챕터 기준 권장: 컬러 프론트피스 1장, 본문 흑백/단색 삽화 6~10장.
@@ -37,10 +37,10 @@ description: Use to plan interior illustrations for Korean light novels or web n
    - `_prompt.md`에 권장 도구, 프롬프트, 네거티브 프롬프트, 비율/해상도, 저장 파일명을 기록한다.
    - 이미지 파일이 아직 없으면 상태를 `prompt_ready` 또는 `image_missing`으로 둔다.
 6. **원고 삽입 준비**
-   - `manuscript/04_manuscript.md` 또는 시즌 원고에 다음 형태의 마커를 넣을 수 있게 기록한다.
+   - `P05_manuscript/04_manuscript.md` 또는 시즌 원고에 다음 형태의 마커를 넣을 수 있게 기록한다.
 
 ```markdown
-![삽화 설명](illustrations/s01/001_guild_registration.png)
+![삽화 설명](../P06_publication/illustrations/s01/001_guild_registration.png)
 ```
 
 ## 삽화 계획 형식
@@ -56,7 +56,7 @@ description: Use to plan interior illustrations for Korean light novels or web n
 ## Slots
 | ID | 위치 | 장면 | 목적 | 파일 | 상태 |
 |----|------|------|------|------|------|
-| s01-001-a | 1화 후반 | 계측기 폭발 직후 길드 등록소 | 세계관 룰 첫인상 | illustrations/s01/001_guild_registration.png | prompt_ready |
+| s01-001-a | 1화 후반 | 계측기 폭발 직후 길드 등록소 | 세계관 룰 첫인상 | P06_publication/illustrations/s01/001_guild_registration.png | prompt_ready |
 ```
 
 ## 프롬프트 파일 형식
@@ -66,7 +66,7 @@ description: Use to plan interior illustrations for Korean light novels or web n
 ```markdown
 # Illustration Prompt — s01-001-a
 
-- Target file: `illustrations/s01/001_guild_registration.png`
+- Target file: `P06_publication/illustrations/s01/001_guild_registration.png`
 - Status: prompt_ready
 - Recommended tools: Midjourney / Stable Diffusion / NovelAI / OpenAI image model / other web image tool
 - Aspect ratio: 2:3 or 3:4
@@ -85,7 +85,7 @@ no speech bubbles, no readable text, no logos, no copyrighted character resembla
 
 Generate the image externally and save the final PNG exactly here:
 
-`{slug}/illustrations/s01/001_guild_registration.png`
+`{slug}/P06_publication/illustrations/s01/001_guild_registration.png`
 ```
 
 ## 검증 체크
@@ -94,7 +94,7 @@ Generate the image externally and save the final PNG exactly here:
 - [ ] 스포일러 강도가 해당 삽입 위치보다 앞서가지 않는다.
 - [ ] 주요 인물 외형이 캐릭터 카드와 모순되지 않는다.
 - [ ] 이미지 파일명은 소문자 영문·숫자·언더스코어만 사용한다.
-- [ ] EPUB 상대 경로가 `{slug}/manuscript/04_manuscript.md` 기준으로 맞다.
+- [ ] EPUB 상대 경로가 `{slug}/P05_manuscript/04_manuscript.md` 기준으로 맞다.
 - [ ] `illustration_plan.md`의 파일 경로와 실제 저장된 PNG 경로가 일치한다.
 
 ## 재생성 규칙

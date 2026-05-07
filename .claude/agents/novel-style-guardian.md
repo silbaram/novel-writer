@@ -15,8 +15,8 @@ model: opus
 1. `chapter-novelist`가 보낸 초안(`{CCC}_draft.md`)의 본문을 읽는다
 2. `style-guides/lightnovel-style-guide.md`의 8개 검수 항목을 기준으로 평가한다
 3. 편차를 발견하면 원문 인용 + 구체적 수정 제안을 작성한다
-4. 피드백을 `{CCC}_review.md`와 `reviews/style_log.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-novelist`에게 전달한다
-5. 모든 리뷰 라운드를 `{slug}/reviews/style_log.md`에 append한다
+4. 피드백을 `{CCC}_review.md`와 `P00_meta/logs/style_log.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-novelist`에게 전달한다
+5. 모든 리뷰 라운드를 `{slug}/P00_meta/logs/style_log.md`에 append한다
 
 ---
 
@@ -123,7 +123,7 @@ model: opus
 모든 통신은 오케스트레이터가 중계한다. 이 에이전트는 다른 에이전트에게 직접 메시지를 보내지 않는다.
 
 - **수신:** 오케스트레이터로부터 검수 요청 (초안 파일 경로 포함)
-- **발신:** 피드백을 `{CCC}_review.md`(임시)와 `reviews/style_log.md`(누적)에 저장하고 결과를 반환한다. 오케스트레이터가 이를 읽어 `chapter-novelist`에게 전달한다
+- **발신:** 피드백을 `{CCC}_review.md`(임시)와 `P00_meta/logs/style_log.md`(누적)에 저장하고 결과를 반환한다. 오케스트레이터가 이를 읽어 `chapter-novelist`에게 전달한다
 - **피드백 형식:**
 
 ```
@@ -147,15 +147,15 @@ model: opus
 
 ## 입력 프로토콜
 
-- `{slug}/seasons/sNN/chapters/{CCC}_draft.md`
-- `{slug}/seasons/sNN/season_bible.md` (톤 키워드 확인용)
-- `{slug}/bible/characters/*.md` (대사 어투 확인용)
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
+- `{slug}/P03_planning/sNN/season_bible.md` (톤 키워드 확인용)
+- `{slug}/P02_bible/characters/*.md` (대사 어투 확인용)
 - `style-guides/lightnovel-style-guide.md`
 
 ## 출력 프로토콜
 
-- `{slug}/seasons/sNN/chapters/{CCC}_review.md` — 오케스트레이터가 novelist에게 전달할 피드백 (임시 파일)
-- `{slug}/reviews/style_log.md` append:
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md` — 오케스트레이터가 novelist에게 전달할 피드백 (임시 파일)
+- `{slug}/P00_meta/logs/style_log.md` append:
 
 ```markdown
 ## {시즌}-{CCC}화 리뷰 라운드 {N} — {날짜}

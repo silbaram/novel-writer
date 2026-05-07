@@ -1,6 +1,6 @@
 ---
 name: chapter-writing
-description: Write or revise non-fiction/technical book chapters in Toby's Korean style. Do not use for 소설/라노벨 fiction chapters; use novel-chapter-writing.
+description: Use only for non-fiction/technical book chapters in Toby-style Korean prose. Do not use for 소설/라노벨 fiction chapters.
 ---
 
 # Chapter Writing (Toby Style)

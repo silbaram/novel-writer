@@ -5,16 +5,18 @@ description: Use to coordinate web, paper, and community research agents into a 
 
 # Research Coordination
 
+> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
+
 세 명의 리서처를 병렬 스폰하고 결과를 종합해 하나의 레퍼런스 문서를 만드는 조율 스킬이다.
 
 ## 절차
 
 1. **리서치 브리프 작성** — 주제, 주요 내용, 대상 독자를 한 문단으로 정리
-2. **병렬 스폰** — `Agent` 도구로 3명을 `run_in_background: true`로 호출
+2. **병렬 스폰** — Codex 서브에이전트로 3명을 병렬 호출
    - `web-researcher`, `paper-researcher`, `community-researcher`
-   - 각각 `model: "opus"` 명시
+   - 각각 기본 모델 `gpt-5.5` 사용
    - 슬러그와 브리프를 입력으로 전달
-3. **완료 대기** — 세 에이전트 모두 완료될 때까지 대기 (브리지 도구는 자동 알림)
+3. **완료 대기** — 세 에이전트 모두 완료될 때까지 대기하고 결과를 부모 세션에서 수집
 4. **결과 읽기** — 각 에이전트 산출물 읽기
    - `{slug}/research/web.md`
    - `{slug}/research/papers.md`

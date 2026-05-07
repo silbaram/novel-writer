@@ -5,6 +5,8 @@ description: Use to critique a book outline against references and audience fit,
 
 # Plan Review
 
+> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
+
 저술 계획을 5축으로 비판하고 구체적 수정 제안을 돌려준다. 칭찬 금지, 근거 없는 비판도 금지.
 
 ## 5축 검토
@@ -24,7 +26,7 @@ description: Use to critique a book outline against references and audience fit,
 3. **5축 평가** — 각 축마다 문제 3개 이내로 압축 (과다 지적 금지)
 4. **우선순위 부여** — Critical / Should / Nice
 5. **구체적 제안** — 문제 진단뿐 아니라 어떻게 고칠지까지
-6. **전달** — `SendMessage`로 `book-planner`에게
+6. **전달** — 부모 Codex 세션에 `book-planner`로 전달할 피드백을 반환한다
 
 ## 리뷰 메시지 포맷
 

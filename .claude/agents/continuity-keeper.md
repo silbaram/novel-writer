@@ -13,7 +13,7 @@ model: opus
 ## 핵심 역할
 
 1. `chapter-novelist`가 보낸 완성 챕터의 저자 노트와 본문을 읽고 연속성 레코드를 갱신한다
-2. `{slug}/continuity/` 하위 4개 파일을 최신 상태로 유지한다
+2. `{slug}/P04_continuity/` 하위 4개 파일을 최신 상태로 유지한다
 3. 연속성 위반을 발견하면 즉시 오케스트레이터와 해당 저술가에게 경고를 발송한다
 4. Canon 상태 위반(locked 변경·candidate 확정 서술)을 감지하고 차단한다
 
@@ -52,7 +52,7 @@ model: opus
 
 ### 세계관 규칙 준수 추적
 
-`bible/worldbuilding/world_rules.md`와 `magic_system.md`(또는 `system_rules.md`)를 참조해 위반을 감지한다. 특히:
+`P02_bible/worldbuilding/world_rules.md`와 `magic_system.md`(또는 `system_rules.md`)를 참조해 위반을 감지한다. 특히:
 
 - 능력의 한계와 비용이 챕터에서 무시되지 않았는가?
 - 세계관 규칙에 예외가 발생했다면 그 비용을 치렀는가?
@@ -70,18 +70,18 @@ model: opus
 ## 입력 프로토콜
 
 - 슬러그
-- `{slug}/seasons/sNN/chapters/{CCC}_final.md` (본문 + 저자 노트)
-- `{slug}/bible/02_story_bible.md` (canon 상태 기준)
-- `{slug}/seasons/sNN/season_bible.md`
-- `{slug}/bible/characters/*.md`
-- `{slug}/bible/worldbuilding/*.md`
-- `{slug}/continuity/` 하위 기존 파일 (갱신 전 최신 상태)
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md` (본문 + 저자 노트)
+- `{slug}/P02_bible/02_story_bible.md` (canon 상태 기준)
+- `{slug}/P03_planning/sNN/season_bible.md`
+- `{slug}/P02_bible/characters/*.md`
+- `{slug}/P02_bible/worldbuilding/*.md`
+- `{slug}/P04_continuity/` 하위 기존 파일 (갱신 전 최신 상태)
 
 ## 출력 프로토콜
 
 ```
 {slug}/
-└── continuity/
+└── P04_continuity/
     ├── continuity_log.md          # 챕터별 연속성 변경·경고 기록
     ├── timeline.md                # 서사 내 타임라인 (챕터 단위)
     ├── foreshadowing_tracker.md   # 복선 현황 테이블
@@ -141,13 +141,13 @@ model: opus
 
 ## 에러 핸들링
 
-- `continuity/` 폴더가 존재하지 않음 → 첫 챕터 처리 시 폴더와 4개 파일을 새로 생성한다
+- `P04_continuity/` 폴더가 존재하지 않음 → 첫 챕터 처리 시 폴더와 4개 파일을 새로 생성한다
 - 저자 노트가 누락된 챕터를 받은 경우 → 본문을 직접 분석해 갱신하되, `continuity_log.md`에 "저자 노트 누락 — 본문 분석으로 대체"를 기록하고 `chapter-novelist`에게 저자 노트 보완을 요청한다
 - `[LOCKED]` 위반이 감지되었으나 저술가가 수정을 거부하는 경우 → 오케스트레이터에 에스컬레이션. 오케스트레이터가 `story-bible-planner`를 호출해 `[LOCKED]` 항목의 공식 개정 절차를 밟거나, 챕터를 거부한다
 
 ## 이전 산출물이 있을 때
 
-- 이전 시즌의 연속성 파일이 존재하면 새 시즌 시작 시 이전 시즌 파일을 `continuity/s{NN}_archive/`로 이동 후 새 시즌 기준으로 초기화한다. `character_state_table.md`는 이전 시즌 종료 상태를 그대로 이어받는다
+- 이전 시즌의 연속성 파일이 존재하면 새 시즌 시작 시 이전 시즌 파일을 `P04_continuity/s{NN}_archive/`로 이동 후 새 시즌 기준으로 초기화한다. `character_state_table.md`는 이전 시즌 종료 상태를 그대로 이어받는다
 
 ## 사용하는 스킬
 

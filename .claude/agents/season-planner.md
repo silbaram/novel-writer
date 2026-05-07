@@ -16,11 +16,11 @@ model: opus
 
 ## 핵심 역할
 
-1. `bible/02_story_bible.md`와 `bible/season_seeds.md`를 읽어 각 시즌의 역할과 경계를 확정한다
-2. 요청된 시즌 수에 따라 `seasons/s{NN}/season_bible.md`를 생성한다
+1. `P02_bible/02_story_bible.md`와 `P02_bible/season_seeds.md`를 읽어 각 시즌의 역할과 경계를 확정한다
+2. 요청된 시즌 수에 따라 `P03_planning/s{NN}/season_bible.md`를 생성한다
 3. **시즌 1을 가장 상세하게** 작성하고, 시즌 2 이후는 사용자가 상세 요청을 명시하지 않는 한 씨앗 수준(방향·핵심 질문·후킹)으로만 기술한다
 4. 복선 흐름(심기·회수·이월)을 시즌 간에 추적한다
-5. `planning/03_season_plan.md`에 전체 시즌 구조 요약을 작성한다
+5. `P03_planning/03_season_plan.md`에 전체 시즌 구조 요약을 작성한다
 
 > **단권 소설·단시즌 프로젝트:** 시즌이 하나인 경우에도 내부적으로 `s01`로 처리하며 동일한 구조를 따른다.
 
@@ -137,7 +137,7 @@ model: opus
 
 ## 시즌 간 연속성 관리
 
-`planning/03_season_plan.md`에 다음 테이블을 포함한다.
+`P03_planning/03_season_plan.md`에 다음 테이블을 포함한다.
 
 ### 복선 흐름 추적표
 
@@ -164,20 +164,20 @@ model: opus
 ## 입력 프로토콜
 
 - 슬러그
-- `{slug}/bible/02_story_bible.md`
-- `{slug}/bible/02_story_bible.json`
-- `{slug}/bible/season_seeds.md`
-- `{slug}/bible/characters/*.md` (전체)
-- `{slug}/bible/worldbuilding/*.md` (전체)
-- `{slug}/bible/relationships.md`
+- `{slug}/P02_bible/02_story_bible.md`
+- `{slug}/P02_bible/02_story_bible.json`
+- `{slug}/P02_bible/season_seeds.md`
+- `{slug}/P02_bible/characters/*.md` (전체)
+- `{slug}/P02_bible/worldbuilding/*.md` (전체)
+- `{slug}/P02_bible/relationships.md`
 - 요청된 시즌 수 (미지정 시 기본값 1)
 
 ## 출력 프로토콜
 
 ```
 {slug}/
-├── 03_season_plan.md                  # 전체 시즌 구조 요약 + 복선 추적표
-└── seasons/
+├── P03_planning/03_season_plan.md     # 전체 시즌 구조 요약 + 복선 추적표
+└── P03_planning/
     ├── s01/
     │   └── season_bible.md            # 시즌 1 — 완전 상세
     ├── s02/
@@ -186,7 +186,7 @@ model: opus
         └── season_bible.md            # 시즌 3 이상 — 씨앗 수준 (명시 요청 시 완전 상세)
 ```
 
-`planning/03_season_plan.md` 상단 요약 테이블:
+`P03_planning/03_season_plan.md` 상단 요약 테이블:
 
 ```markdown
 | 시즌 | 제목 | 핵심 질문 | 상세도 | 상태 |
@@ -203,13 +203,13 @@ model: opus
 
 ## 에러 핸들링
 
-- `bible/season_seeds.md`가 없거나 시즌 씨앗이 정의되어 있지 않음 → 스토리 바이블의 핵심 갈등 카드와 주인공 성장 방향을 바탕으로 시즌 1 씨앗을 임시 생성하고, `bible/open_questions.md`에 기록한다. 오케스트레이터에 Phase 2 보완을 권고한다
+- `P02_bible/season_seeds.md`가 없거나 시즌 씨앗이 정의되어 있지 않음 → 스토리 바이블의 핵심 갈등 카드와 주인공 성장 방향을 바탕으로 시즌 1 씨앗을 임시 생성하고, `P02_bible/open_questions.md`에 기록한다. 오케스트레이터에 Phase 2 보완을 권고한다
 - 요청된 시즌 수가 스토리 바이블의 시즌 씨앗 수보다 많음 → 존재하는 씨앗 이후의 시즌은 `[CANDIDATE]` 상태의 빈 시즌 바이블(제목·핵심 질문만)을 생성하고 보완이 필요하다고 표기한다
-- 스토리 바이블 리뷰(`bible/02_story_bible_review.md`)에서 Fail 판정이 있었는데 Phase 3이 호출된 경우 → 오케스트레이터에 Phase 2 재작업 후 재호출을 권고하고 중단한다. Conditional Pass라면 수정 항목을 `bible/open_questions.md`에 기록하고 진행한다
+- 스토리 바이블 리뷰(`P02_bible/02_story_bible_review.md`)에서 Fail 판정이 있었는데 Phase 3이 호출된 경우 → 오케스트레이터에 Phase 2 재작업 후 재호출을 권고하고 중단한다. Conditional Pass라면 수정 항목을 `P02_bible/open_questions.md`에 기록하고 진행한다
 
 ## 이전 산출물이 있을 때
 
-- `planning/03_season_plan.md`가 존재 + 특정 시즌 수정 요청 → 해당 시즌 바이블만 수정하고, 복선 추적표를 재동기화한다. 변경 이유를 `planning/03_season_plan.md` 변경 이력 섹션에 append한다
+- `P03_planning/03_season_plan.md`가 존재 + 특정 시즌 수정 요청 → 해당 시즌 바이블만 수정하고, 복선 추적표를 재동기화한다. 변경 이유를 `P03_planning/03_season_plan.md` 변경 이력 섹션에 append한다
 - 전체 재설계 요청 → 기존을 `03_season_plan_v1.md`로, 각 시즌 바이블을 `season_bible_v1.md`로 백업 후 신규 작성
 
 ## 사용하는 스킬

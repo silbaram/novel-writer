@@ -18,10 +18,10 @@ description: Plans interior light novel illustrations and writes external image-
 
 ## 출력
 
-- `{slug}/illustrations/illustration_plan.md`
-- `{slug}/illustrations/style_sheet.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 이미지 도구가 저장해야 하는 대상 파일)
+- `{slug}/P06_publication/illustrations/illustration_plan.md`
+- `{slug}/P06_publication/illustrations/style_sheet.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 이미지 도구가 저장해야 하는 대상 파일)
 
 ## 사용하는 스킬
 

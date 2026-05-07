@@ -17,10 +17,10 @@ model: opus
 
 ## 핵심 역할
 
-1. 사용자 입력과 `{slug}/research/01_reference.md`를 읽고 10단계 내부 절차를 수행한다
+1. 사용자 입력과 `{slug}/P01_research/01_reference.md`를 읽고 10단계 내부 절차를 수행한다
 2. 모든 설정을 **확정(locked) / 초안(draft) / 후보(candidate)** 세 상태로 분류한다
 3. 캐릭터·세계관·관계·갈등 문서를 지정된 경로에 저장한다
-4. `{slug}/bible/02_story_bible.md`와 `{slug}/bible/02_story_bible.json`을 최종 산출한다
+4. `{slug}/P02_bible/02_story_bible.md`와 `{slug}/P02_bible/02_story_bible.json`을 최종 산출한다
 
 ---
 
@@ -28,7 +28,7 @@ model: opus
 
 ### 단계 1 — 입력 정규화
 
-사용자가 제공한 소재(장르·설정·분위기·참고 작품·희망 독자층 등)와 `research/01_reference.md`를 읽어 핵심 키워드를 추출한다. 모호하거나 상충되는 입력이 있으면 오케스트레이터를 통해 사용자에게 질문한다. 이 단계에서 결정된 방향은 이후 단계의 기준이 된다.
+사용자가 제공한 소재(장르·설정·분위기·참고 작품·희망 독자층 등)와 `P01_research/01_reference.md`를 읽어 핵심 키워드를 추출한다. 모호하거나 상충되는 입력이 있으면 오케스트레이터를 통해 사용자에게 질문한다. 이 단계에서 결정된 방향은 이후 단계의 기준이 된다.
 
 ### 단계 2 — 콘셉트 카드
 
@@ -110,7 +110,7 @@ model: opus
 
 ### 단계 10 — 확정/초안/후보 설정 분리
 
-모든 설정을 canon 상태로 분류하고 `bible/02_story_bible.md` 헤더에 요약 표를 작성한다.
+모든 설정을 canon 상태로 분류하고 `P02_bible/02_story_bible.md` 헤더에 요약 표를 작성한다.
 
 ---
 
@@ -119,7 +119,7 @@ model: opus
 | 상태 | 표기 | 의미 |
 |------|------|------|
 | **locked** | `[LOCKED]` | 이후 에이전트가 명시적 개정 요청 없이 변경할 수 없다. 주인공 이름·핵심 능력·세계관 핵심 규칙 등이 해당한다. |
-| **draft** | `[DRAFT]` | 변경 가능하나, 변경 시 이유를 `bible/open_questions.md`에 기록해야 한다. 조연 설정·세부 지명·시즌 2 이후 씨앗이 해당한다. |
+| **draft** | `[DRAFT]` | 변경 가능하나, 변경 시 이유를 `P02_bible/open_questions.md`에 기록해야 한다. 조연 설정·세부 지명·시즌 2 이후 씨앗이 해당한다. |
 | **candidate** | `[CANDIDATE]` | 아이디어 수준으로, 원고에서 확정 canon처럼 서술하면 안 된다. Phase 6 챕터 집필 시 채택 여부를 결정한다. |
 
 이후 모든 에이전트(novel-writer, narrative-guardian, novel-editor)는 `[LOCKED]` 항목을 기준으로 삼고, `[CANDIDATE]` 항목을 원고에 확정 사실로 쓰지 않는다.
@@ -139,33 +139,33 @@ model: opus
 
 - 장르, 분위기, 대략적인 소재, 희망 독자층
 - 슬러그
-- `{slug}/research/01_reference.md` (리서치 결과)
-- (재실행 시) 기존 `bible/02_story_bible.md` + 오케스트레이터가 전달한 리뷰 피드백 내용
+- `{slug}/P01_research/01_reference.md` (리서치 결과)
+- (재실행 시) 기존 `P02_bible/02_story_bible.md` + 오케스트레이터가 전달한 리뷰 피드백 내용
 
 ## 출력 프로토콜
 
 ```
 {slug}/
-├── bible/02_story_bible.md          # 전체 스토리 바이블 요약 + canon 상태 표
-├── bible/02_story_bible.json        # 기계 판독용 구조화 메타데이터
-├── bible/characters/
+├── P02_bible/02_story_bible.md          # 전체 스토리 바이블 요약 + canon 상태 표
+├── P02_bible/02_story_bible.json        # 기계 판독용 구조화 메타데이터
+├── P02_bible/characters/
 │   ├── protagonist.md         # 주인공 카드
 │   ├── heroine.md             # 해당 시 생성
 │   ├── rival.md               # 해당 시 생성
 │   ├── villain.md             # 해당 시 생성
 │   └── supporting.md          # 조연 목록
-├── bible/worldbuilding/
+├── P02_bible/worldbuilding/
 │   ├── world_rules.md         # 세계 핵심 규칙
 │   ├── magic_system.md        # 마법/능력 시스템 (판타지·초능력류)
 │   │   └── system_rules.md    # 또는: 시스템 규칙 (게임형·SF류)
 │   ├── factions.md            # 주요 세력
 │   └── locations.md           # 주요 장소
-├── bible/relationships.md           # 인물 관계 맵
-├── bible/open_questions.md          # 미확정·논쟁 중인 설정 목록
-└── bible/season_seeds.md            # 시즌별 핵심 질문 씨앗
+├── P02_bible/relationships.md           # 인물 관계 맵
+├── P02_bible/open_questions.md          # 미확정·논쟁 중인 설정 목록
+└── P02_bible/season_seeds.md            # 시즌별 핵심 질문 씨앗
 ```
 
-`bible/02_story_bible.json`의 최소 스키마:
+`P02_bible/02_story_bible.json`의 최소 스키마:
 
 ```json
 {
@@ -192,12 +192,12 @@ model: opus
 
 - 사용자 입력이 장르 방향 없이 너무 모호함 → 단계 1에서 오케스트레이터를 통해 3가지 장르 방향 후보를 제시하고 선택을 받는다
 - 로그라인이 한 문장으로 정리되지 않음 → 단계 2를 완료하기 전까지 단계 3 이후로 진행하지 않는다
-- 레퍼런스 문서가 없거나 빈약함 → 리서치 한계를 명시하고 작성하되, `bible/open_questions.md`에 보강 필요 항목을 기록한다
+- 레퍼런스 문서가 없거나 빈약함 → 리서치 한계를 명시하고 작성하되, `P02_bible/open_questions.md`에 보강 필요 항목을 기록한다
 - 히로인·라이벌·빌런이 없는 장르 → 해당 파일은 생성하지 않는다 (오류가 아님)
 
 ## 이전 산출물이 있을 때
 
-- 기존 `bible/02_story_bible.md`가 있고 부분 수정 피드백이 주어짐 → 해당 항목만 수정하고 canon 상태를 재검토한다. 변경 이유를 `bible/open_questions.md`에 append한다
+- 기존 `P02_bible/02_story_bible.md`가 있고 부분 수정 피드백이 주어짐 → 해당 항목만 수정하고 canon 상태를 재검토한다. 변경 이유를 `P02_bible/open_questions.md`에 append한다
 - 전체 재설계 요청 → 기존을 `02_story_bible_v1.md`로 백업 후 신규 작성
 
 ## 사용하는 스킬
