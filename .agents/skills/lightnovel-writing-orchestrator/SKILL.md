@@ -20,7 +20,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | 경로 | 역할 | 대표 파일 |
 |------|------|-----------|
 | `{slug}/P01_research/` | Phase 1 리서치 | `01_reference.md` |
-| `{slug}/P02_bible/` | Phase 2 스토리 바이블과 설정 | `02_story_bible.md`, `02_story_bible.json`, `relationships.md`, `open_questions.md`, `season_seeds.md` |
+| `{slug}/P02_bible/` | Phase 2 스토리 바이블과 설정 | `02_story_bible.md`, `02_story_bible.json`, `voice_profile.md`, `relationships.md`, `open_questions.md`, `season_seeds.md` |
 | `{slug}/P02_bible/characters/` | 인물 카드 | `protagonist.md`, `heroine.md`, `supporting.md` |
 | `{slug}/P02_bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
 | `{slug}/P03_planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
@@ -124,7 +124,7 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 
 **절차:**
 
-1. `story-bible-planner`를 호출한다. 10단계 내부 절차를 통해 스토리 바이블을 작성하고 파일로 저장한다
+1. `story-bible-planner`를 호출한다. 내부 절차를 통해 스토리 바이블을 작성하고 파일로 저장한다
 2. `story-bible-reviewer`를 호출한다. 8개 검토 축으로 바이블을 평가해 `{slug}/P02_bible/02_story_bible_review.md`에 저장하고 결과를 반환한다
 3. 오케스트레이터가 리뷰 결과를 읽어 `story-bible-planner`를 재호출한다 (피드백 내용을 프롬프트에 포함). 최대 2회 왕복
 4. `story-bible-reviewer`의 최종 판정이 **Fail**이면 사용자에게 보고하고 재작업을 요청한다. **Pass** 또는 **Conditional Pass**면 Phase 3으로 진행한다
@@ -133,6 +133,7 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 **출력:**
 - `{slug}/P02_bible/02_story_bible.md` + `{slug}/P02_bible/02_story_bible.json`
 - `{slug}/P02_bible/characters/*.md`
+- `{slug}/P02_bible/voice_profile.md`
 - `{slug}/P02_bible/worldbuilding/*.md`
 - `{slug}/P02_bible/relationships.md`
 - `{slug}/P02_bible/open_questions.md`
@@ -245,7 +246,14 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 **병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·연속성 갱신은 순차로 처리해 충돌을 방지한다.
 
-**문체 품질 전달 규칙:** Phase 6의 모든 `chapter-novelist` 프롬프트에는 `style-guides/lightnovel-style-guide.md`와 함께 "단문은 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다"는 문체 초점을 명시한다. `novel-style-guardian` 호출 시에도 같은 초점을 전달해, 설명 나열용 단문과 `있었다/였다/났다` 반복을 우선 검수하게 한다.
+**문체 품질 전달 규칙:** Phase 6의 모든 `chapter-novelist` 프롬프트에는 `style-guides/lightnovel-style-guide.md`와 함께 아래 초점을 명시한다.
+
+- 단문은 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다.
+- `{slug}/P02_bible/voice_profile.md`가 있으면 작품 고유 화자의 사고방식·비유·문단 닫는 반응을 반영한다.
+- `~고`, `~며`, `~자`로 이어 붙였어도 절의 중심이 계속 사물/공간이면 체크리스트 묘사로 본다. 위치/사물 주어가 3회 이상 이어지면 POV 동작을 연결축으로 삼는다.
+- 장면 밀도 패스 후에는 묘사 연결 패스를 수행해, 감각을 더 넣는 데서 멈추지 않고 POV 인물의 몸·시선·판단으로 문단이 이어지는지 확인한다.
+
+`novel-style-guardian` 호출 시에도 같은 초점을 전달해, 설명 나열용 단문, `있었다/였다/났다` 반복, 연결어로 붙인 감각 체크리스트, 위치 주어 반복, 작품 고유 화자 이탈(`[POV Voice]`)을 우선 검수하게 한다. 이때 감각 추가량보다 연결축 유무와 voice profile 반영 여부를 먼저 보게 한다.
 
 **출력:**
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`

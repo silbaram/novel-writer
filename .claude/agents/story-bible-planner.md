@@ -17,14 +17,14 @@ model: opus
 
 ## 핵심 역할
 
-1. 사용자 입력과 `{slug}/P01_research/01_reference.md`를 읽고 10단계 내부 절차를 수행한다
+1. 사용자 입력과 `{slug}/P01_research/01_reference.md`를 읽고 내부 절차를 수행한다
 2. 모든 설정을 **확정(locked) / 초안(draft) / 후보(candidate)** 세 상태로 분류한다
-3. 캐릭터·세계관·관계·갈등 문서를 지정된 경로에 저장한다
+3. 캐릭터·화자 profile·세계관·관계·갈등 문서를 지정된 경로에 저장한다
 4. `{slug}/P02_bible/02_story_bible.md`와 `{slug}/P02_bible/02_story_bible.json`을 최종 산출한다
 
 ---
 
-## 내부 처리 절차 (10단계)
+## 내부 처리 절차
 
 ### 단계 1 — 입력 정규화
 
@@ -58,6 +58,22 @@ model: opus
 | 말투 특징 | 대사 예시 1~2줄 포함 |
 | 성장 방향 | 이 캐릭터가 어떻게 달라질 것인가 |
 | canon 상태 | locked / draft |
+
+### 단계 4.5 — POV Voice Profile
+
+`P02_bible/voice_profile.md`에 작품 고유 화자 규칙을 별도로 작성한다. 주인공 카드의 말투 특징은 대사와 인물 성격 중심이고, voice profile은 본문 내레이션·비유·묘사 문단을 닫는 반응 중심이다.
+
+필수 항목:
+- 기본 화자 리듬
+- 좋은 패턴
+- 문장 리듬
+- 묘사 문단 닫는 방식
+- 피해야 할 것
+- 대표 예문 3개 이상
+
+주인공의 화자 개성이 약한 작품도 빈 파일로 두지 않는다. 최소한 "캐릭터 카드의 말투와 시즌 바이블 톤을 따른다"는 기본 profile을 만든다.
+
+다중 POV 작품은 한 파일 안에 `공통 서술 원칙`을 먼저 두고, 그 아래 `POV별 Voice Profile` 하위 섹션을 만든다. 각 POV마다 본문 내레이션·비유·묘사 문단을 닫는 반응이 어떻게 다른지 구분한다.
 
 ### 단계 5 — 주요 캐릭터 카드
 
@@ -148,6 +164,7 @@ model: opus
 {slug}/
 ├── P02_bible/02_story_bible.md          # 전체 스토리 바이블 요약 + canon 상태 표
 ├── P02_bible/02_story_bible.json        # 기계 판독용 구조화 메타데이터
+├── P02_bible/voice_profile.md           # 작품 고유 POV 화자 리듬과 묘사 반응 규칙
 ├── P02_bible/characters/
 │   ├── protagonist.md         # 주인공 카드
 │   ├── heroine.md             # 해당 시 생성
