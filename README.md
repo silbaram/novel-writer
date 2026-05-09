@@ -82,37 +82,42 @@
 | 0. 분석 | 인라인 | 요청 파싱, 슬러그 생성 |
 | 1. 리서치 | `web/paper/community-researcher` 병렬 | `01_reference.md` |
 | 2. 스토리 바이블 | `story-bible-planner` ↔ `story-bible-reviewer` (최대 2회) | `02_story_bible.md` + 캐릭터·세계관 파일 |
-| 3. 시즌 구조 | `season-planner` | `03_season_plan.md` + `seasons/sNN/season_bible.md` |
-| 4. 챕터 플롯 | `chapter-plotter` | `seasons/sNN/chapter_plan.md` |
+| 3. 시즌 구조 | `season-planner` | `P03_planning/03_season_plan.md` + `P03_planning/sNN/season_bible.md` |
+| 4. 챕터 플롯 | `chapter-plotter` | `P03_planning/sNN/chapter_plan.md` |
 | 5. 플롯 리뷰 | `story-bible-reviewer` + `continuity-keeper` | `05_review_log.md` |
-| 6. 챕터 집필 | `chapter-novelist` × 3 병렬 → `novel-style-guardian` → `continuity-keeper` | `{CCC}_draft.md` → `{CCC}_final.md` |
-| 7. 시즌 검수 | `novel-style-guardian` + `continuity-keeper` | `style_log.md` + `continuity/` |
+| 6. 챕터 집필 | `chapter-novelist` → style/revision pipeline → `continuity-keeper` | `{CCC}_final.md` |
+| 7. 시즌 검수 | `novel-style-guardian` + `continuity-keeper` | `P00_meta/logs/style_log.md` + `P04_continuity/` |
 | 8. 통합 편집 | `novel-editor` | `04_manuscript.md` + `book_manifest.json` |
 | 9. EPUB 빌드 | `cover-designer` → `epub-builder` | EPUB + 책 소개 markdown |
 
 ### 스타일 가이드
 
-`style-guides/lightnovel-style-guide.md`가 모든 챕터 집필의 제약 조건이다.
+`style-guides/lightnovel-style-guide.md`가 모든 챕터 집필과 퇴고의 제약 조건이다. 내부적으로는 초안 작성, 문체 검수, 문장 퇴고, 최종본 확정, 연속성 갱신 순서로 처리한다.
 
 ### 기대 산출물
 
 ```
 {slug}/
-├── 02_story_bible.md / .json
-├── characters/ worldbuilding/ relationships.md
-├── seasons/s01/
+├── P02_bible/
+│   ├── 02_story_bible.md / .json
+│   ├── voice_profile.md
+│   └── characters/ worldbuilding/ relationships.md
+├── P03_planning/s01/
 │   ├── season_bible.md
-│   ├── chapter_plan.md
-│   └── chapters/ 001_draft.md / 001_final.md ...
-├── continuity/
-├── 04_manuscript.md
-├── book_manifest.json
-├── cover.png
-└── build_log.md
+│   └── chapter_plan.md
+├── P04_continuity/s01/chapters/
+│   └── 001_final.md
+├── P05_manuscript/
+│   ├── 04_manuscript.md
+│   └── book_manifest.json
+├── P06_publication/assets/cover.png
+└── P00_meta/logs/build_log.md
 
 {작품-제목}-v1.0.0.epub
 {작품-제목}-v1.0.0.md
 ```
+
+챕터 집필 중간에는 디버깅과 재검수를 위해 `001_draft.md`, `001_review.md`, `001_revised.md`, `001_review2.md` 같은 내부 산출물이 함께 남는다. 일반적으로 사용자가 확인할 대상은 `001_final.md`다.
 
 ---
 
@@ -143,16 +148,17 @@ novel-writer/
 │   ├── toby-book-writing-style.md         # 기술서 Toby 문체 가이드
 │   └── lightnovel-style-guide.md          # 라노벨 문체 가이드
 └── .claude/
-    ├── agents/                             # 19개 에이전트
+    ├── agents/                             # 21개 에이전트
     │   ├── [기술서] book-planner, chapter-writer, editor, plan-reviewer, style-guardian, research-lead
-    │   ├── [라노벨] chapter-novelist, chapter-plotter, novel-editor, novel-style-guardian,
-    │   │           season-planner, story-bible-planner, story-bible-reviewer, continuity-keeper
-    │   └── [공용]   web-researcher, paper-researcher, community-researcher, cover-designer, epub-builder
-    └── skills/                             # 17개 스킬
+    │   ├── [라노벨] chapter-novelist, chapter-prose-reviser, chapter-plotter,
+    │   │           novel-editor, novel-style-guardian, season-planner,
+    │   │           story-bible-planner, story-bible-reviewer, continuity-keeper
+    │   └── [공용]   web-researcher, paper-researcher, community-researcher, cover-designer, interior-illustrator, epub-builder
+    └── skills/                             # 19개 스킬
         ├── [기술서] book-writing-orchestrator, book-planning, book-editing,
         │           chapter-writing/, plan-review, style-review
         ├── [라노벨] lightnovel-writing-orchestrator, novel-planning, novel-chapter-writing,
-        │           novel-editing, narrative-review
+        │           novel-prose-revision, novel-editing, novel-illustration, narrative-review
         └── [공용]   research-coordination, web-research, paper-research,
                     community-research, cover-design, epub-build/
 ```

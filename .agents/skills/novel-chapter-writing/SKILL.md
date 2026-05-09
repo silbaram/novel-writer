@@ -1,11 +1,11 @@
 ---
 name: novel-chapter-writing
-description: Use to write or revise a Korean light novel chapter from story bible, season bible, chapter plan, characters, world files, and POV voice.
+description: Use to write a Korean light novel chapter draft from story bible, season bible, chapter plan, characters, world files, and POV voice.
 ---
 
 # Novel Chapter Writing
 
-라이트노벨/웹소설의 챕터 한 편을 저술하는 절차 가이드다. `chapter-novelist`가 이 스킬을 참조한다.
+라이트노벨/웹소설의 챕터 초안을 저술하는 절차 가이드다. `chapter-novelist`가 이 스킬을 참조한다. 스타일 리뷰 이후의 문장 퇴고와 최종본 생성은 `chapter-prose-reviser`와 `novel-prose-revision`이 담당한다.
 
 ---
 
@@ -211,15 +211,16 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 ### 장면 밀도/연결 패스
 {보강한 장면 / 추가한 감각·정서 요소 / POV 몸·시선 연결축 확인 / voice profile 반영 여부 / 리듬 조정 여부}
 
+### 퇴고 주의 지점
+{의도적으로 유지해야 하는 단문 / 개그 타이밍 / 복선 문장 / 바꾸면 안 되는 대사 / 훅 문장}
+
 ### 다음 챕터 연결
 {이 챕터 마지막 상태에서 다음 챕터가 어떻게 이어지는가 — 훅 포함}
 ```
 
 저자 노트는 독자에게 보이지 않는 내부 메타데이터다. `novel-editor`가 통합 원고 생성 시 제거하고, `continuity-keeper`가 복선·연속성 갱신에 활용한다.
 
-### `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md`
-
-`novel-style-guardian`의 피드백을 반영한 최종본. 저자 노트는 그대로 유지한다.
+최종본(`{CCC}_final.md`)은 스타일 리뷰와 퇴고를 거친 뒤 `chapter-prose-reviser`가 생성한다.
 
 ---
 
@@ -252,4 +253,4 @@ description: Use to write or revise a Korean light novel chapter from story bibl
 | 챕터 플랜이 없거나 해당 섹션 비어 있음 | 오케스트레이터에 Phase 4 미완료 보고, 집필 대기 |
 | `[LOCKED]` 설정과 챕터 플랜 충돌 | 오케스트레이터와 `story-bible-planner`에게 보고, 집필 중단 |
 | 레퍼런스에 없는 사실이 필요한 경우 | `(설정 확인 필요)` 표기 후 계속 작성, 저자 노트에 기록 |
-| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `P00_meta/logs/style_log.md`에 "합의 실패" 기록 |
+| 스타일 리뷰 피드백이 직접 들어옴 | 최종본을 작성하지 않고 오케스트레이터에 `chapter-prose-reviser` 라우팅 필요를 보고 |

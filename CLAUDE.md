@@ -33,10 +33,10 @@
 
 **트리거:** 라노벨, 소설, 웹소설, 판타지, 이세계물, 회귀물 등 픽션 저술 요청 시 `lightnovel-writing-orchestrator` 스킬을 사용하라. 단순 질문(예: "소설 쓰는 방법이 뭐야?")은 직접 응답 가능.
 
-**스타일 가이드:** `style-guides/lightnovel-style-guide.md`가 모든 챕터 집필의 제약 조건이다. `chapter-novelist`와 `novel-style-guardian`은 반드시 이를 준수한다. 단문은 개그·충격·깨달음 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다.
+**스타일 가이드:** `style-guides/lightnovel-style-guide.md`가 모든 챕터 집필과 퇴고의 제약 조건이다. 챕터 집필·검수·퇴고 에이전트는 단문을 개그·충격·깨달음 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다.
 
 **산출 경로:**
-- 중간 산출물: `{novel-slug}/`, 시즌별: `{novel-slug}/seasons/sNN/`
+- 중간 산출물: `{novel-slug}/`, 시즌 설계: `{novel-slug}/P03_planning/sNN/`, 챕터 원고: `{novel-slug}/P04_continuity/sNN/chapters/`
 - 최종 산출물(프로젝트 루트):
   - `{작품-제목}-v{version}.epub`
   - `{작품-제목}-v{version}.md` — 외부 독자용 책 소개 markdown
