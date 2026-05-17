@@ -25,7 +25,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | `{slug}/P02_bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
 | `{slug}/P03_planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
 | `{slug}/P03_planning/sNN/` | 시즌별 바이블과 챕터 플랜 | `season_bible.md`, `chapter_plan.md` |
-| `{slug}/P04_continuity/sNN/` | 챕터 초안·리뷰·최종본 | `chapters/*_draft.md`, `chapters/*_review.md`, `chapters/*_final.md` |
+| `{slug}/P04_continuity/sNN/` | 챕터 원고와 내부 검수 산출물 | `chapters/*_final.md` (내부: `*_draft.md`, `*_review.md`, `*_revised.md`, `*_review2.md`) |
 | `{slug}/P04_continuity/` | 연속성 추적 | `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`, `character_state_table.md` |
 | `{slug}/P00_meta/logs/` | 검수/편집/빌드 로그 | `05_review_log.md`, `style_log.md`, `editor_notes.md`, `build_log.md` |
 | `{slug}/P05_manuscript/` | 출판/EPUB용 최종 원고와 메타데이터 | `04_manuscript.md`, `book_manifest.json`, `s01/season_manuscript.md` |
@@ -59,7 +59,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | 3 | 시즌 구조 설계 | 단일 서브 |
 | 4 | 챕터 플롯 작성 | 단일 서브 (시즌 1 우선, 이후 시즌은 아래 규칙 참조) |
 | 5 | 집필 전 종합 검증 | 순차 서브 에이전트 4단계 (바이블·시즌구조·챕터플랜·연속성) |
-| 6 | 챕터 집필 | 오케스트레이터 주도 순환 (최대 3개 병렬 초안 → 순차 검수) |
+| 6 | 챕터 집필 | 오케스트레이터 주도 순환 (초안 작성 → 스타일 검수·퇴고 → 최종본 확정) |
 | 7 | 문체/연속성 검수 | 순차 서브 에이전트 (시즌 전체 관점) |
 | 8 | 통합 편집 | 단일 서브 |
 | 8.5 | 본문 삽화 프롬프트/파일 계약 | 서브 에이전트 (삽화 슬롯 → 외부 생성용 프롬프트/경로) |
@@ -227,30 +227,44 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 ## Phase 6: 챕터 집필
 
-**실행 모드:** 오케스트레이터 주도 순환 (최대 3개 병렬 초안 → 순차 검수)
+**실행 모드:** 오케스트레이터 주도 순환 (초안 작성 → 스타일 검수·퇴고 → 최종본 확정)
 
 가장 긴 Phase다. 시즌 단위로 진행하며, 한 시즌이 완료된 후 다음 시즌으로 넘어간다.
 
 **챕터 번호 정책:** 챕터 번호(`{CCC}`)는 **시즌별로 리셋**한다. `s01/chapters/001`, `s02/chapters/001` 형태로 관리한다. 파일 경로에 시즌 정보가 포함되어 있으므로 전체 고유성이 보장된다.
 
-**절차:**
+**요약 절차:**
+
+1. `chapter-novelist`가 챕터 초안을 쓴다
+2. `novel-style-guardian`과 `chapter-prose-reviser`가 문체 검수와 퇴고를 처리한다
+3. `{CCC}_final.md`가 확정되면 `continuity-keeper`가 연속성을 갱신한다
+
+**내부 실행 상세:**
 
 1. Codex 작업 계획으로 해당 시즌의 챕터 목록을 태스크로 등록한다
 2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다 (병렬 서브에이전트 호출). 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다
-3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 검수한다. 스타일 가디언은 피드백을 `{CCC}_review.md`(임시)와 `P00_meta/logs/style_log.md`(누적)에 저장하고 결과를 반환한다
-4. 오케스트레이터가 피드백을 읽어 해당 `chapter-novelist`를 재호출해 수정을 요청한다 (피드백 내용을 프롬프트에 포함). `chapter-novelist`가 `{CCC}_final.md`를 저장하고 반환한다
-5. 오케스트레이터가 `continuity-keeper`를 호출한다 (`{CCC}_final.md` 경로 전달). `continuity-keeper`가 연속성 레코드를 갱신하고 결과를 반환한다
-6. Critical 경고가 반환되면 오케스트레이터가 해당 `chapter-novelist`를 재호출해 수정을 지시한다
-7. 해당 챕터 완료 후 다음 배치(3개)로 넘어간다. 시즌 내 모든 챕터 완료 후 다음 Phase로 진행한다
+3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 1차 검수를 요청한다. 스타일 가디언은 피드백을 `{CCC}_review.md`와 `P00_meta/logs/style_log.md`(누적)에 저장하고 결과를 반환한다
+4. 오케스트레이터가 `{CCC}_draft.md`와 `{CCC}_review.md`를 `chapter-prose-reviser`에게 전달한다. 퇴고자는 플롯·Canon·사건 순서를 보존한 채 문장 흐름을 고쳐 `{CCC}_revised.md`를 저장하고 반환한다
+5. 오케스트레이터가 `{CCC}_revised.md`를 `novel-style-guardian`에게 전달해 2차 검수를 요청한다. 스타일 가디언은 `{CCC}_review2.md`와 `P00_meta/logs/style_log.md`를 저장하고 Critical/Should 잔여 여부를 반환한다
+6. 오케스트레이터가 `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달해 최종화를 요청한다. 2차 리뷰에 Critical/Should가 없으면 내용을 유지해 `{CCC}_final.md`로 저장하고, 남아 있으면 해당 지적만 최소 수정해 `{CCC}_final.md`를 저장한다
+7. 오케스트레이터가 `continuity-keeper`를 호출한다 (`{CCC}_final.md` 경로 전달). `continuity-keeper`가 연속성 레코드를 갱신하고 결과를 반환한다
+8. Critical 경고가 반환되면 문체 문제는 `chapter-prose-reviser`, 사건·연속성 문제는 `chapter-novelist`로 라우팅해 수정한다. 퇴고 루프는 최대 2회로 제한하고, 남은 문제는 `P00_meta/logs/style_log.md`에 미해결로 기록한다
+9. 해당 챕터 완료 후 다음 배치(3개)로 넘어간다. 시즌 내 모든 챕터 완료 후 다음 Phase로 진행한다
 
-**병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·연속성 갱신은 순차로 처리해 충돌을 방지한다.
+**병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·퇴고·연속성 갱신은 순차로 처리해 충돌을 방지한다.
 
 **문체 품질 전달 규칙:** Phase 6의 모든 `chapter-novelist` 프롬프트에는 `style-guides/lightnovel-style-guide.md`와 함께 "단문은 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다"는 문체 초점을 명시한다. `novel-style-guardian` 호출 시에도 같은 초점을 전달해, 설명 나열용 단문과 `있었다/였다/났다` 반복을 우선 검수하게 한다.
 
-**출력:**
-- `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
-- `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md` (스타일 가디언 피드백, 임시)
+`chapter-prose-reviser` 호출 시에는 `{CCC}_draft.md`의 저자 노트, `{CCC}_review.md` 또는 `{CCC}_review2.md`, `voice_profile.md`를 함께 전달한다. 퇴고자는 `퇴고 주의 지점`에 적힌 단문·복선·훅을 보존하고, 문장 리듬과 묘사 연결만 조정한다.
+
+**주요 산출물:**
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md`
+
+**내부 산출물:**
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md` — 초안
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md` — 1차 스타일 리뷰
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_revised.md` — 문장 퇴고본
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_review2.md` — 2차 스타일 리뷰
 
 ---
 
@@ -263,7 +277,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 **절차:**
 1. 오케스트레이터가 `novel-style-guardian`을 호출한다. 시즌 원고 전체의 톤 일관성 점검을 목적으로 명시한다 (챕터별 피드백이 아닌 전체 흐름 관점). 가디언은 문제 목록을 반환한다
 2. 오케스트레이터가 `continuity-keeper`를 호출한다. 시즌 전체의 복선 회수 여부, 캐릭터 아크 완결성, 타임라인 충돌 최종 점검을 목적으로 명시한다. Critical 경고 목록을 반환한다
-3. 오케스트레이터가 두 결과를 취합해 수정이 필요한 챕터를 식별하고, 해당 `chapter-novelist`를 재호출해 수정을 지시한다
+3. 오케스트레이터가 두 결과를 취합해 수정이 필요한 챕터를 식별한다. 문체·문장 리듬 문제는 `chapter-prose-reviser`, 사건·연속성·챕터 구조 문제는 `chapter-novelist`로 라우팅한다
 4. Critical 미해결 항목이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 사용자에게 수동 확인을 요청할 때까지 **Phase 9(최종 EPUB 빌드)는 중단**한다
 5. Critical 이슈가 해소되거나 사용자 수동 확인이 완료되면 Phase 9로 진행한다
 
@@ -348,7 +362,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 리서치 에이전트 타임아웃 | 가용 결과만으로 `P01_research/01_reference.md` 작성, 누락 섹션 명시 후 진행 |
 | `story-bible-reviewer` Fail 판정 | 사용자에게 보고, `story-bible-planner` 재작업 요청 |
 | `continuity-keeper` Critical 경고 | 해당 챕터 finalizing 중단, 저술가에게 수정 지시 |
-| 스타일 가디언과 3회 왕복 합의 실패 | 저술가 최종본 채택, `P00_meta/logs/style_log.md`에 "합의 실패" 기록 |
+| 퇴고 루프 2회 후에도 스타일 이견이 남음 | 남은 문제를 `P00_meta/logs/style_log.md`에 미해결로 기록하고 현재 final 후보를 사용자 확인 대상으로 보고 |
 | `[LOCKED]` Canon 위반 감지 | `continuity-keeper`가 차단, `story-bible-planner`에게 공식 개정 절차 요청 |
 | 표지 생성 실패 | ImageMagick 폴백 → 단순 타이포그래피 표지. 폴백도 실패 시 사용자 알림 후 표지 없이 빌드 |
 | EPUB 빌드 실패 | pandoc 에러 메시지 그대로 보고, `P05_manuscript/04_manuscript.md`는 보존 |
@@ -366,7 +380,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 파일명 컨벤션:
 - Phase 산출물: `{NN}_{artifact}.md` (NN = Phase 번호 2자리)
-- 챕터: `{CCC}_draft.md` / `{CCC}_review.md` / `{CCC}_final.md` (CCC = 시즌 내 3자리 제로 패딩, 시즌별 리셋)
+- 챕터: `{CCC}_draft.md` / `{CCC}_review.md` / `{CCC}_revised.md` / `{CCC}_review2.md` / `{CCC}_final.md` (CCC = 시즌 내 3자리 제로 패딩, 시즌별 리셋)
 - 시즌 설계 경로: `P03_planning/s{NN}/`, 챕터 원고·연속성 경로: `P04_continuity/s{NN}/`, 시즌 통합 원고 경로: `P05_manuscript/s{NN}/` (NN = 2자리 제로 패딩)
 
 ---

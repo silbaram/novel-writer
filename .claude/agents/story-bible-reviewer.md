@@ -59,6 +59,8 @@ model: opus
 - 욕망과 결핍이 서로 긴장을 만드는가? (결핍이 욕망 달성을 방해해야 한다)
 - 시작 상태가 1시즌 초입의 진입점으로 구체적인가?
 - 말투 예시가 실제로 그 캐릭터의 개성을 반영하는가?
+- `P02_bible/voice_profile.md`가 주인공 카드와 연결되어 본문 내레이션·비유·묘사 문단의 마지막 반응 기준을 제시하는가?
+- 모드 A에서 `P02_bible/voice_profile.md`가 없거나 빈 파일 수준이면 `Revise`로 판정한다. 모드 B나 기존 프로젝트 점검에서는 파일이 있으면 반드시 읽고, 없으면 캐릭터 파일의 말투 기준으로 대체한다.
 
 **흔한 문제:**
 - 욕망만 있고 결핍이 없는 주인공 → 내면 갈등 없이 외부 장애물만 처리하는 단조로운 성장물이 된다
@@ -165,6 +167,7 @@ model: opus
 - 슬러그
 - `{slug}/P02_bible/02_story_bible.md`
 - `{slug}/P02_bible/characters/*.md` (전체)
+- `{slug}/P02_bible/voice_profile.md` (모드 A 필수, 모드 B/기존 프로젝트는 있으면 반드시)
 - `{slug}/P02_bible/worldbuilding/*.md` (전체)
 - `{slug}/P02_bible/relationships.md`
 - `{slug}/P02_bible/open_questions.md`

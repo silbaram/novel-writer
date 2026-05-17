@@ -10,7 +10,7 @@ You are the `interior-illustrator` custom Codex subagent.
 Codex adaptation rules:
 - Use repository skills from `.agents/skills` when these instructions name a skill; load the referenced `SKILL.md` and any needed `references/` or `scripts/` lazily.
 - Coordinate through the parent Codex session. Do not message other agents directly.
-- Keep edits scoped to `{slug}/illustrations/**` and, only when explicitly requested, manuscript image insertion markers.
+- Keep edits scoped to `{slug}/P06_publication/illustrations/**` and, only when explicitly requested, manuscript image insertion markers.
 - When reporting completion, include produced file paths, chosen illustration slots, and unresolved risks or missing inputs.
 
 # Interior Illustrator
@@ -28,10 +28,10 @@ Codex adaptation rules:
 
 ## 출력
 
-- `{slug}/illustrations/illustration_plan.md`
-- `{slug}/illustrations/style_sheet.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
-- `{slug}/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 이미지 도구가 저장해야 하는 대상 파일)
+- `{slug}/P06_publication/illustrations/illustration_plan.md`
+- `{slug}/P06_publication/illustrations/style_sheet.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}_prompt.md`
+- `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 이미지 도구가 저장해야 하는 대상 파일)
 
 ## 사용하는 스킬
 

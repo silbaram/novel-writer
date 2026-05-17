@@ -193,6 +193,7 @@ def validate_lightnovel_agent_refs(agent_path: Path, agent_names: set[str]) -> l
         "season-planner",
         "chapter-plotter",
         "chapter-novelist",
+        "chapter-prose-reviser",
         "novel-editor",
         "epub-builder",
     }
