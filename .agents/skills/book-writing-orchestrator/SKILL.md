@@ -5,9 +5,24 @@ description: Use for non-fiction/technical 책 쓰기 or 전자책 workflows to 
 
 # Book Writing Orchestrator
 
-> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
-
 주제·주요 내용·대상 독자를 받아 **논픽션/기술서** EPUB을 산출하는 전 과정을 조율한다. 라노벨·소설·웹소설 요청에는 이 스킬을 쓰지 말고 `lightnovel-writing-orchestrator`를 사용한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
+
+## 진행 게이트와 보고 형식
+
+### 보고 형식 규칙
+
+1. 산출물 전문을 채팅에 출력하지 않고 파일에 저장한 뒤 경로만 보고한다.
+2. 게이트 보고는 15줄 이내 다이제스트로 한다.
+3. 사용자가 특정 파일을 명시적으로 요청할 때만 내용을 보여준다.
+4. 서브에이전트는 상태, 산출 파일, 10줄 이내 핵심 요약, 다음 단계 전달 사항만 반환한다.
+
+| 게이트 | 시점 | 동작 |
+|--------|------|------|
+| GA1 | Phase 3 계획 리뷰 완료 후 | 계획 다이제스트와 경로를 제시하고 승인까지 정지 |
+| GA2 | Phase 4 첫 챕터 완성 후 | 첫 챕터 경로와 문체 요약을 제시하고 승인까지 정지 |
+| GA3 | Phase 5 실행 전 | 통합 원고·교열 결과·메타데이터를 다이제스트로 제시하고 빌드 승인까지 정지 |
+
+GA2 문체 피드백은 `{slug}/style_notes.md`에 규칙으로 누적하고 이후 모든 챕터 프롬프트에 포함한다. 사용자 피드백에 의한 수정은 내부 에이전트 왕복 상한과 별개로 승인까지 반복한다.
 
 ## 실행 모드
 
@@ -39,8 +54,6 @@ description: Use for non-fiction/technical 책 쓰기 or 전자책 workflows to 
 **입력:** 주제, 주요 내용, 대상 독자
 **출력:** `{slug}/research/01_reference.md` — 리서치 종합 문서 (섹션: 개념·정의, 주요 관점, 사례, 논쟁점, 참고문헌)
 
-Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
-
 ## Phase 2: 저술 계획
 
 **실행 모드:** 단일 서브 에이전트
@@ -58,11 +71,11 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 
 **실행 모드:** 에이전트 팀 (생성-검증 왕복)
 
-Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`와 `plan-reviewer`를 팀으로 구성한다. `plan-reviewer`가 계획을 비판적으로 읽고 부모 Codex 세션에 `book-planner`로 전달할 피드백을 보고한다. `book-planner`는 피드백을 반영해 계획을 갱신한다. 합의에 도달하거나 최대 2회 왕복 후 팀을 해체한다.
+부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`와 `plan-reviewer`를 팀으로 구성한다. `plan-reviewer`가 계획을 비판적으로 읽고 부모 세션에 `book-planner`로 전달할 피드백을 보고한다. `book-planner`는 피드백을 반영해 계획을 갱신한다. 합의에 도달하거나 최대 2회 왕복 후 팀을 해체한다.
 
 **산출물:** `{slug}/02_plan.md` (갱신됨) + `{slug}/03_review_log.md` (리뷰 기록)
 
-팀 해체 후 사용자에게 최종 계획을 제시하고 승인을 받는다. 사용자 피드백이 있으면 `book-planner`를 한 번 더 호출해 반영한다.
+팀 해체 후 **GA1 게이트**에서 제목 후보, 독자 여정, 챕터별 핵심 질문을 15줄 이내 다이제스트로 제시하고 정지한다. 전문은 `{slug}/02_plan.md` 경로만 안내한다. 사용자 피드백이 있으면 `book-planner`를 재호출해 반영하고 승인 후 Phase 4로 진행한다.
 
 ## Phase 4: 챕터 저술 (에이전트 팀)
 
@@ -76,13 +89,15 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 
 **절차:**
 
-1. Codex 부모 세션에서 병렬 서브에이전트를 구성해 위 팀을 구성한다. 팀 이름: `book-writing-team`.
-2. Codex 작업 계획으로 각 챕터를 task로 등록한다. task당 `chapter-writer` 1명을 할당한다.
-3. 각 `chapter-writer`는 자기 챕터 초안을 쓰고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 부모 Codex 세션에 `style-guardian` 리뷰 요청을 보고한다.
-4. `style-guardian`은 Toby 스타일 기준(`style-guides/toby-book-writing-style.md` 기본 원칙 + `chapter-writing/references/toby-style-guide.md` 확장 규칙)으로 검수하고, 편차가 있으면 구체적 수정 제안을 작성해 부모 Codex 세션에 응답한다.
-5. `chapter-writer`가 수정하고 `{NN}_final.md`로 저장한다.
-6. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/manuscript/04_manuscript.md`에 통합 원고를 만든다.
-7. 팀을 해체한다.
+1. 부모 세션에서 병렬 서브에이전트를 구성해 위 팀을 구성한다. 팀 이름은 `book-writing-team`이다.
+2. 작업 계획으로 각 챕터를 task로 등록한다. 첫 챕터는 단독으로 작성·검수·수정한다.
+3. 첫 챕터를 `{slug}/chapters/01_final.md`로 저장한 뒤 **GA2 게이트**에서 자수·검수 상태·문체 확인 요청과 파일 경로를 보고하고 정지한다.
+4. 문체 피드백은 `{slug}/style_notes.md`에 규칙으로 누적하고 첫 챕터를 다시 수정한다. 승인 후 나머지 챕터를 최대 3명 풀 방식으로 진행한다.
+5. 각 `chapter-writer`는 `style_notes.md`를 포함해 초안을 작성하고 `{slug}/chapters/{NN}_draft.md`에 저장한 뒤 부모 세션에 `style-guardian` 리뷰 요청을 보고한다.
+6. `style-guardian`은 Toby 스타일 기준으로 검수하고, `chapter-writer`가 반영해 `{NN}_final.md`로 저장한다.
+7. 모든 챕터 완료 후 `editor`가 전환부를 점검하고 `{slug}/manuscript/04_manuscript.md`에 통합 원고를 만든다.
+8. `editor`가 맞춤법·띄어쓰기·비문·문장부호·숫자/단위 표기 교열 패스를 1회 수행하고 `{slug}/logs/proofread_log.md`에 수정 건수와 유형을 기록한다. 내용과 문체는 바꾸지 않는다.
+9. 팀을 해체한다.
 
 **챕터 수가 3개를 초과하면** chapter-writer를 챕터 수만큼 만들지 않고, 3명으로 시작해 각자 여러 챕터를 순차 처리한다(풀 방식). 너무 많은 팀원은 조율 오버헤드를 만든다.
 
@@ -92,7 +107,9 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 
 **실행 모드:** 서브 에이전트 병렬 호출
 
-두 작업이 독립적이므로 병렬로 호출한다.
+**GA3 게이트:** 통합 원고 경로, 교열 결과, 제목·저자·버전을 다이제스트로 제시하고 정지한다. 승인 후 아래 빌드를 실행한다.
+
+표지를 먼저 만든 뒤 EPUB을 빌드한다.
 
 - `cover-designer` → 표지 이미지 생성, `{slug}/assets/cover.png` 저장
 - `epub-builder`는 cover가 준비된 후에 호출 (순서 의존) → `{책-제목}-v{version}.epub` 생성 (프로젝트 루트) **+ 같은 폴더에 책 소개 markdown `{책-제목}-v{version}.md` 동시 산출**
@@ -119,8 +136,8 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 | 전략 | 용도 |
 |------|------|
 | 파일 기반 (`{slug}/`) | 모든 Phase 간 산출물 전달, 감사 추적 |
-| 메시지 기반 (Codex 부모 세션 라우팅) | Phase 3·4의 팀 내 실시간 조율 |
-| 태스크 기반 (Codex 작업 계획) | Phase 4의 챕터 작업 할당 및 진행 추적 |
+| 메시지 기반 (부모 세션 라우팅) | Phase 3·4의 팀 내 실시간 조율 |
+| 태스크 기반 (작업 계획) | Phase 4의 챕터 작업 할당 및 진행 추적 |
 | 반환값 기반 | 서브 에이전트 모드(Phase 1·2·5)의 결과 수집 |
 
 파일명 컨벤션: `{NN}_{artifact}.md` (NN은 Phase 번호 2자리).
@@ -130,7 +147,15 @@ Codex 부모 세션에서 병렬 서브에이전트를 구성해 `book-planner`�
 모든 Phase 완료 및 EPUB 산출 후:
 1. 사용자에게 EPUB 경로 + 책 소개 markdown 경로 + 요약 보고
 2. "개선할 부분이 있나요?"를 짧게 물어본다 (강요하지 않음)
-3. 피드백이 오면 Phase 7-2 매트릭스에 따라 해당 Phase만 재실행
+3. 피드백이 오면 아래 부분 재실행 규칙에 따라 해당 Phase만 재실행
+
+| 요청 유형 | 부분 재실행 |
+|----------|------------|
+| 계획 수정 | Phase 2~3 재실행 후 GA1 재통과 |
+| 단일 챕터 수정 | Phase 4의 해당 챕터만 재실행. 문체 전역 피드백은 `style_notes.md` 갱신 |
+| 통합·교열 수정 | Phase 4의 `editor` 작업만 재실행 후 GA3 재통과 |
+| 표지 교체 | Phase 5의 `cover-designer`만 재실행 |
+| EPUB 재빌드 | Phase 5의 `epub-builder`만 재실행 |
 
 ## 테스트 시나리오
 

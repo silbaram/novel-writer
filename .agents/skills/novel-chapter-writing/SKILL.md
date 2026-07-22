@@ -21,13 +21,27 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 | 4 | `{slug}/P03_planning/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
 | 5 | 등장인물 파일 (`{slug}/P02_bible/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
 | 6 | `{slug}/P02_bible/voice_profile.md` (있으면 필수) | 작품 고유 POV 화자 리듬·비유·금지 반응 확인 |
-| 7 | `{slug}/P02_bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
-| 8 | `{slug}/P04_continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
-| 9 | `{slug}/P04_continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
+| 7 | `{slug}/P02_bible/glossary.md` | 고유명사·능력명·호칭의 표준 표기 확인 |
+| 8 | `{slug}/P02_bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
+| 9 | `{slug}/P04_continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
+| 10 | `{slug}/P04_continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
 
 ---
 
 ## 집필 절차
+
+### 단계 0 — 씬 카드 분해
+
+본문을 쓰기 전에 챕터 플랜을 2~4개 씬으로 분해한다.
+
+| 씬 | 목표(무엇이 달라지는가) | 갈등/장애 | 전환(씬 끝의 변화) | 감각 앵커 |
+|----|-------------------------|-----------|----------------------|-----------|
+| 1 | | | | |
+
+- 챕터 플랜의 주요 사건을 모두 씬에 배정한다.
+- 주요 사건은 장면 안에서 실시간으로 일어나야 한다. 플랜을 위에서 아래로 요약 서술하지 않는다.
+- 시간 경과 때문에 요약·몽타주로 처리할 사건이 있으면 이유를 저자 노트에 기록한다. 챕터당 1회 이내만 허용한다.
+- 씬 카드는 저자 노트의 `씬 카드` 섹션에 그대로 남긴다.
 
 ### 단계 1 — 오프닝 작성
 
@@ -54,6 +68,7 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 **씬 목적 원칙:**
 - 모든 씬은 끝날 때 무언가 달라져야 한다 (정보·감정·관계·위치 중 하나 이상)
 - 씬 전후로 아무것도 변하지 않으면 해당 씬을 삭제하거나 다른 씬에 통합한다
+- 챕터 플랜을 위에서 아래로 낭독하는 요약체를 금지한다. 사건은 단계 0의 씬 카드에 배정된 장면 안에서 실시간으로 일어난다
 
 **시점 유지:**
 - 챕터 플랜에 지정된 시점 인물을 씬 내내 유지한다
@@ -193,6 +208,9 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 <!-- author-note -->
 ## 저자 노트 (내부용)
 
+### 씬 카드
+{단계 0의 씬 분해표 + 요약 처리한 사건과 그 이유}
+
 ### 챕터 목표
 {이 챕터에서 달성하려는 서사적·감정적 목표}
 
@@ -234,6 +252,7 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 | 태그 감정 서술 | 대사 전후 행동 묘사 |
 | 브리핑 대사 | 행동·씬을 통한 자연스러운 노출 |
 | 인포덤프 블록 | 설명을 행동·대사 사이에 분산 |
+| 핵심 사건 요약 서술 | 씬 카드에 배정하고 실시간 장면으로 극화 |
 | 시점 오염 | 씬 브레이크로 시점 전환 경계 명시 |
 | 목적 없는 씬 | 씬 전후 변화를 확인하고 없으면 삭제 |
 | 장면/사물/인물 묘사 부족 | 초안 후 장면 밀도 패스로 감각·정서·리듬 보강, 묘사 연결 패스로 POV 연결축 확인 |

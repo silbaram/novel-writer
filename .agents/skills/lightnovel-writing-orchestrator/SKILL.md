@@ -5,8 +5,6 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 # Lightnovel Writing Orchestrator
 
-> Codex 변환 참고: Claude 전용 팀/메시지/태스크 명령은 Codex 부모 세션이 서브에이전트를 호출하고, 결과를 파일 경로와 반환값으로 받아 다음 에이전트 프롬프트에 전달하는 방식으로 해석한다.
-
 장르·분위기·주인공 아이디어를 받아 스토리 바이블 → 시즌 구조 → 챕터 집필 → EPUB 빌드까지 전 과정을 조율한다. 각 Phase에서 전문 에이전트를 호출하고, 중간 산출물을 `{slug}/` 하위에 축적한 뒤 최종 EPUB을 프로젝트 루트에 만든다.
 
 > **저작권 원칙:** 기존 저작물(소설·웹툰·게임·애니메이션 등)의 캐릭터·세계관·고유 설정·문장을 허가 없이 복사하거나 직접 전용하지 않는다. 오마주·패러디를 의도하더라도 독립적 설정으로 치환한다. 이 원칙은 모든 Phase의 에이전트에 공통 적용된다.
@@ -19,8 +17,9 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 | 경로 | 역할 | 대표 파일 |
 |------|------|-----------|
+| `{slug}/P00_meta/` | 게이트 상태와 실행 메타데이터 | `gate_status.md` |
 | `{slug}/P01_research/` | Phase 1 리서치 | `01_reference.md` |
-| `{slug}/P02_bible/` | Phase 2 스토리 바이블과 설정 | `02_story_bible.md`, `02_story_bible.json`, `voice_profile.md`, `relationships.md`, `open_questions.md`, `season_seeds.md` |
+| `{slug}/P02_bible/` | Phase 2 스토리 바이블과 설정 | `02_story_bible.md`, `02_story_bible.json`, `voice_profile.md`, `glossary.md`, `relationships.md`, `open_questions.md`, `season_seeds.md` |
 | `{slug}/P02_bible/characters/` | 인물 카드 | `protagonist.md`, `heroine.md`, `supporting.md` |
 | `{slug}/P02_bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
 | `{slug}/P03_planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
@@ -49,21 +48,99 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 ---
 
+## 진행 게이트와 보고 형식
+
+### 보고 형식 규칙 (모든 Phase 공통)
+
+1. **산출물 전문을 채팅에 출력하지 않는다.** 모든 산출물은 파일에 저장하고 경로만 보고한다.
+2. **게이트 보고는 15줄 이내 다이제스트**로 한다. 요약 + 파일 경로 + 판정/선택지만 포함한다.
+3. 사용자가 특정 파일을 명시적으로 요청할 때만 그 내용을 보여준다.
+4. 서브에이전트 반환값은 각 에이전트의 `반환 형식` 계약을 따른다. 산출물 전문을 반환값에 포함하지 않는다.
+
+### 게이트 정의
+
+| 게이트 | 시점 | 정지 유형 | 보고 내용 |
+|--------|------|----------|----------|
+| G1 | Phase 0 완료 후 | 정지 | 요청 해석 표: 장르·주인공·분량·시즌·진행 모드 |
+| G2 | Phase 2 완료 후 | 정지 | 바이블 다이제스트: logline 1줄, 주인공 3줄, 핵심 인물 1줄씩 최대 4명, 세계 규칙 3줄, 시즌 씨앗 목록 |
+| G3 | Phase 4 완료 후 | 정지 | 시즌 아크 요약 + 챕터당 1줄 요약표(제목·핵심 사건·훅 유형) |
+| G4 | Phase 5 완료 후 | 조건부 정지 | 검증 판정. Critical이 있으면 정지하고, 없으면 보고 후 진행 |
+| G5 | 1화 파일럿 완성 후 | 정지 | 파일럿 경로 + 문체 확인 요청. 승인 전 배치 집필 금지 |
+| G6 | 이후 3화 배치마다 | 정지 | 진행표(챕터·자수·검수 상태·미해결) + 계속/수정 선택 |
+| G7 | Phase 8 완료 후 | 정지 | 시즌 검수·교열 요약 + 통합 원고 경로 |
+| G7.5 | Phase 8.5 완료 후 | 정지 | 삽화 슬롯·이미지 상태 + 슬롯별 승인/수정/제외 선택 |
+| G8 | Phase 9 실행 전 | 조건부 정지 | Critical 미해결 시 빌드 금지 |
+
+G2에서 표시하는 핵심 인물 4명은 다이제스트 표시 상한일 뿐 등장인물 수 제한이 아니다. 전체 캐스트는 `P02_bible/characters/`에 인원 제한 없이 정의하고, 5명 이상이면 `외 조연 N명 — supporting.md 참조`로 표시한다.
+
+### 진행 모드
+
+Phase 0에서 `진행 모드`를 확정한다.
+
+- **gate (기본값):** 위 게이트 전체를 적용한다.
+- **auto:** 정지 게이트를 G2·G5·G8로 축소하고 나머지는 다이제스트만 보고한 뒤 진행한다. 단, 삽화 PNG가 누락된 슬롯이 있으면 G7.5에서도 정지한다.
+- 보고 형식 규칙은 두 모드 모두 동일하게 적용한다.
+
+### 게이트 상태 파일
+
+`{slug}/P00_meta/gate_status.md`에 게이트 통과를 즉시 기록한다. 새 세션에서 `이어서 진행` 요청을 받으면 이 파일을 먼저 읽고 마지막 통과 게이트 다음부터 재개한다.
+
+```markdown
+# Gate Status
+- 진행 모드: gate
+- 현재 위치: G5 대기 (s01 001화 파일럿 완성)
+
+| 게이트 | 상태 | 일시 | 비고 |
+|--------|------|------|------|
+| G1 | 통과 | 2026-07-21 | 시즌 1개, 20챕터 |
+| G2 | 통과 | 2026-07-21 | 바이블 v1 승인 |
+| G3 | 대기 | | |
+| G4 | 대기 | | |
+| G5 | 대기 | | |
+| G6 | 대기 | | |
+| G7 | 대기 | | |
+| G7.5 | 대기 | | |
+| G8 | 대기 | | |
+```
+
+### 사용자 퇴고 루프
+
+퇴고 루프는 두 종류다.
+
+| 루프 | 주체 | 상한 |
+|------|------|------|
+| 내부 자동 루프 | 에이전트 간 (`novel-style-guardian` ↔ `chapter-prose-reviser`) | 2회 |
+| 사용자 퇴고 루프 | 사용자 피드백 | 없음 — 사용자가 승인할 때까지 반복 |
+
+사용자 퇴고 루프는 G5·G6·G7·G7.5와 완료 후 부분 재실행에서 동일하게 적용한다.
+
+1. 피드백을 분류한다.
+   - 문장·문체·리듬 → `chapter-prose-reviser` 재퇴고
+   - 사건·전개·씬 구조 → `chapter-novelist` 부분 재집필 후 검수·퇴고와 `continuity-keeper` 재갱신
+   - 전역 문체 규칙 → 규칙으로 변환해 `voice_profile.md`의 `## 사용자 피드백 보정`에 추가하고 해당 챕터 재퇴고. 확정된 다른 챕터에 소급할지는 사용자에게 확인
+   - 설정·Canon → 영향받는 챕터·복선·관계를 다이제스트로 보고하고 승인 후 `story-bible-planner`로 개정
+2. 챕터 플랜과 어긋나는 사건·구조 수정은 `chapter_plan.md` 갱신 여부를 확인한다.
+3. 수정 전 파일을 `_v{N}` 접미사로 백업하고 라운드 이력을 `P00_meta/logs/style_log.md`에 1줄 기록한다.
+4. 완료 후 무엇을 왜 어떻게 바꿨는지 5줄 이내 변경 다이제스트와 파일 경로만 재제시한다.
+5. 사용자가 승인하면 종료하고, 추가 피드백이 오면 다시 분류한다.
+
+---
+
 ## 실행 모드 요약
 
-| Phase | 이름 | 실행 모드 |
-|-------|------|----------|
-| 0 | 소설 요청 분석 | 인라인 |
-| 1 | 소재/세계관 리서치 | 서브 에이전트 (병렬 가능) |
-| 2 | 스토리 바이블 작성 | 단일 서브 → 오케스트레이터 중계 왕복 (생성-검증) |
-| 3 | 시즌 구조 설계 | 단일 서브 |
-| 4 | 챕터 플롯 작성 | 단일 서브 (시즌 1 우선, 이후 시즌은 아래 규칙 참조) |
-| 5 | 집필 전 종합 검증 | 순차 서브 에이전트 4단계 (바이블·시즌구조·챕터플랜·연속성) |
-| 6 | 챕터 집필 | 오케스트레이터 주도 순환 (초안 작성 → 스타일 검수·퇴고 → 최종본 확정) |
-| 7 | 문체/연속성 검수 | 순차 서브 에이전트 (시즌 전체 관점) |
-| 8 | 통합 편집 | 단일 서브 |
-| 8.5 | 본문 삽화 프롬프트/파일 계약 | 서브 에이전트 (삽화 슬롯 → 외부 생성용 프롬프트/경로) |
-| 9 | 표지 + EPUB 빌드 | 서브 에이전트 (표지 먼저, 완료 후 EPUB) |
+| Phase | 이름 | 실행 모드 | 게이트 |
+|-------|------|----------|--------|
+| 0 | 소설 요청 분석 | 인라인 | G1 |
+| 1 | 소재/세계관 리서치 | 서브 에이전트 (병렬 가능) | - |
+| 2 | 스토리 바이블 작성 | 단일 서브 → 오케스트레이터 중계 왕복 | G2 |
+| 3 | 시즌 구조 설계 | 단일 서브 | - |
+| 4 | 챕터 플롯 작성 | 단일 서브 (시즌별 순차) | G3 |
+| 5 | 집필 전 종합 검증 | 순차 서브 에이전트 4단계 | G4 |
+| 6 | 챕터 집필 | 파일럿 단독 → 배치 순환 | G5·G6 |
+| 7 | 문체/연속성 검수 | 순차 서브 에이전트 (시즌 전체 관점) | - |
+| 8 | 통합 편집·교열 | 단일 서브 | G7 |
+| 8.5 | 본문 삽화 | 서브 에이전트 + 가용 시 이미지 생성 | G7.5 |
+| 9 | 표지 + EPUB 빌드 | 서브 에이전트 | G8 |
 
 ---
 
@@ -87,13 +164,17 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | 권/챕터 수 | 미지정 시 시즌당 20챕터 기본값 |
 | 시점 | 미지정 시 "1인칭 주인공" 기본값 |
 | 저자명 | 미지정 시 기본값 `AI-Author` |
+| 진행 모드 | 미지정 시 `gate` (게이트별 정지) |
 
 **슬러그 생성:** 작품 핵심 키워드로 영문 슬러그를 만든다. 예: `회귀한 마검사` → `regression-swordmaster`.
 
 **기존 산출물 확인:**
 - `{slug}/` 미존재 → 초기 실행, Phase 1부터 순차 실행
+- `{slug}/` 존재 + `이어서 진행` 요청 → `P00_meta/gate_status.md`를 읽고 마지막 통과 게이트 다음부터 재개
 - `{slug}/` 존재 + 부분 수정 요청 → 해당 Phase만 재실행 (아래 "부분 재실행 규칙" 참조)
 - `{slug}/` 존재 + 새 입력 → `{slug}_prev-{timestamp}/`로 이동 후 새 실행
+
+추출 결과를 요청 해석 표로 15줄 이내에 제시하고 정지한다(**G1**). 사용자가 승인하면 `gate_status.md`에 통과를 기록하고 Phase 1로 진행한다.
 
 ---
 
@@ -109,8 +190,6 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 **입력:** 장르, 핵심 아이디어, 배경 설정 키워드
 **출력:** `{slug}/P01_research/01_reference.md` — 세계관·소재 레퍼런스 (섹션: 장르 관행, 배경 자료, 독자 기대, 유사 작품 분석, 참고문헌)
-
-Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정에서 사용할 수 없으면 `gpt-5.4` 또는 부모 세션의 가용 모델을 따른다.
 
 ---
 
@@ -128,12 +207,13 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 2. `story-bible-reviewer`를 호출한다. 8개 검토 축으로 바이블을 평가해 `{slug}/P02_bible/02_story_bible_review.md`에 저장하고 결과를 반환한다
 3. 오케스트레이터가 리뷰 결과를 읽어 `story-bible-planner`를 재호출한다 (피드백 내용을 프롬프트에 포함). 최대 2회 왕복
 4. `story-bible-reviewer`의 최종 판정이 **Fail**이면 사용자에게 보고하고 재작업을 요청한다. **Pass** 또는 **Conditional Pass**면 Phase 3으로 진행한다
-5. 사용자에게 스토리 바이블을 제시하고 승인을 받는다. 피드백이 있으면 `story-bible-planner`를 한 번 더 호출해 반영한다
+5. **G2 게이트:** 바이블 다이제스트를 제시하고 정지한다. 전문은 파일 경로만 안내한다. 피드백이 있으면 `story-bible-planner`를 한 번 더 호출해 반영하고, 승인 후 `gate_status.md`를 갱신한다
 
 **출력:**
 - `{slug}/P02_bible/02_story_bible.md` + `{slug}/P02_bible/02_story_bible.json`
 - `{slug}/P02_bible/characters/*.md`
 - `{slug}/P02_bible/voice_profile.md`
+- `{slug}/P02_bible/glossary.md`
 - `{slug}/P02_bible/worldbuilding/*.md`
 - `{slug}/P02_bible/relationships.md`
 - `{slug}/P02_bible/open_questions.md`
@@ -185,11 +265,15 @@ Codex 에이전트 파일은 기본 모델을 `gpt-5.5`로 설정한다. 계정�
 | 복선 사용 | 이 챕터에서 심을 복선 |
 | 복선 회수 | 이 챕터에서 회수할 복선 |
 | 챕터 엔딩 | 훅 유형과 구체적 장치 |
+| 분량 계획 | 시즌 바이블 챕터 규격 기준 목표 자수와 씬 수 |
+| 리텐션 장치 | 1~3화에 한해 핵심 소재 도달·주인공 매력 시연·첫 보상 배치 |
 
 **출력:**
 - `{slug}/P03_planning/04_chapter_plan.md` — 전체 챕터 플랜 요약
 - `{slug}/P03_planning/s01/chapter_plan.md`
 - `{slug}/P03_planning/s02/chapter_plan.md` (시즌 2 이상 존재 시)
+
+**G3 게이트:** 시즌 아크 요약과 챕터당 1줄 요약표(챕터 번호·제목·핵심 사건·훅 유형)를 제시하고 정지한다. 수정 요청은 `chapter-plotter` 재호출로 반영하고, 승인 후 `gate_status.md`를 갱신한다.
 
 ---
 
@@ -218,9 +302,9 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 **통합 판정 및 출력:**
 
 - 네 단계 결과를 `{slug}/P00_meta/logs/05_review_log.md`에 통합 기록한다
-- Critical 문제가 하나라도 있으면 사용자에게 보고하고 해당 Phase(2, 3, 또는 4)를 재실행한다
+- **G4 게이트:** Critical 문제가 하나라도 있으면 판정과 Critical 목록만 보고하고 정지한 뒤 해당 Phase(2, 3, 또는 4)를 재실행한다
 - Should 이하는 리뷰 로그에 기록하고 Phase 6으로 진행한다
-- 모든 단계 Pass 또는 Conditional Pass이면 오케스트레이터가 사용자에게 "집필 전 종합 검증 완료 — Phase 6 집필을 시작합니다"를 보고한다
+- 모든 단계 Pass 또는 Conditional Pass이면 판정 다이제스트를 보고하고 `gate_status.md`를 갱신한 뒤 Phase 6으로 진행한다
 
 **출력:** `{slug}/P00_meta/logs/05_review_log.md`
 
@@ -242,15 +326,30 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 **내부 실행 상세:**
 
-1. Codex 작업 계획으로 해당 시즌의 챕터 목록을 태스크로 등록한다
-2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다 (병렬 서브에이전트 호출). 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다
-3. 모든 병렬 초안이 완성되면, 오케스트레이터가 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달해 1차 검수를 요청한다. 스타일 가디언은 피드백을 `{CCC}_review.md`와 `P00_meta/logs/style_log.md`(누적)에 저장하고 결과를 반환한다
-4. 오케스트레이터가 `{CCC}_draft.md`와 `{CCC}_review.md`를 `chapter-prose-reviser`에게 전달한다. 퇴고자는 플롯·Canon·사건 순서를 보존한 채 문장 흐름을 고쳐 `{CCC}_revised.md`를 저장하고 반환한다
-5. 오케스트레이터가 `{CCC}_revised.md`를 `novel-style-guardian`에게 전달해 2차 검수를 요청한다. 스타일 가디언은 `{CCC}_review2.md`와 `P00_meta/logs/style_log.md`를 저장하고 Critical/Should 잔여 여부를 반환한다
-6. 오케스트레이터가 `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달해 최종화를 요청한다. 2차 리뷰에 Critical/Should가 없으면 내용을 유지해 `{CCC}_final.md`로 저장하고, 남아 있으면 해당 지적만 최소 수정해 `{CCC}_final.md`를 저장한다
-7. 오케스트레이터가 `continuity-keeper`를 호출한다 (`{CCC}_final.md` 경로 전달). `continuity-keeper`가 연속성 레코드를 갱신하고 결과를 반환한다
-8. Critical 경고가 반환되면 문체 문제는 `chapter-prose-reviser`, 사건·연속성 문제는 `chapter-novelist`로 라우팅해 수정한다. 퇴고 루프는 최대 2회로 제한하고, 남은 문제는 `P00_meta/logs/style_log.md`에 미해결로 기록한다
-9. 해당 챕터 완료 후 다음 배치(3개)로 넘어간다. 시즌 내 모든 챕터 완료 후 다음 Phase로 진행한다
+**단계 A — 파일럿 (시즌 첫 챕터, 필수):**
+
+1. 시즌 첫 챕터 `001`을 단독으로 전체 파이프라인(초안 → 1차 검수 → 퇴고 → 2차 검수 → 최종화 → 연속성 갱신)에 통과시킨다. 이때 병렬 배치를 시작하지 않는다.
+2. **G5 게이트:** `001_final.md` 경로, 자수, 씬 수, 훅 유형, 핵심 소재 도달 여부, 검수 요약 3줄을 보고하고 정지한다. 본문은 채팅에 출력하지 않는다.
+3. 문체 피드백을 받으면 규칙 형태로 변환해 `P02_bible/voice_profile.md`의 `## 사용자 피드백 보정`에 추가하고 `chapter-prose-reviser`로 001화를 보정한다. 사용자 퇴고 루프에 따라 G5를 다시 제시한다.
+4. 승인 후 `gate_status.md`를 갱신하고 단계 B로 진행한다. 이후 모든 챕터 프롬프트에는 갱신된 `voice_profile.md`를 포함한다.
+
+**단계 B — 배치 집필 (승인된 문체 기준):**
+
+1. 작업 계획에 `002`화부터 시즌의 나머지 챕터를 등록한다.
+2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다. 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다.
+3. 모든 병렬 초안이 완성되면 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달한다. 1차 피드백은 `{CCC}_review.md`와 `P00_meta/logs/style_log.md`에 저장한다.
+4. `{CCC}_draft.md`와 `{CCC}_review.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_revised.md`를 만든다.
+5. `{CCC}_revised.md`를 `novel-style-guardian`에게 전달해 2차 검수하고 `{CCC}_review2.md`를 만든다.
+6. `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_final.md`를 만든다.
+7. `continuity-keeper`가 `{CCC}_final.md` 기준으로 연속성 레코드와 `glossary.md`를 갱신한다.
+8. Critical 경고는 문체 문제면 `chapter-prose-reviser`, 사건·연속성 문제면 `chapter-novelist`로 라우팅한다. 내부 자동 루프는 최대 2회이며 사용자 퇴고 라운드는 이 상한에 포함하지 않는다.
+
+**단계 C — 배치 게이트:**
+
+1. 3화 배치마다 **G6 게이트**에서 챕터·제목·자수·씬 수·1차 리뷰 Critical/Should 건수·최종 검수 상태·미해결 이슈를 표로 보고하고 정지한다.
+2. 직전 배치보다 1차 리뷰 지적 건수가 2배 이상 증가하거나 3개 배치 연속 상승하면 `품질 하락 추세 — 원인(피로 패턴/플랜 밀도 저하) 점검 권고`를 1줄 추가한다.
+3. `계속`이면 `gate_status.md`를 갱신하고 다음 배치로 진행한다. 수정 요청은 사용자 퇴고 루프와 부분 재실행 규칙을 따른다.
+4. 전역 문체 피드백은 `voice_profile.md`에 추가해 이후 배치에 적용하며, 기존 확정 챕터 소급 여부는 사용자에게 확인한다.
 
 **병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·퇴고·연속성 갱신은 순차로 처리해 충돌을 방지한다.
 
@@ -258,6 +357,8 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 - 단문은 타이밍으로 살리고, 새 장소·인물·사물 묘사는 POV 감각 흐름으로 연결한다.
 - `{slug}/P02_bible/voice_profile.md`가 있으면 작품 고유 화자의 사고방식·비유·문단 닫는 반응을 반영한다.
+- `voice_profile.md`의 `## 사용자 피드백 보정`은 일반 스타일 가이드보다 우선한다. 충돌하면 사용자 보정을 따른다.
+- 챕터 플랜의 주요 사건을 2~4개 씬 카드에 배정하고 실시간 장면으로 극화한다. 요약·몽타주는 시간 경과 처리에만 챕터당 1회 이내로 쓴다.
 - `~고`, `~며`, `~자`로 이어 붙였어도 절의 중심이 계속 사물/공간이면 체크리스트 묘사로 본다. 위치/사물 주어가 3회 이상 이어지면 POV 동작을 연결축으로 삼는다.
 - 장면 밀도 패스 후에는 묘사 연결 패스를 수행해, 감각을 더 넣는 데서 멈추지 않고 POV 인물의 몸·시선·판단으로 문단이 이어지는지 확인한다.
 
@@ -283,7 +384,7 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서는 **시즌 전체를 통으로 보는** 검수를 수행한다.
 
 **절차:**
-1. 오케스트레이터가 `novel-style-guardian`을 호출한다. 시즌 원고 전체의 톤 일관성 점검을 목적으로 명시한다 (챕터별 피드백이 아닌 전체 흐름 관점). 가디언은 문제 목록을 반환한다
+1. 오케스트레이터가 `novel-style-guardian`을 호출하고 `narrative-review` 스킬 **섹션 5 — 시즌 통독 검수**를 기준으로 시즌 원고 전체를 점검하도록 명시한다. 가디언은 축별 판정과 수정 필요 챕터 목록을 반환한다
 2. 오케스트레이터가 `continuity-keeper`를 호출한다. 시즌 전체의 복선 회수 여부, 캐릭터 아크 완결성, 타임라인 충돌 최종 점검을 목적으로 명시한다. Critical 경고 목록을 반환한다
 3. 오케스트레이터가 두 결과를 취합해 수정이 필요한 챕터를 식별한다. 문체·문장 리듬 문제는 `chapter-prose-reviser`, 사건·연속성·챕터 구조 문제는 `chapter-novelist`로 라우팅한다
 4. Critical 미해결 항목이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 사용자에게 수동 확인을 요청할 때까지 **Phase 9(최종 EPUB 빌드)는 중단**한다
@@ -302,12 +403,17 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 **실행 모드:** 단일 서브 에이전트
 
-`novel-editor`를 호출한다. 모든 챕터 최종본을 시즌 원고로, 전체 원고(`P05_manuscript/04_manuscript.md`)로 통합한다. 저자 노트 제거, 전환부 정리, 용어 통일, 서문·작가 후기 작성, `P05_manuscript/book_manifest.json` 생성을 수행한다.
+`novel-editor`를 호출한다. 모든 챕터 최종본을 시즌 원고와 전체 원고(`P05_manuscript/04_manuscript.md`)로 통합한다. 저자 노트 제거, 전환부 정리, `P02_bible/glossary.md` 기준 용어 통일, 서문·작가 후기 작성, `P05_manuscript/book_manifest.json` 생성을 수행한다.
+
+통합 후 교열 전용 패스를 1회 수행한다. 맞춤법·띄어쓰기·비문·문장부호·숫자/단위 표기·용어집 대조만 수정하고 플롯·문체·인물 의도는 바꾸지 않는다. 수정 건수와 유형을 `P00_meta/logs/proofread_log.md`에 기록한다.
 
 **출력:**
 - `{slug}/P05_manuscript/sNN/season_manuscript.md`
 - `{slug}/P05_manuscript/04_manuscript.md`
 - `{slug}/P05_manuscript/book_manifest.json`
+- `{slug}/P00_meta/logs/proofread_log.md`
+
+**G7 게이트:** 시즌 통독 검수 요약, 교열 결과 1줄, 통합 원고 경로를 보고하고 정지한다. 수정 요청은 사용자 퇴고 루프를 적용하며, 승인 후 `gate_status.md`를 갱신한다.
 
 ---
 
@@ -315,16 +421,16 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 **실행 모드:** 서브 에이전트
 
-`interior-illustrator`를 호출한다. 표지가 아니라 라노벨 본문 중간 삽화의 장면 선정, 외부 이미지 생성용 프롬프트, 저장 파일 경로 계약을 담당한다. 이미지는 Codex/Claude가 직접 생성하지 않는다. 사용자가 OpenAI API, Claude, 웹 LLM, Midjourney, Stable Diffusion, NovelAI 등에서 프롬프트로 이미지를 생성한 뒤 약속된 경로에 PNG로 저장하면 삽화가 포함된다.
+`interior-illustrator`를 호출한다. 라노벨 본문 삽화의 장면 선정, 이미지 생성 프롬프트, 저장 파일 경로 계약을 담당한다. 세션에 이미지 생성 수단이 있으면 프롬프트 작성 후 직접 생성을 시도하고, 없거나 실패하면 외부 생성 계약으로 폴백한다.
 
 챕터 플랜 기준의 예비 슬롯이 있더라도, Phase 6의 최종 원고와 Phase 8의 통합 원고를 우선해 장면 위치와 스포일러 강도를 보정한다.
 
 **절차:**
 1. `interior-illustrator`가 `novel-illustration` 스킬을 사용해 `{slug}/P06_publication/illustrations/illustration_plan.md`를 작성 또는 갱신한다
 2. 단권 20챕터 기준 기본값은 컬러 프론트피스 1장 + 본문 삽화 6~10장이다. 사용자 지정이 있으면 그 수량을 따른다
-3. 캐릭터 외형·의상·소품 일관성을 `{slug}/P06_publication/illustrations/style_sheet.md`에 기록한다
+3. 캐릭터 카드의 외형 키워드와 캐릭터 외형·의상·소품 일관성을 `{slug}/P06_publication/illustrations/style_sheet.md`에 기록하고 모든 슬롯 프롬프트에 반영한다
 4. 각 이미지의 외부 생성 프롬프트를 `{slug}/P06_publication/illustrations/sNN/*_prompt.md`에 저장하고, 저장해야 할 PNG 경로를 명시한다
-5. PNG 파일이 아직 없으면 상태를 `prompt_ready` 또는 `image_missing`으로 표시한다. Phase 9 전에 사용자가 해당 경로에 PNG를 저장하면 EPUB에 포함한다
+5. 이미지 생성 수단이 있으면 계약 경로에 PNG를 생성하고 상태를 `generated`로 갱신한다. 생성 수단이 없거나 실패하면 `prompt_ready` 또는 `image_missing`으로 둔다. 사용자가 배치한 이미지는 `user_provided`, 제외한 슬롯은 `excluded`로 기록한다
 6. `novel-editor` 또는 오케스트레이터가 `P05_manuscript/04_manuscript.md`에 Markdown 이미지 마커를 삽입한다
 
 **출력:**
@@ -334,6 +440,21 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 - `{slug}/P06_publication/illustrations/sNN/{CCC}_{scene_slug}.png` (외부 도구가 저장해야 하는 대상 파일)
 - 삽화가 포함되도록 갱신된 `{slug}/P05_manuscript/04_manuscript.md`
 
+**G7.5 게이트 — 삽화 확인:**
+
+아래 형식으로 보고하고 정지한다. 생성된 이미지에는 외형 일관성 육안 확인 필요 여부를 표시한다.
+
+| 슬롯 | 챕터·장면 | 설명 요약 | 프롬프트 경로 | 이미지 상태 |
+|------|-----------|-----------|-----------------|--------------|
+| frontpiece | - | | `000_frontpiece_prompt.md` | generated / image_missing |
+| 01 | 003화 첫 대면 | | `{CCC}_{scene_slug}_prompt.md` | prompt_ready / user_provided / excluded |
+
+- 슬롯별 승인·수정·제외를 받는다. 장면 교체나 프롬프트 수정은 `interior-illustrator`를 재호출하고 사용자 퇴고 루프에 따라 반복한다.
+- 자동 생성, 외부 생성 후 배치 대기, 삽화 생략 중 하나를 선택할 수 있게 한다.
+- 일부 이미지만 있으면 누락 슬롯 제외 후 빌드할지 배치까지 기다릴지 확인한다.
+- 모든 슬롯이 승인되고 이미지가 확보되거나 제외가 확정된 뒤 `gate_status.md`를 갱신하고 G8로 진행한다.
+- `auto` 모드라도 누락 이미지가 있으면 이 게이트에서 정지한다.
+
 ---
 
 ## Phase 9: 표지 + EPUB 빌드
@@ -342,9 +463,9 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 기존 하네스의 `cover-designer`와 `epub-builder`를 그대로 재사용한다. 입력 포맷이 동일하므로 호환성 문제가 없다.
 
-> **게이트 규칙(강제):** `P04_continuity/continuity_log.md`에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 오케스트레이터는 수동 확인 요청을 사용자에게 전달하고, 승인/수정 완료 전까지 EPUB 빌드를 호출하지 않는다.
+> **G8 게이트(강제):** `P04_continuity/continuity_log.md` 또는 시즌 검수 로그에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 판정 다이제스트와 수동 확인 요청을 제시하고 승인·수정 완료 전까지 EPUB 빌드를 호출하지 않는다. 통과 시 `gate_status.md`를 갱신한다.
 
-1. `cover-designer` → `{slug}/P06_publication/assets/cover.png` 생성 (Codex 이미지 생성 도구/스킬 > API > ImageMagick 폴백)
+1. `cover-designer` → `{slug}/P06_publication/assets/cover.png` 생성 (이미지 생성 도구/스킬 > API > ImageMagick 폴백)
 2. 본문 삽화 마커가 있으면 `P05_manuscript/04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
 3. 표지 생성 완료 후 `epub-builder` 호출 → `epub-build/scripts/build_epub.sh` 실행
 4. `epub-builder`가 EPUB 빌드 직후 **책 소개 markdown**을 함께 산출
@@ -383,8 +504,9 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 |------|------|
 | 파일 기반 (`{slug}/`) | 모든 Phase 간 산출물 전달, 감사 추적 |
 | 반환값 + 오케스트레이터 중계 | 에이전트 간 피드백 전달 (Phase 2·5·6·7). 에이전트는 결과를 파일에 저장하고 반환하며, 오케스트레이터가 읽어 다음 에이전트 프롬프트에 포함한다 |
-| `Codex 작업 계획` | Phase 6의 챕터 작업 분배·진행 추적 |
+| 작업 계획 | Phase 6의 챕터 작업 분배·진행 추적 |
 | 반환값 기반 | 서브 에이전트 모드(Phase 1·3·4·8·9)의 결과 수집 |
+| `gate_status` (`P00_meta/gate_status.md`) | 게이트 통과 기록과 세션 간 재개 지점 |
 
 파일명 컨벤션:
 - Phase 산출물: `{NN}_{artifact}.md` (NN = Phase 번호 2자리)
@@ -402,7 +524,8 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 스토리 바이블 수정 | Phase 2 → 3 → 4 → 5 재실행 | `P02_bible/02_story_bible.md` → `02_story_bible_v{N}.md` |
 | 시즌 구조 수정 | Phase 3 → 4 → 5 재실행 | `P03_planning/03_season_plan.md` → `03_season_plan_v{N}.md` |
 | 단일 챕터 재작성 | Phase 6 (해당 챕터만) → Phase 7 | `{CCC}_draft.md` → `{CCC}_draft_v{N}.md` |
-| 본문 삽화 추가/교체 | Phase 8.5 | 기존 PNG → `{name}_v{N}.png` |
+| 문체 전역 보정 | `voice_profile.md` 갱신 → 이후 챕터 적용. 기존 챕터 소급은 사용자 선택 | `voice_profile.md` → `voice_profile_v{N}.md` |
+| 본문 삽화 추가/교체 | Phase 8.5 재실행 → G7.5 재통과 | 기존 PNG → `{name}_v{N}.png` |
 | 표지 교체 | Phase 9 (`cover-designer`만) | `P06_publication/assets/cover.png` → `cover_v{N}.png` |
 | EPUB 재빌드 | Phase 9 (`epub-builder`만) | 기존 EPUB → `_prev/` 이동 |
 

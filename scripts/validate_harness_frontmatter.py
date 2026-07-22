@@ -9,6 +9,9 @@ Checks performed:
      - skills:  name, description
   4. Every skill declared under '## 사용하는 스킬' in an agent file
      has a corresponding .claude/skills/{skill-name}/SKILL.md
+  5. The lightnovel orchestrator's required agent references exist
+  6. .claude/skills and .agents/skills are exact mirrors
+  7. .claude/agents and .codex/agents have a one-to-one file mapping
 
 Usage:
     python3 scripts/validate_harness_frontmatter.py
@@ -180,13 +183,13 @@ def validate_skill_refs(agent_path: Path, skill_dirs: set[str]) -> list[str]:
     return errors
 
 
-def validate_lightnovel_agent_refs(agent_path: Path, agent_names: set[str]) -> list[str]:
+def validate_lightnovel_agent_refs(orchestrator_path: Path, agent_names: set[str]) -> list[str]:
     """Lightweight check for lightnovel orchestrator's critical agent references."""
     errors: list[str] = []
-    if agent_path.name != "lightnovel-writing-orchestrator.md":
-        return errors
+    if not orchestrator_path.is_file():
+        return [f"missing orchestrator skill: {orchestrator_path.relative_to(REPO_ROOT)}"]
 
-    text = agent_path.read_text(encoding="utf-8")
+    text = orchestrator_path.read_text(encoding="utf-8")
     # Keep this check intentionally lightweight: only guard must-have Phase agents.
     required_agents = {
         "story-bible-planner",
@@ -202,6 +205,43 @@ def validate_lightnovel_agent_refs(agent_path: Path, agent_names: set[str]) -> l
             errors.append(
                 f"references agent '{name}' but .claude/agents/{name}.md does not exist"
             )
+    return errors
+
+
+def validate_skill_mirrors() -> list[str]:
+    """Require .claude/skills and .agents/skills to contain identical files."""
+    errors: list[str] = []
+    claude_root = REPO_ROOT / ".claude" / "skills"
+    agents_root = REPO_ROOT / ".agents" / "skills"
+    claude_files = {
+        path.relative_to(claude_root): path
+        for path in claude_root.rglob("*")
+        if path.is_file()
+    }
+    agent_files = {
+        path.relative_to(agents_root): path
+        for path in agents_root.rglob("*")
+        if path.is_file()
+    }
+
+    for rel in sorted(claude_files.keys() - agent_files.keys()):
+        errors.append(f"missing .agents/skills/{rel}")
+    for rel in sorted(agent_files.keys() - claude_files.keys()):
+        errors.append(f"extra .agents/skills/{rel}")
+    for rel in sorted(claude_files.keys() & agent_files.keys()):
+        if claude_files[rel].read_bytes() != agent_files[rel].read_bytes():
+            errors.append(f"skill mirror differs: {rel}")
+    return errors
+
+
+def validate_agent_file_mapping(agent_names: set[str]) -> list[str]:
+    """Require every Claude agent to have exactly one Codex TOML mirror."""
+    codex_names = {path.stem for path in (REPO_ROOT / ".codex" / "agents").glob("*.toml")}
+    errors: list[str] = []
+    for name in sorted(agent_names - codex_names):
+        errors.append(f"missing .codex/agents/{name}.toml")
+    for name in sorted(codex_names - agent_names):
+        errors.append(f"extra .codex/agents/{name}.toml")
     return errors
 
 
@@ -241,13 +281,26 @@ def main() -> int:
     print(f"=== Agents ({len(agent_paths)} files) ===")
     for p in agent_paths:
         skill_ref_errors = validate_skill_refs(p, skill_dirs)
-        orchestrator_ref_errors = validate_lightnovel_agent_refs(p, agent_names)
-        check(p, REQUIRED_AGENT_FIELDS, skill_ref_errors + orchestrator_ref_errors)
+        check(p, REQUIRED_AGENT_FIELDS, skill_ref_errors)
 
     print()
     print(f"=== Skills ({len(skill_paths)} files) ===")
     for p in skill_paths:
-        check(p, REQUIRED_SKILL_FIELDS, [])
+        extra_errors: list[str] = []
+        if p == REPO_ROOT / ".claude/skills/lightnovel-writing-orchestrator/SKILL.md":
+            extra_errors = validate_lightnovel_agent_refs(p, agent_names)
+        check(p, REQUIRED_SKILL_FIELDS, extra_errors)
+
+    harness_errors = validate_skill_mirrors() + validate_agent_file_mapping(agent_names)
+    print()
+    print("=== Harness mirrors ===")
+    if harness_errors:
+        failed += 1
+        print("  FAIL  harness mirrors")
+        for error in harness_errors:
+            print(f"        → {error}")
+    else:
+        print("  OK    skill content and agent file mappings")
 
     print()
     if failed == 0:
