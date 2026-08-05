@@ -23,10 +23,12 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | `{slug}/P02_bible/characters/` | 인물 카드 | `protagonist.md`, `heroine.md`, `supporting.md` |
 | `{slug}/P02_bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
 | `{slug}/P03_planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
-| `{slug}/P03_planning/sNN/` | 시즌별 바이블과 챕터 플랜 | `season_bible.md`, `chapter_plan.md` |
+| `{slug}/P03_planning/sNN/` | 시즌별 바이블·챕터 플랜·종료 요약 | `season_bible.md`, `chapter_plan.md`, `season_summary.md` |
 | `{slug}/P04_continuity/sNN/` | 챕터 원고와 내부 검수 산출물 | `chapters/*_final.md` (내부: `*_draft.md`, `*_review.md`, `*_revised.md`, `*_review2.md`) |
+| `{slug}/P04_continuity/sNN/_archive/` | 종료 시즌의 추적 원본 | `continuity_log_sNN.md`, `timeline_sNN.md`, `foreshadowing_tracker_sNN.md`, `character_state_table_sNN_end.md` |
+| `{slug}/P04_continuity/sNN/chapters/_archive/` | 종료 시즌의 챕터 배관·백업 파일 | `*_draft*.md`, `*_review*.md`, `*_revised*.md`, `*_final_v*.md` |
 | `{slug}/P04_continuity/` | 연속성 추적 | `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`, `character_state_table.md` |
-| `{slug}/P00_meta/logs/` | 검수/편집/빌드 로그 | `05_review_log.md`, `style_log.md`, `editor_notes.md`, `build_log.md` |
+| `{slug}/P00_meta/logs/` | 검수/편집/롤업/빌드 로그 | `05_review_log.md`, `style_log_sNN.md`, `critical_status.md`, `rollup_log.md`, `editor_notes.md`, `build_log.md` |
 | `{slug}/P05_manuscript/` | 출판/EPUB용 최종 원고와 메타데이터 | `04_manuscript.md`, `book_manifest.json`, `s01/season_manuscript.md` |
 | `{slug}/P06_publication/assets/` | 표지 등 출판용 공용 이미지 | `cover.png` |
 | `{slug}/P06_publication/illustrations/` | 본문 삽화 계획, 프롬프트, 외부 생성 이미지 | `illustration_plan.md`, `style_sheet.md`, `s01/*_prompt.md` |
@@ -69,6 +71,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | G6 | 이후 3화 배치마다 | 정지 | 진행표(챕터·자수·검수 상태·미해결) + 계속/수정 선택 |
 | G7 | Phase 8 완료 후 | 정지 | 시즌 검수·교열 요약 + 통합 원고 경로 |
 | G7.5 | Phase 8.5 완료 후 | 정지 | 삽화 슬롯·이미지 상태 + 슬롯별 승인/수정/제외 선택 |
+| G7.7 | Phase 8.7 완료 후 | 정지 | 시즌 롤업 다이제스트: 카드·성장 방향·압축·아카이브 결과 |
 | G8 | Phase 9 실행 전 | 조건부 정지 | Critical 미해결 시 빌드 금지 |
 
 G2에서 표시하는 핵심 인물 4명은 다이제스트 표시 상한일 뿐 등장인물 수 제한이 아니다. 전체 캐스트는 `P02_bible/characters/`에 인원 제한 없이 정의하고, 5명 이상이면 `외 조연 N명 — supporting.md 참조`로 표시한다.
@@ -78,7 +81,7 @@ G2에서 표시하는 핵심 인물 4명은 다이제스트 표시 상한일 뿐
 Phase 0에서 `진행 모드`를 확정한다.
 
 - **gate (기본값):** 위 게이트 전체를 적용한다.
-- **auto:** 정지 게이트를 G2·G5·G8로 축소하고 나머지는 다이제스트만 보고한 뒤 진행한다. 단, 삽화 PNG가 누락된 슬롯이 있으면 G7.5에서도 정지한다.
+- **auto:** 정지 게이트를 G2·G5·G7.7·G8로 축소하고 나머지는 다이제스트만 보고한 뒤 진행한다. 단, 삽화 PNG가 누락된 슬롯이 있으면 G7.5에서도 정지한다. **G7.7은 신규 인물 카드와 다음 시즌 성장 방향을 승인하는 게이트이므로 `auto` 모드에서도 항상 정지한다.**
 - 보고 형식 규칙은 두 모드 모두 동일하게 적용한다.
 
 ### 게이트 상태 파일
@@ -100,6 +103,7 @@ Phase 0에서 `진행 모드`를 확정한다.
 | G6 | 대기 | | |
 | G7 | 대기 | | |
 | G7.5 | 대기 | | |
+| G7.7 | 대기 | | |
 | G8 | 대기 | | |
 ```
 
@@ -112,7 +116,7 @@ Phase 0에서 `진행 모드`를 확정한다.
 | 내부 자동 루프 | 에이전트 간 (`novel-style-guardian` ↔ `chapter-prose-reviser`) | 2회 |
 | 사용자 퇴고 루프 | 사용자 피드백 | 없음 — 사용자가 승인할 때까지 반복 |
 
-사용자 퇴고 루프는 G5·G6·G7·G7.5와 완료 후 부분 재실행에서 동일하게 적용한다.
+사용자 퇴고 루프는 G5·G6·G7·G7.5·G7.7과 완료 후 부분 재실행에서 동일하게 적용한다.
 
 1. 피드백을 분류한다.
    - 문장·문체·리듬 → `chapter-prose-reviser` 재퇴고
@@ -120,7 +124,7 @@ Phase 0에서 `진행 모드`를 확정한다.
    - 전역 문체 규칙 → 규칙으로 변환해 `voice_profile.md`의 `## 사용자 피드백 보정`에 추가하고 해당 챕터 재퇴고. 확정된 다른 챕터에 소급할지는 사용자에게 확인
    - 설정·Canon → 영향받는 챕터·복선·관계를 다이제스트로 보고하고 승인 후 `story-bible-planner`로 개정
 2. 챕터 플랜과 어긋나는 사건·구조 수정은 `chapter_plan.md` 갱신 여부를 확인한다.
-3. 수정 전 파일을 `_v{N}` 접미사로 백업하고 라운드 이력을 `P00_meta/logs/style_log.md`에 1줄 기록한다.
+3. 수정 전 파일을 `_v{N}` 접미사로 백업하고 라운드 이력을 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 1줄 기록한다.
 4. 완료 후 무엇을 왜 어떻게 바꿨는지 5줄 이내 변경 다이제스트와 파일 경로만 재제시한다.
 5. 사용자가 승인하면 종료하고, 추가 피드백이 오면 다시 분류한다.
 
@@ -140,6 +144,7 @@ Phase 0에서 `진행 모드`를 확정한다.
 | 7 | 문체/연속성 검수 | 순차 서브 에이전트 (시즌 전체 관점) | - |
 | 8 | 통합 편집·교열 | 단일 서브 | G7 |
 | 8.5 | 본문 삽화 | 서브 에이전트 + 가용 시 이미지 생성 | G7.5 |
+| 8.7 | 시즌 롤업 | 순차 서브 에이전트 2단계 | G7.7 |
 | 9 | 표지 + EPUB 빌드 | 서브 에이전트 | G8 |
 
 ---
@@ -231,7 +236,7 @@ Phase 0에서 `진행 모드`를 확정한다.
 - 단권 소설은 `s01`로 처리한다
 - 시즌 1은 완전 상세로 작성하고, 시즌 2 이후는 사용자가 명시적으로 요청하지 않는 한 방향/씨앗 수준으로만 작성한다
 
-**입력:** `{slug}/P02_bible/02_story_bible.md`, `{slug}/P02_bible/02_story_bible.json`, `{slug}/P02_bible/season_seeds.md`, 캐릭터·세계관 파일 전체, 요청 시즌 수
+**입력:** `{slug}/P02_bible/02_story_bible.md`, `{slug}/P02_bible/02_story_bible.json`, `{slug}/P02_bible/season_seeds.md`, `characters/README.md` 색인과 주인공·주요 인물·시즌 씨앗에 등장하는 조연 카드, 세계관 파일, 요청 시즌 수. 무관한 시즌의 `supporting_sNN.md`는 열지 않는다
 **출력:**
 - `{slug}/P03_planning/03_season_plan.md`
 - `{slug}/P03_planning/s01/season_bible.md` (시즌 1 완전 상세)
@@ -249,6 +254,7 @@ Phase 0에서 `진행 모드`를 확정한다.
 **시즌 2+ 챕터 플롯 작성 시점:**
 - Phase 4 최초 실행 시 시즌 1 챕터 플롯만 작성한다. 시즌 2+는 Phase 3에서 방향 수준으로만 존재한다
 - 시즌 N의 집필(Phase 6)이 완료되고 Phase 7·8을 통과한 뒤, 다음 시즌으로 진행하기 전에 해당 시즌의 Phase 4를 재실행한다
+- 다음 시즌의 Phase 3 또는 Phase 4를 시작하기 전에 **Phase 8.7 시즌 롤업과 G7.7 승인을 먼저 완료한다**
 - 즉, 시즌 2 챕터 플롯은 시즌 1 집필 완료 후에 작성한다. 미리 작성하지 않는다
 - 이 시점에 Phase 3의 시즌 2 씨앗이 `[DRAFT]`이면 `season-planner`를 먼저 호출해 시즌 2 바이블을 완전 상세로 확장한다
 
@@ -337,7 +343,7 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 1. 작업 계획에 `002`화부터 시즌의 나머지 챕터를 등록한다.
 2. 오케스트레이터가 최대 3개의 챕터를 `chapter-novelist`에게 병렬 호출한다. 인접 챕터는 같은 저술가에게 묶어 전환부 맥락을 보존한다.
-3. 모든 병렬 초안이 완성되면 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달한다. 1차 피드백은 `{CCC}_review.md`와 `P00_meta/logs/style_log.md`에 저장한다.
+3. 모든 병렬 초안이 완성되면 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달한다. 1차 피드백은 `{CCC}_review.md`와 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 저장한다.
 4. `{CCC}_draft.md`와 `{CCC}_review.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_revised.md`를 만든다.
 5. `{CCC}_revised.md`를 `novel-style-guardian`에게 전달해 2차 검수하고 `{CCC}_review2.md`를 만든다.
 6. `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_final.md`를 만든다.
@@ -346,7 +352,7 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 **단계 C — 배치 게이트:**
 
-1. 3화 배치마다 **G6 게이트**에서 챕터·제목·자수·씬 수·1차 리뷰 Critical/Should 건수·최종 검수 상태·미해결 이슈를 표로 보고하고 정지한다.
+1. 3화 배치마다 **G6 게이트**에서 챕터·제목·자수·씬 수·1차 리뷰 Critical/Should 건수·최종 검수 상태·미해결 이슈를 표로 보고하고 정지한다. 시즌 끝의 남은 배치가 1~2화여도 완료 직후 같은 G6를 실행한다.
 2. 직전 배치보다 1차 리뷰 지적 건수가 2배 이상 증가하거나 3개 배치 연속 상승하면 `품질 하락 추세 — 원인(피로 패턴/플랜 밀도 저하) 점검 권고`를 1줄 추가한다.
 3. `계속`이면 `gate_status.md`를 갱신하고 다음 배치로 진행한다. 수정 요청은 사용자 퇴고 루프와 부분 재실행 규칙을 따른다.
 4. 전역 문체 피드백은 `voice_profile.md`에 추가해 이후 배치에 적용하며, 기존 확정 챕터 소급 여부는 사용자에게 확인한다.
@@ -387,15 +393,33 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 1. 오케스트레이터가 `novel-style-guardian`을 호출하고 `narrative-review` 스킬 **섹션 5 — 시즌 통독 검수**를 기준으로 시즌 원고 전체를 점검하도록 명시한다. 가디언은 축별 판정과 수정 필요 챕터 목록을 반환한다
 2. 오케스트레이터가 `continuity-keeper`를 호출한다. 시즌 전체의 복선 회수 여부, 캐릭터 아크 완결성, 타임라인 충돌 최종 점검을 목적으로 명시한다. Critical 경고 목록을 반환한다
 3. 오케스트레이터가 두 결과를 취합해 수정이 필요한 챕터를 식별한다. 문체·문장 리듬 문제는 `chapter-prose-reviser`, 사건·연속성·챕터 구조 문제는 `chapter-novelist`로 라우팅한다
-4. Critical 미해결 항목이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 사용자에게 수동 확인을 요청할 때까지 **Phase 9(최종 EPUB 빌드)는 중단**한다
-5. Critical 이슈가 해소되거나 사용자 수동 확인이 완료되면 Phase 9로 진행한다
+4. 모든 Critical을 `{slug}/P00_meta/logs/critical_status.md`에 수렴한다. 원본 로그가 아카이브되어도 이 활성 파일은 유지하며 상태는 `open / resolved / user_accepted` 중 하나로 관리한다
+5. `open` Critical이 있으면 **Phase 8(통합 편집)까지만 진행**하고, 오케스트레이터가 사용자에게 수동 확인을 요청할 때까지 **Phase 8.5 이후와 Phase 9(최종 EPUB 빌드)는 중단**한다
+6. 수정 근거가 확인되면 `resolved`, 사용자가 문제를 이해한 상태에서 명시적으로 진행을 승인하면 승인 일시·게이트를 기록하고 `user_accepted`로 변경한다. 둘 중 하나가 되기 전에는 `open`을 제거하지 않는다
+7. Critical 이슈가 해소되거나 사용자 수동 확인이 완료되면 건너뛰지 않고 정상 순서로 재개한다. Phase 8 미완료면 Phase 8부터, 완료 상태면 Phase 8.5부터 진행하며 시즌제 작품은 반드시 Phase 8.7과 G7.7을 거친 뒤에만 Phase 9 또는 다음 시즌으로 이동한다
 
 **출력:**
-- `{slug}/P00_meta/logs/style_log.md` (누적 append)
+- `{slug}/P00_meta/logs/style_log_sNN.md` (현재 시즌 리뷰만 append)
 - `{slug}/P04_continuity/continuity_log.md`
 - `{slug}/P04_continuity/timeline.md`
 - `{slug}/P04_continuity/foreshadowing_tracker.md`
 - `{slug}/P04_continuity/character_state_table.md`
+- `{slug}/P00_meta/logs/critical_status.md` (아카이브되지 않는 활성 Critical 상태 SSOT)
+
+`critical_status.md` 형식:
+
+```markdown
+| ID | 시즌 | 출처 | 요약 | 상태 | 해결·승인 근거 | 최종 갱신 |
+|----|------|------|------|------|---------------|----------|
+| CRIT-sNN-001 | sNN | continuity/style | | open / resolved / user_accepted | 파일·게이트·사용자 승인 일시 | |
+
+## 시즌별 집계
+| 시즌 | open | resolved | user_accepted | 상세 스냅샷 | 최종 재계산 |
+|------|------|----------|---------------|---------------|---------------|
+| sNN | 0 | 0 | 0 | P04_continuity/sNN/_archive/critical_status_sNN.md | |
+```
+
+항목은 근거 없이 삭제하지 않는다. 롤업 시 `resolved` 상세는 시즌 아카이브로 옮길 수 있지만 `open`과 `user_accepted` 항목 및 시즌별 건수·스냅샷 경로는 활성 파일에 남긴다. 집계는 원본 로그와 대조해 매번 재계산하며 기존 값을 누적 덧셈하지 않는다.
 
 ---
 
@@ -452,8 +476,104 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 - 슬롯별 승인·수정·제외를 받는다. 장면 교체나 프롬프트 수정은 `interior-illustrator`를 재호출하고 사용자 퇴고 루프에 따라 반복한다.
 - 자동 생성, 외부 생성 후 배치 대기, 삽화 생략 중 하나를 선택할 수 있게 한다.
 - 일부 이미지만 있으면 누락 슬롯 제외 후 빌드할지 배치까지 기다릴지 확인한다.
-- 모든 슬롯이 승인되고 이미지가 확보되거나 제외가 확정된 뒤 `gate_status.md`를 갱신하고 G8로 진행한다.
+- 모든 슬롯이 승인되고 이미지가 확보되거나 제외가 확정된 뒤 `gate_status.md`를 갱신한다. **시즌제 작품은 Phase 8.7로 진행하고, 단권(`s01` 단독) 작품만 G8로 진행한다.**
 - `auto` 모드라도 누락 이미지가 있으면 이 게이트에서 정지한다.
+
+---
+
+## Phase 8.7: 시즌 롤업
+
+**실행 모드:** 순차 서브 에이전트 2단계
+
+**실행 조건:** 시즌제 작품에서 시즌 N의 Phase 8과 Phase 8.5가 완료된 뒤 실행한다. 단권(`s01` 단독) 작품은 건너뛴다.
+
+시즌을 닫고 다음 시즌 작업 공간을 준비한다. 누적된 추적 자료를 인물 카드와 시즌 요약으로 수렴시키고, 중간 산출물을 무손실 아카이브해 활성 파일 수와 에이전트 입력량을 되돌린다.
+
+롤업 시작 전에 `P03_planning/03_season_plan.md`와 Phase 0의 계획 시즌 수를 대조해 **다음 계획 시즌 존재 여부**를 확정한다. 이 판정은 성장 방향 작성과 G7.7 이후 라우팅에 동일하게 사용한다.
+
+**롤업 전체를 하나의 트랜잭션으로 처리한다.** 어떤 에이전트도 활성 파일을 바로 수정하지 않는다. 시작 시 `rollup_log.md`의 미완료 `pending` 저널을 먼저 검사하고, 있으면 새 롤업을 시작하지 말고 이전 스냅샷을 복원해 롤백부터 완료한다. 다음으로 `critical_status.md`를 원본 로그와 대조한다. 파일이 누락·오래되었거나 `open`이 있으면 **인물 카드 갱신을 포함한 어떤 쓰기도 시작하지 않는다.**
+
+### 단계 1 — 카드 갱신 (`story-bible-planner`)
+
+**입력:** `P03_planning/03_season_plan.md`, `character_state_table.md`, `continuity_log.md`의 시즌 N 구간, 시즌 N `season_manuscript.md`, `characters/README.md` 색인과 시즌 N에 등장한 인물 카드. 색인이 없으면 기존 `characters/*.md` 구조에서 등장 인물 카드를 찾는다
+
+1. `continuity_log.md`의 `### 카드 미등재 인물` 후보를 확인하고 WP16 판정 기준에 맞는 인물 카드를 신설한다
+2. 각 인물 카드의 `## 시즌별 상태 변화`에 `### sNN 종료 시점` 항목을 append한다. 기존 시즌 기록은 덮어쓰지 않는다
+3. 다음 계획 시즌이 있을 때만 주요 인물 카드의 `## 성장 방향`에 `### s{N+1} 성장 방향` 초안을 append한다. 시즌 아크에 참여하는 조연도 포함한다. **마지막 계획 시즌이면 `s{N+1}` 성장 방향을 생성하지 않고**, `## 시즌별 상태 변화`의 종료 상태를 시리즈 완결 상태로 기록한다
+4. `supporting.md`의 인물 항목이 12개를 초과하면 첫 등장 시즌 기준 `supporting_sNN.md`로 분리하고 `characters/README.md` 색인을 만든다
+5. `relationships.md`를 시즌 N 종료 시점 기준으로 갱신한다
+6. 신설·갱신·분리할 카드, `characters/README.md`, `relationships.md`를 원본 경로에 쓰지 말고 `P04_continuity/sNN/_archive/.staging/new-active/`에 **프로젝트 상대 경로를 보존**해 작성한다. 어떤 출력을 신설하고 어떤 파일을 교체할지 목록도 함께 반환한다
+
+### 단계 2 — 추적 파일 압축 (`continuity-keeper`)
+
+1. `{slug}/P03_planning/sNN/season_summary.md`를 아래 형식으로 생성한다. 목표 크기는 시즌 1 기준 **5KB 이내**다. 최종 경로에 바로 쓰지 말고 단계 1과 같은 스테이징 트리에 작성한다
+2. `continuity_log.md`와 `style_log_sNN.md`의 Critical을 `P00_meta/logs/critical_status.md`와 다시 대조해 사전 판정이 아직 유효한지 확인한다. `open`이 1건이라도 있거나 원본 로그보다 상태 파일이 오래되었으면 스테이징을 폐기하고 아카이브를 시작하지 않는다
+3. `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`의 시즌 N 구간을 `{slug}/P04_continuity/sNN/_archive/`의 시즌별 원본 파일로 추출한다. 새 활성 `continuity_log.md`와 `timeline.md`에는 `season_summary.md` 링크를 남기고, `foreshadowing_tracker.md`에는 요약 링크와 **미회수·이월 복선 행 전체**를 다음 시즌 활성 상태로 보존한다
+4. `character_state_table.md`를 `_archive/character_state_table_sNN_end.md`로 동결 복사한다. 다음 계획 시즌이 있으면 활성 본체의 행과 종료 상태는 유지하고 `최종 업데이트 챕터`만 다음 시즌 시작 상태로 리셋한다. **마지막 계획 시즌이면 최종 챕터 값을 유지하고 리셋하지 않는다**
+5. `glossary.md`에서 본문·계획 어디에도 실제 사용되지 않은 항목과 중복 표기를 정리한 새 파일을 스테이징한다. 향후 시즌 계획에 있는 표기는 미사용으로 보지 않는다. 표준 표기 변경은 자동 적용하지 않고 파급 범위를 보고한다
+6. 시즌 N의 챕터 배관·백업 파일을 아카이브한다. `chapters/{CCC}_draft*.md`, `{CCC}_review*.md`, `{CCC}_revised*.md`, `{CCC}_final_v*.md`를 `chapters/_archive/`로 이동하고 현재 `{CCC}_final.md`만 `chapters/` 직하에 유지한다
+7. `P00_meta/logs/style_log_sNN.md`와 해당 시즌의 `resolved` Critical 상세를 `P04_continuity/sNN/_archive/`로 이동한다. `critical_status.md`의 `open`·`user_accepted`와 시즌별 건수는 활성 상태로 유지한다
+
+### 아카이브 트랜잭션 규칙
+
+파일은 **삭제하거나 덮어쓰지 않는다.** 여러 파일을 바로 이동한 뒤 검증하지 말고 아래 순서로 처리한다.
+
+1. **사전 검사:** 정확한 이동·신설·교체 대상과 목적지 목록을 만든다. 각 기존 대상이 일반 파일인지 확인하고, 심볼릭 링크·목적지 중복·기존 파일 충돌·예상 밖 경로가 하나라도 있으면 쓰기 전에 중단한다
+2. **스테이징:** 추적 아카이브본, `season_summary.md`, `critical_status_sNN.md`, **새 활성 추적 파일 전체**와 `critical_status.md`, 갱신·신설할 인물 카드·색인·관계·용어집 파일을 모두 `sNN/_archive/.staging/new-active/`에 **프로젝트 상대 경로를 보존**해 작성한다. 원본 바이트·항목 수·이월 복선 수·Critical 상태별 수와 스테이징 결과를 대조한다
+3. **이동 저널:** 각 조작 **전에** `rollup_log.md`의 `pending` 항목에 `원본 → 목적지`와 예상 바이트를 기록하고 저장을 확인한 뒤 한 파일씩 조작한다. 조작 후는 해당 항목만 `done`으로 바꾸며 기존 목적지 파일은 절대 교체하지 않는다
+4. **커밋 준비:** 교체할 인물 카드·색인·관계·용어집 파일, 활성 추적 파일, `critical_status.md`를 모두 `sNN/_archive/pre_rollup_snapshot/`의 같은 프로젝트 상대 경로로 이동한다. 이어서 `new-active/`의 신규·갱신 파일을 최종 경로로, 챕터 배관·백업과 `style_log_sNN.md`를 아카이브 경로로 하나씩 승격한다. 신규 파일은 기존 스냅샷이 없음을 저널에 표시한다
+5. **커밋 롤백:** 어느 조작에서든 실패하면 저널을 역순으로 실행한다. 승격한 새 파일은 프로젝트 경로에서 `new-active/`로 되돌리고, `pre_rollup_snapshot/`의 카드·색인·관계·용어집·추적·Critical 상태 파일을 원래 경로로 복원하며, 챕터 배관·백업과 스타일 로그도 활성 위치로 되돌린다. 완전 롤백 후에만 재시도할 수 있다
+6. **커밋 완료:** 전 이동, 신규·교체 파일, 활성 미회수 복선, Critical 집계 검증이 끝난 뒤에만 `rollup_log.md` 상태를 `committed`로 바꾼다. `pre_rollup_snapshot/`은 삭제하지 않고 복구 감사 자료로 보존한다
+
+### `season_summary.md` 형식
+
+```markdown
+# 시즌 N 요약
+
+> 이 파일은 시즌 N 종료 후 다음 시즌 작업의 유일한 과거 참조원이다.
+> 원본은 `P04_continuity/sNN/_archive/`에 보존된다.
+
+## 사건 라인
+{챕터 묶음 단위로 10줄 이내}
+
+## 인물 변화
+{인물당 1줄 — 시작 상태 → 종료 상태. 상세는 characters/ 카드 참조}
+
+## 복선 상태
+| 복선 | 심은 챕터 | 상태 | 회수 예정 |
+|------|----------|------|----------|
+{회수 완료는 1줄 요약, 이월 복선은 전부 나열}
+
+## 타임라인
+{서사 내 주요 시점만. 챕터 단위 상세는 아카이브 참조}
+
+## 다음 시즌 이월 사항
+{미해결 갈등, 인물이 모르는 사실, 열린 질문}
+
+## 품질 게이트 상태
+{Critical open 0건 / resolved N건 / user_accepted N건. 상세 SSOT는 P00_meta/logs/critical_status.md}
+```
+
+**출력:**
+- 갱신된 `{slug}/P02_bible/characters/*.md`와 `{slug}/P02_bible/relationships.md`
+- `{slug}/P03_planning/sNN/season_summary.md`
+- `{slug}/P04_continuity/sNN/_archive/`와 `{slug}/P04_continuity/sNN/chapters/_archive/`
+- `{slug}/P00_meta/logs/rollup_log.md` — 시즌, 아카이브 건수, 변경 전후 활성 파일 수, 원본/요약 바이트, 압축률, 카드 변경 건수 기록
+
+**G7.7 게이트 — 시즌 롤업 확인:**
+
+아래 항목을 포함한 **15줄 이내 다이제스트**를 보고하고 정지한다.
+
+| 항목 | 값 |
+|------|-----|
+| 신규 등재 인물 | N명 (이름 나열) |
+| 카드 갱신 | N건 |
+| 활성 파일 수 | 변경 전 X개 → 변경 후 Y개 |
+| 추적 파일 압축 | 원본 XKB → `season_summary.md` YKB |
+| 다음 시즌 성장 방향 | 다음 시즌 있음: 주요 인물 N명 작성 완료 / 마지막 계획 시즌: 해당 없음 (`s{N+1}` 미생성) |
+| Critical 상태 | open 0건 / resolved N건 / user_accepted N건 |
+
+사용자는 신규 인물 카드와 성장 방향을 승인하거나 수정 요청한다. 수정 요청에는 사용자 퇴고 루프를 적용한다. 승인 전 다음 시즌 Phase 3·4를 시작하지 않으며, 승인 후 `gate_status.md`를 갱신한다. 남은 계획 시즌이 있으면 다음 시즌의 Phase 3 상세화 또는 Phase 4로 이동하고, 마지막 계획 시즌까지 완료했을 때만 G8로 진행한다. **`auto` 모드에서도 G7.7은 항상 정지한다.**
 
 ---
 
@@ -463,7 +583,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 기존 하네스의 `cover-designer`와 `epub-builder`를 그대로 재사용한다. 입력 포맷이 동일하므로 호환성 문제가 없다.
 
-> **G8 게이트(강제):** `P04_continuity/continuity_log.md` 또는 시즌 검수 로그에 Critical 미해결 항목이 하나라도 남아 있으면 Phase 9 실행을 금지한다. 판정 다이제스트와 수동 확인 요청을 제시하고 승인·수정 완료 전까지 EPUB 빌드를 호출하지 않는다. 통과 시 `gate_status.md`를 갱신한다.
+> **G8 게이트(강제):** 먼저 `P00_meta/logs/critical_status.md`를 읽는다. 파일이 없거나 최근 시즌 로그보다 오래되었거나 `open` 항목이 하나라도 있으면 Phase 9 실행을 금지한다. `user_accepted`는 승인 일시·게이트 근거가 있을 때만 통과로 인정한다. 롤업 전 단권은 활성 `continuity_log.md`와 `style_log_s01.md`도 함께 대조한다. 판정 다이제스트와 수동 확인 요청을 제시하고 승인·수정 완료 전까지 EPUB 빌드를 호출하지 않는다. 통과 시 `gate_status.md`를 갱신한다.
 
 1. `cover-designer` → `{slug}/P06_publication/assets/cover.png` 생성 (이미지 생성 도구/스킬 > API > ImageMagick 폴백)
 2. 본문 삽화 마커가 있으면 `P05_manuscript/04_manuscript.md`의 상대 이미지 경로와 실제 PNG 파일 존재 여부를 확인한다. PNG가 없으면 해당 마커를 빌드에서 제외하거나 사용자 확인 후 진행한다
@@ -491,10 +611,13 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 리서치 에이전트 타임아웃 | 가용 결과만으로 `P01_research/01_reference.md` 작성, 누락 섹션 명시 후 진행 |
 | `story-bible-reviewer` Fail 판정 | 사용자에게 보고, `story-bible-planner` 재작업 요청 |
 | `continuity-keeper` Critical 경고 | 해당 챕터 finalizing 중단, 저술가에게 수정 지시 |
-| 퇴고 루프 2회 후에도 스타일 이견이 남음 | 남은 문제를 `P00_meta/logs/style_log.md`에 미해결로 기록하고 현재 final 후보를 사용자 확인 대상으로 보고 |
+| 퇴고 루프 2회 후에도 스타일 이견이 남음 | 남은 문제를 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 미해결로 기록하고 현재 final 후보를 사용자 확인 대상으로 보고 |
 | `[LOCKED]` Canon 위반 감지 | `continuity-keeper`가 차단, `story-bible-planner`에게 공식 개정 절차 요청 |
 | 표지 생성 실패 | ImageMagick 폴백 → 단순 타이포그래피 표지. 폴백도 실패 시 사용자 알림 후 표지 없이 빌드 |
 | EPUB 빌드 실패 | pandoc 에러 메시지 그대로 보고, `P05_manuscript/04_manuscript.md`는 보존 |
+| 시즌 롤업 중 아카이브 누락·이름 충돌 | 이동을 중단하고 원본을 활성 위치에 보존한 뒤 누락·충돌 목록을 보고 |
+| `season_summary.md`가 5KB를 초과하거나 이월 복선이 누락됨 | G7.7 통과 금지. 요약을 재작성하되 이월 복선은 축약·삭제하지 않음 |
+| `critical_status.md` 누락·오래됨·open 존재 | Phase 8.7 아카이브와 G8 빌드를 중단하고 원본 로그와 대조해 상태 파일부터 복구 |
 
 ---
 
@@ -507,6 +630,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 작업 계획 | Phase 6의 챕터 작업 분배·진행 추적 |
 | 반환값 기반 | 서브 에이전트 모드(Phase 1·3·4·8·9)의 결과 수집 |
 | `gate_status` (`P00_meta/gate_status.md`) | 게이트 통과 기록과 세션 간 재개 지점 |
+| `critical_status` (`P00_meta/logs/critical_status.md`) | 아카이브와 무관하게 유지되는 Critical 상태·승인 근거 SSOT |
 
 파일명 컨벤션:
 - Phase 산출물: `{NN}_{artifact}.md` (NN = Phase 번호 2자리)
@@ -523,7 +647,8 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 |----------|------------|---------|
 | 스토리 바이블 수정 | Phase 2 → 3 → 4 → 5 재실행 | `P02_bible/02_story_bible.md` → `02_story_bible_v{N}.md` |
 | 시즌 구조 수정 | Phase 3 → 4 → 5 재실행 | `P03_planning/03_season_plan.md` → `03_season_plan_v{N}.md` |
-| 단일 챕터 재작성 | Phase 6 (해당 챕터만) → Phase 7 | `{CCC}_draft.md` → `{CCC}_draft_v{N}.md` |
+| 인물 추가·카드 수정 | Phase 2 인물 카드만 갱신 (Phase 3~5 재실행 불필요). 단, 시즌 아크나 챕터 플랜에 영향이 있으면 해당 Phase도 재실행 | `supporting.md` 또는 `supporting_sNN.md` → 해당 파일 `_v{N}.md` |
+| 단일 챕터 재작성 | Phase 6 (해당 챕터만) → Phase 7. 아카이브된 시즌이면 `_archive/`에서 해당 챕터 배관 파일을 먼저 복원 | `{CCC}_draft.md` → `{CCC}_draft_v{N}.md` |
 | 문체 전역 보정 | `voice_profile.md` 갱신 → 이후 챕터 적용. 기존 챕터 소급은 사용자 선택 | `voice_profile.md` → `voice_profile_v{N}.md` |
 | 본문 삽화 추가/교체 | Phase 8.5 재실행 → G7.5 재통과 | 기존 PNG → `{name}_v{N}.png` |
 | 표지 교체 | Phase 9 (`cover-designer`만) | `P06_publication/assets/cover.png` → `cover_v{N}.png` |

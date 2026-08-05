@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the static acceptance criteria from GitHub issue #1 (WP1-WP12)."""
+"""Validate static harness criteria from issues #1 and #2."""
 
 from __future__ import annotations
 
@@ -27,6 +27,38 @@ def forbid(path: str, *needles: str) -> None:
     for needle in needles:
         if needle in body:
             failures.append(f"{path}: forbidden text remains: {needle!r}")
+
+
+def require_count_at_least(path: str, needle: str, minimum: int) -> None:
+    count = text(path).count(needle)
+    if count < minimum:
+        failures.append(
+            f"{path}: expected at least {minimum} occurrences of {needle!r}, got {count}"
+        )
+
+
+def require_order(path: str, *needles: str) -> None:
+    body = text(path)
+    cursor = -1
+    for needle in needles:
+        position = body.find(needle, cursor + 1)
+        if position < 0:
+            failures.append(f"{path}: missing ordered text {needle!r}")
+            return
+        if position <= cursor:
+            failures.append(f"{path}: out-of-order text {needle!r}")
+            return
+        cursor = position
+
+
+def section(path: str, start: str, end: str) -> str:
+    body = text(path)
+    start_at = body.find(start)
+    end_at = body.find(end, start_at + len(start)) if start_at >= 0 else -1
+    if start_at < 0 or end_at < 0:
+        failures.append(f"{path}: cannot resolve section {start!r} -> {end!r}")
+        return ""
+    return body[start_at:end_at]
 
 
 def validate_skill_mirrors() -> None:
@@ -126,13 +158,189 @@ def main() -> int:
     require(".claude/agents/novel-editor.md", "P02_bible/glossary.md", "proofread_log.md", "교열과 윤문 분리")
     require(".claude/agents/editor.md", "proofread_log.md", "교열과 윤문 분리")
 
+    # Issue #2 — season rollup, character growth, bounded context, and archives.
+    require(
+        orchestrator,
+        "## Phase 8.7",
+        "G7.7",
+        "season_summary.md",
+        "P04_continuity/sNN/_archive/",
+        "P04_continuity/sNN/chapters/_archive/",
+        "rollup_log.md",
+        "`auto` 모드에서도 G7.7은 항상 정지",
+        "인물 추가·카드 수정",
+        "아카이브된 시즌이면 `_archive/`에서 해당 챕터 배관 파일을 먼저 복원",
+    )
+    require_order(orchestrator, "## Phase 8.5", "## Phase 8.7", "## Phase 9")
+    gate_definition = section(orchestrator, "### 게이트 정의", "### 진행 모드")
+    if "| G7.7 | Phase 8.7 완료 후 | 정지 |" not in gate_definition:
+        failures.append(f"{orchestrator}: gate definition missing exact G7.7 stop row")
+    gate_status = section(orchestrator, "### 게이트 상태 파일", "### 사용자 퇴고 루프")
+    if "| G7.7 | 대기 |" not in gate_status:
+        failures.append(f"{orchestrator}: gate status template missing G7.7 row")
+    execution_summary = section(orchestrator, "## 실행 모드 요약", "## Phase 0")
+    if "| 8.7 | 시즌 롤업 | 순차 서브 에이전트 2단계 | G7.7 |" not in execution_summary:
+        failures.append(f"{orchestrator}: execution summary missing Phase 8.7 row")
+    phase_4 = section(orchestrator, "## Phase 4", "## Phase 5")
+    if "Phase 8.7 시즌 롤업과 G7.7 승인을 먼저 완료한다" not in phase_4:
+        failures.append(f"{orchestrator}: Phase 4 can start before rollup approval")
+    phase_3 = section(orchestrator, "## Phase 3", "## Phase 4")
+    for needle in ("characters/README.md", "시즌 씨앗에 등장하는 조연 카드", "무관한 시즌의 `supporting_sNN.md`는 열지 않는다"):
+        if needle not in phase_3:
+            failures.append(f"{orchestrator}: Phase 3 input is not selective: {needle!r}")
+    phase_6 = section(orchestrator, "## Phase 6", "## Phase 7")
+    if "시즌 끝의 남은 배치가 1~2화여도 완료 직후 같은 G6를 실행한다" not in phase_6:
+        failures.append(f"{orchestrator}: final partial chapter batch can bypass G6")
+    phase_7 = section(orchestrator, "## Phase 7", "## Phase 8:")
+    for needle in (
+        "critical_status.md",
+        "open / resolved / user_accepted",
+        "승인 일시·게이트",
+        "근거 없이 삭제하지 않는다",
+    ):
+        if needle not in phase_7:
+            failures.append(f"{orchestrator}: Phase 7 missing Critical contract {needle!r}")
+    phase_85 = section(orchestrator, "## Phase 8.5", "## Phase 8.7")
+    for needle in ("시즌제 작품은 Phase 8.7로 진행", "단권(`s01` 단독) 작품만 G8로 진행"):
+        if needle not in phase_85:
+            failures.append(f"{orchestrator}: Phase 8.5 missing route {needle!r}")
+    if "`gate_status.md`를 갱신하고 G8로 진행한다" in phase_85:
+        failures.append(f"{orchestrator}: Phase 8.5 still bypasses Phase 8.7")
+    phase_87 = section(orchestrator, "## Phase 8.7", "## Phase 9")
+    for needle in (
+        "남은 계획 시즌",
+        "마지막 계획 시즌이면",
+        "`s{N+1}` 성장 방향을 생성하지 않고",
+        "사전 검사",
+        "새 활성 추적 파일 전체",
+        "pre_rollup_snapshot/",
+        "커밋 롤백",
+        "style_log_sNN.md",
+        "critical_status.md",
+        "원본 로그보다 상태 파일이 오래되었으면",
+        "아카이브를 시작하지 않는다",
+        "마지막 계획 시즌이면 최종 챕터 값을 유지하고 리셋하지 않는다",
+        "## 품질 게이트 상태",
+        "미회수·이월 복선 행 전체",
+        "인물 카드 갱신을 포함한 어떤 쓰기도 시작하지 않는다",
+        "프로젝트 상대 경로를 보존",
+        "{CCC}_draft*.md",
+        "{CCC}_final_v*.md",
+        "카드·색인·관계·용어집·추적·Critical 상태 파일",
+        "향후 시즌 계획에 있는 표기는 미사용으로 보지 않는다",
+        "각 조작 **전에**",
+    ):
+        if needle not in phase_87:
+            failures.append(f"{orchestrator}: Phase 8.7 missing contract {needle!r}")
+    phase_9 = section(orchestrator, "## Phase 9", "## 에러 핸들링")
+    for needle in (
+        "critical_status.md",
+        "파일이 없거나",
+        "오래되었거나",
+        "`open` 항목",
+        "`user_accepted`",
+        "승인 일시·게이트 근거",
+    ):
+        if needle not in phase_9:
+            failures.append(f"{orchestrator}: G8 missing Critical contract {needle!r}")
+    require(
+        ".claude/agents/continuity-keeper.md",
+        "### 인물 등재 추적",
+        "### 카드 미등재 인물",
+        "season_summary.md",
+        "rollup_log.md",
+    )
+    require(
+        ".claude/skills/narrative-review/SKILL.md",
+        "### 축 6 — 인물 성장 곡선",
+        "카드 미등재 인물 후보",
+        "계획 방향 | 실제 변화 | 일치 여부",
+    )
+    for path in (".claude/skills/novel-planning/SKILL.md", ".claude/agents/story-bible-planner.md"):
+        require(
+            path,
+            "## 시즌별 상태 변화",
+            "### sNN 성장 방향",
+            "supporting_sNN.md",
+            "characters/README.md",
+            "마지막 계획 시즌이면",
+            "`s{N+1}` 방향을 생성하지 않고",
+            "결과를 원본 경로에 직접 쓰지 않는다",
+            ".staging/new-active/",
+            "프로젝트 상대 경로 그대로",
+            "신설/교체 대상 목록",
+        )
+        require_count_at_least(path, "## 시즌별 상태 변화", 2)
+    for path in (
+        ".claude/agents/chapter-novelist.md",
+        ".claude/agents/continuity-keeper.md",
+        ".claude/agents/novel-style-guardian.md",
+        ".claude/agents/chapter-plotter.md",
+        ".claude/agents/season-planner.md",
+    ):
+        require(path, "continuity_log.md", "season_summary.md", "_archive/", "characters/README.md")
+        forbid(path, "`{slug}/P02_bible/characters/*.md`")
+    require(
+        ".claude/agents/novel-style-guardian.md",
+        "style_log_sNN.md",
+        "축 6 인물 성장 곡선",
+    )
+    require(
+        ".claude/agents/continuity-keeper.md",
+        "style_log_sNN.md",
+        "critical_status.md",
+        "critical_status_sNN.md",
+        "파일이 누락·오래되었거나 `open`이 있으면",
+        "마지막 계획 시즌이면 최종 챕터 값을 유지하고 리셋하지 않는다",
+        "미완료 `pending` 저널",
+        "인물 카드 갱신을 포함한 어떤 쓰기도 시작하지 않는다",
+        "미회수·이월 복선 행 전체",
+        "{CCC}_draft*.md",
+        "{CCC}_final_v*.md",
+        "카드·색인·관계·용어집·추적·Critical 상태 파일",
+        "현재 및 향후 시즌 계획 어디에도 쓰이지 않은 용어",
+        "사전 검사",
+        "새 활성 추적 파일",
+        "pre_rollup_snapshot/",
+        "커밋 롤백",
+    )
+    for path in (
+        ".claude/skills/novel-chapter-writing/SKILL.md",
+        ".claude/agents/chapter-prose-reviser.md",
+        ".claude/skills/novel-prose-revision/SKILL.md",
+    ):
+        require(path, "characters/README.md", "supporting_sNN.md", "season_summary.md", "명시적으로 요청")
+        forbid(path, "characters/*.md")
+    require(
+        ".claude/skills/novel-illustration/SKILL.md",
+        "characters/README.md",
+        "삽화 후보 장면에 등장하는 인물 카드만",
+        "supporting_sNN.md",
+    )
+    forbid(".claude/skills/novel-illustration/SKILL.md", "characters/*.md")
+    require(track_a, "chapters/_archive/", "사전 검사", "롤백", "기존 아카이브 파일을 덮어쓰지 않는다")
+    require(track_a, "*_draft*.md", "*_final_v*.md", "미완료 이동 저널", "예상 바이트")
+    require(
+        ".claude/agents/editor.md",
+        "chapters/_archive/",
+        "배관 파일 무손실 아카이브",
+        "사전 검사",
+        "롤백",
+        "*_draft*.md",
+        "*_final_v*.md",
+        "미완료 저널",
+    )
+
     if failures:
-        print("Issue #1 harness validation failed:")
+        print("Harness validation failed:")
         for failure in failures:
             print(f"  - {failure}")
         return 1
 
-    print("Issue #1 WP1-WP12 static acceptance criteria passed.")
+    print(
+        "Issue #1 WP1-WP12 and issue #2 WP15-WP20 static acceptance criteria passed. "
+        "WP21 actual pilot A/B is not covered."
+    )
     return 0
 
 

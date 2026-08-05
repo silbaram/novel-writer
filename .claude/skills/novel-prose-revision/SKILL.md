@@ -17,12 +17,13 @@ description: Use to revise Korean light novel prose after a style review, focusi
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md`
 - `style-guides/lightnovel-style-guide.md`
 - `{slug}/P02_bible/02_story_bible.md`
-- `{slug}/P02_bible/characters/*.md`
+- `{slug}/P02_bible/characters/README.md`가 있으면 먼저 읽고, 퇴고 대상 챕터의 등장인물 카드만 선택한다. `README.md`가 없는 12명 이하 레거시 구조에서만 `supporting.md`를 읽으며 무관한 `supporting_sNN.md`는 열지 않는다.
 - `{slug}/P02_bible/worldbuilding/*.md`
 - `{slug}/P03_planning/sNN/season_bible.md`
 - `{slug}/P04_continuity/character_state_table.md`
 - `{slug}/P04_continuity/foreshadowing_tracker.md`
 - `{slug}/P02_bible/voice_profile.md`가 있으면 반드시 읽는다.
+- 종료된 시즌의 추적 원본(`P04_continuity/sNN/_archive/`)은 사용자가 명시적으로 요청할 때만 읽고, 필요한 과거 맥락은 `P03_planning/s{이전시즌}/season_summary.md`로 확인한다.
 
 ---
 
@@ -155,7 +156,7 @@ D가 달려 있었다 → D가 움직임에 맞춰 흔들렸다
 
 - Critical/Should가 없으면 `{CCC}_revised.md`를 내용 변경 없이 `{CCC}_final.md`로 저장한다.
 - Critical/Should가 있으면 해당 지적만 최소 수정하고 `{CCC}_final.md`로 저장한다.
-- 해결하지 못한 지점은 `P00_meta/logs/style_log.md`에 남기도록 오케스트레이터에 보고한다.
+- 해결하지 못한 지점은 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 남기도록 오케스트레이터에 보고한다.
 - `{CCC}_final.md`에도 저자 노트는 유지한다. `continuity-keeper`와 `novel-editor`가 참조한다.
 
 ---

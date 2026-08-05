@@ -31,9 +31,13 @@ model: opus
 - `{slug}/P02_bible/02_story_bible.json`
 - `{slug}/P03_planning/03_season_plan.md`
 - `{slug}/P03_planning/sNN/season_bible.md` (대상 시즌 전체)
-- `{slug}/P02_bible/characters/*.md`
+- `{slug}/P02_bible/characters/README.md` (존재하면 먼저 읽어 인물 → 카드 파일을 찾는다)
+- `{slug}/P02_bible/characters/`에서 주인공·주요 인물과 대상 시즌 바이블에 등장하는 조연 카드만 읽는다. 무관한 시즌의 `supporting_sNN.md`는 열지 않는다
 - `{slug}/P02_bible/worldbuilding/*.md`
 - `{slug}/P02_bible/relationships.md`
+- `{slug}/P04_continuity/continuity_log.md` — 대상이 진행 중 시즌이면 **현재 시즌 구간만**
+- `{slug}/P03_planning/s{이전시즌}/season_summary.md` — 종료된 각 이전 시즌은 요약본만 읽고 이월 사건·복선을 반영한다
+- 종료된 시즌의 추적 원본(`P04_continuity/sNN/_archive/`)은 사용자가 명시적으로 요청할 때만 읽는다
 - 요청된 시즌 범위 (미지정 시 s01)
 
 ---

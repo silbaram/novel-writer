@@ -70,8 +70,26 @@ Original role instructions follow.
 | 시작 상태 | 1시즌 시작 시점의 상황 |
 | 핵심 능력/특기 | |
 | 말투 특징 | 대사 예시 1~2줄 포함 |
-| 성장 방향 | 이 캐릭터가 어떻게 달라질 것인가 |
+| 성장 방향 | `### sNN 성장 방향` 단위로 시즌마다 append |
 | canon 상태 | locked / draft |
+
+주인공 카드 끝에는 아래 구조를 만든다. Phase 2에서는 s01 방향만 작성하고, 시즌 종료 상태는 Phase 8.7 롤업이 append한다.
+
+```markdown
+## 성장 방향
+
+### s01 성장 방향
+{이번 시즌에 내적으로 어떻게 달라져야 하는가}
+
+## 시즌별 상태 변화
+
+<!-- Phase 8.7 롤업이 아래 형식으로 시즌마다 append한다. -->
+### sNN 종료 시점 ({CCC}화)
+- **시작 대비 변화:** {1~2줄. 변화가 없으면 "의도된 무변화"로 명시}
+- **관계 변화:** {주요 관계 이동}
+- **획득·상실:** {소지품·지위·능력}
+- **다음 시즌 이월:** {미해결 상태, 모르는 사실}
+```
 
 ### 단계 4.5 — POV Voice Profile
 
@@ -101,9 +119,35 @@ Original role instructions follow.
 - 욕망과 결핍
 - 말투 특징 + 대사 예시
 - 주인공과의 관계 동학 (어떻게 긴장·협력·성장에 기여하는가)
+- 성장 방향. 히로인·라이벌·빌런은 `## 성장 방향` 아래 `### sNN 성장 방향`을 필수로 작성한다. 조연은 선택이지만 시즌 아크에서 역할이 있으면 필수다
 - canon 상태
 
 히로인·라이벌·빌런은 해당하는 경우에만 생성한다. 모든 프로젝트에 반드시 존재하지 않아도 된다.
+
+주요 캐릭터 카드도 끝에 아래 구조를 만든다. 기존 시즌 기록은 덮어쓰지 않는다.
+
+```markdown
+## 성장 방향
+
+### s01 성장 방향
+{이번 시즌에 내적으로 어떻게 달라져야 하는가. 의도된 무변화도 근거와 함께 명시}
+
+## 시즌별 상태 변화
+
+<!-- Phase 8.7 롤업이 아래 형식으로 시즌마다 append한다. -->
+### sNN 종료 시점 ({CCC}화)
+- **시작 대비 변화:** {1~2줄. 변화가 없으면 "의도된 무변화"로 명시}
+- **관계 변화:** {주요 관계 이동}
+- **획득·상실:** {소지품·지위·능력}
+- **다음 시즌 이월:** {미해결 상태, 모르는 사실}
+```
+
+`supporting.md`의 인물 항목이 **12개를 초과하면** 시즌별 파일로 분리한다.
+
+- `supporting.md`를 `supporting_s01.md`, `supporting_s02.md`처럼 나눈다
+- 분리 기준은 첫 등장 시즌이며, 이후 시즌에도 등장하는 인물은 첫 등장 시즌 파일에 남긴다
+- 분리 시 `characters/README.md`에 `인물 | 첫 등장 시즌 | 카드 파일` 색인을 만들고 갱신한다
+- 에이전트는 먼저 `characters/README.md`를 읽어 필요한 카드 파일만 연다
 
 ### 단계 6 — 세계관 카드
 
@@ -147,6 +191,19 @@ Original role instructions follow.
 
 모든 설정을 canon 상태로 분류하고 `P02_bible/02_story_bible.md` 헤더에 요약 표를 작성한다.
 
+### Phase 8.7 모드 — 인물 카드 롤업
+
+오케스트레이터가 시즌 롤업을 요청하면 Phase 2 전체를 재실행하지 않고 인물 카드와 관계 파일만 갱신한다.
+
+1. 오케스트레이터가 `critical_status.md` 최신성·`open` 0건과 미완료 롤업 저널 부재를 확인한 뒤에만 작업한다
+2. `character_state_table.md`, `continuity_log.md`의 시즌 N 구간, 시즌 N `season_manuscript.md`를 읽는다. `characters/README.md`가 있으면 먼저 색인을 읽고 시즌 N 등장인물 카드만 선택해 대조한다
+3. `### 카드 미등재 인물` 후보 중 고유 이름·대사·2개 챕터 이상 등장 조건을 충족한 인물만 새 카드로 만든다
+4. 각 카드의 `## 시즌별 상태 변화`에 `### sNN 종료 시점`을 append한다. `P03_planning/03_season_plan.md`에 다음 계획 시즌이 있을 때만 주요 인물의 `## 성장 방향`에 `### s{N+1} 성장 방향`을 append한다. 마지막 계획 시즌이면 `s{N+1}` 방향을 생성하지 않고 종료 상태를 시리즈 완결 상태로 기록한다
+5. `supporting.md`가 12명을 초과하면 첫 등장 시즌 기준으로 분리하고 `characters/README.md` 색인을 만든다
+6. `relationships.md`를 시즌 종료 상태로 갱신한다
+7. 결과를 원본 경로에 직접 쓰지 않는다. 신규·갱신·분리할 카드, `characters/README.md`, `relationships.md`를 `P04_continuity/sNN/_archive/.staging/new-active/` 아래에 프로젝트 상대 경로 그대로 작성하고, 신설/교체 대상 목록과 예상 바이트를 반환한다
+8. 기존 시즌 기록은 덮어쓰지 않는다. 입력 간 충돌은 스테이징을 중단하고 G7.7 보류 항목으로 반환한다
+
 ---
 
 ## Canon 상태 정의
@@ -176,6 +233,7 @@ Original role instructions follow.
 - 슬러그
 - `{slug}/P01_research/01_reference.md` (리서치 결과)
 - (재실행 시) 기존 `P02_bible/02_story_bible.md` + 오케스트레이터가 전달한 리뷰 피드백 내용
+- (Phase 8.7 롤업 시) `{slug}/P03_planning/03_season_plan.md`, `{slug}/P04_continuity/character_state_table.md`, `continuity_log.md`의 시즌 N 구간, `{slug}/P05_manuscript/sNN/season_manuscript.md`, `P02_bible/characters/README.md`와 시즌 N 등장인물 카드
 
 ## 출력 프로토콜
 
@@ -190,7 +248,9 @@ Original role instructions follow.
 │   ├── heroine.md             # 해당 시 생성
 │   ├── rival.md               # 해당 시 생성
 │   ├── villain.md             # 해당 시 생성
-│   └── supporting.md          # 조연 목록
+│   ├── README.md              # 인물 → 카드 파일 색인 (supporting 분리 시)
+│   ├── supporting.md          # 조연 12명 이하일 때
+│   └── supporting_sNN.md      # 조연 12명 초과 시 첫 등장 시즌별 분리
 ├── P02_bible/worldbuilding/
 │   ├── world_rules.md         # 세계 핵심 규칙
 │   ├── magic_system.md        # 마법/능력 시스템 (판타지·초능력류)

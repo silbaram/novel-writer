@@ -19,7 +19,8 @@ description: Use to plan and, when tools are available, generate interior illust
 ## 절차
 
 1. **입력 확인**
-   - `P02_bible/02_story_bible.md`, `P02_bible/characters/*.md`, `P02_bible/worldbuilding/*.md`, `P03_planning/sNN/chapter_plan.md`를 읽는다.
+   - `P02_bible/02_story_bible.md`, `P02_bible/characters/README.md`, `P02_bible/worldbuilding/*.md`, `P03_planning/sNN/chapter_plan.md`를 읽는다.
+   - `characters/README.md`가 있으면 삽화 후보 장면에 등장하는 인물 카드만 선택한다. 색인이 없는 12명 이하 레거시 구조에서만 `supporting.md`를 읽고, 무관한 시즌의 `supporting_sNN.md` 전체를 열지 않는다.
    - 챕터 본문이 있으면 `{CCC}_final.md`를 우선하고, 없으면 챕터 플랜 기준으로 후보 장면을 잡는다.
 2. **삽화 슬롯 선정**
    - 단권 20챕터 기준 권장: 컬러 프론트피스 1장, 본문 흑백/단색 삽화 6~10장.

@@ -19,12 +19,15 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 | 2 | `{slug}/P02_bible/02_story_bible.md` | Canon 상태 확인 |
 | 3 | `{slug}/P03_planning/sNN/season_bible.md` | 이 시즌의 톤·갈등·진행 중인 복선 확인 |
 | 4 | `{slug}/P03_planning/sNN/chapter_plan.md` 해당 섹션 | 챕터 목적·사건·감정 변화·엔딩 훅 설계 확인 |
-| 5 | 등장인물 파일 (`{slug}/P02_bible/characters/*.md`) | 각 인물의 말투·욕망·현재 상태 확인 |
-| 6 | `{slug}/P02_bible/voice_profile.md` (있으면 필수) | 작품 고유 POV 화자 리듬·비유·금지 반응 확인 |
-| 7 | `{slug}/P02_bible/glossary.md` | 고유명사·능력명·호칭의 표준 표기 확인 |
-| 8 | `{slug}/P02_bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
-| 9 | `{slug}/P04_continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
-| 10 | `{slug}/P04_continuity/foreshadowing_tracker.md` | 미회수 복선 목록 확인 |
+| 5 | `{slug}/P02_bible/characters/README.md` (있으면 먼저) | 등장인물 → 카드 파일 위치 확인 |
+| 6 | 주인공 카드와 해당 챕터 플랜의 등장인물 카드만 | 말투·욕망·현재 상태 확인. `README.md`가 없는 12명 이하 레거시 구조에서만 `supporting.md`를 읽고 무관한 `supporting_sNN.md`는 열지 않음 |
+| 7 | `{slug}/P02_bible/voice_profile.md` (있으면 필수) | 작품 고유 POV 화자 리듬·비유·금지 반응 확인 |
+| 8 | `{slug}/P02_bible/glossary.md` | 고유명사·능력명·호칭의 표준 표기 확인 |
+| 9 | `{slug}/P02_bible/worldbuilding/*.md` | 이 챕터에서 사용할 세계관 규칙 확인 |
+| 10 | `{slug}/P04_continuity/character_state_table.md` | 직전 챕터 종료 시 인물 상태 확인 |
+| 11 | `{slug}/P04_continuity/foreshadowing_tracker.md` | 현재 시즌의 미회수·이월 복선 목록 확인 |
+
+종료 시즌의 추적 원본(`P04_continuity/sNN/_archive/`)은 사용자가 명시적으로 요청할 때만 읽는다. 과거 사건이 필요하면 `P03_planning/s{이전시즌}/season_summary.md`를 사용한다.
 
 ---
 

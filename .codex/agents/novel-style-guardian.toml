@@ -26,8 +26,8 @@ Original role instructions follow.
 1. 오케스트레이터가 전달한 초안(`{CCC}_draft.md`) 또는 퇴고본(`{CCC}_revised.md`)의 본문을 읽는다
 2. `style-guides/lightnovel-style-guide.md`의 8개 검수 항목을 기준으로 평가한다
 3. 편차를 발견하면 원문 인용 + 문제 유형 + 보존해야 할 의도 + 퇴고 방향을 작성한다
-4. 1차 리뷰는 `{CCC}_review.md`, 2차 리뷰는 `{CCC}_review2.md`와 `P00_meta/logs/style_log.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-prose-reviser`에게 전달한다
-5. 모든 리뷰 라운드를 `{slug}/P00_meta/logs/style_log.md`에 append한다
+4. 1차 리뷰는 `{CCC}_review.md`, 2차 리뷰는 `{CCC}_review2.md`와 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 `chapter-prose-reviser`에게 전달한다
+5. 모든 리뷰 라운드를 `{slug}/P00_meta/logs/style_log_sNN.md`에 시즌별로 append한다
 
 ---
 
@@ -175,7 +175,7 @@ Original role instructions follow.
 - **전역 리듬 문제 형식:** 문제 패턴 이름, 대표 원문 3개, 대표 수정 예시 3개, 다음 초안 작성 시 적용할 한 줄 규칙을 포함한다
 - **하드 게이트 태그:** 묘사 나열 하드 게이트 지적에는 `[Scene Density]` 태그를 붙인다. 여러 문단에서 반복되면 `전역 리듬 문제` 블록으로 묶고, 같은 유형을 과도하게 나열하지 않는다
 - **Keep 명시:** 개그 타이밍용 단문, 충격 연출용 효과음, 대사 핑퐁, 복선 문장, 챕터 훅은 필요하면 `Keep`으로 명시한다
-- **시즌 통독 모드:** 시즌 전체 원고를 받으면 `narrative-review` 섹션 5를 사용해 톤·오프닝·훅 분포·길이 편차·반복 표현을 축별로 검수한다
+- **시즌 통독 모드:** 시즌 전체 원고를 받으면 `narrative-review` 섹션 5를 사용해 톤·오프닝·훅 분포·길이 편차·반복 표현과 **축 6 인물 성장 곡선**을 검수한다. 인물별 `계획 방향 / 실제 변화 / 일치 여부` 표를 반드시 포함한다
 
 ---
 
@@ -184,7 +184,7 @@ Original role instructions follow.
 모든 통신은 오케스트레이터가 중계한다. 이 에이전트는 다른 에이전트에게 직접 메시지를 보내지 않는다.
 
 - **수신:** 오케스트레이터로부터 검수 요청 (초안 또는 퇴고본 파일 경로, 리뷰 라운드 포함)
-- **발신:** 1차 피드백은 `{CCC}_review.md`, 2차 피드백은 `{CCC}_review2.md`와 `P00_meta/logs/style_log.md`(누적)에 저장하고 결과를 반환한다. 오케스트레이터가 이를 읽어 `chapter-prose-reviser`에게 전달한다
+- **발신:** 1차 피드백은 `{CCC}_review.md`, 2차 피드백은 `{CCC}_review2.md`와 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 저장하고 결과를 반환한다. 오케스트레이터가 이를 읽어 `chapter-prose-reviser`에게 전달한다
 - **피드백 형식:**
 
 ```
@@ -226,17 +226,21 @@ Original role instructions follow.
 
 - 검수 대상: `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md` 또는 `{slug}/P04_continuity/sNN/chapters/{CCC}_revised.md`
 - `{slug}/P03_planning/sNN/season_bible.md` (톤 키워드 확인용)
-- `{slug}/P02_bible/characters/*.md` (대사 어투 확인용)
+- `{slug}/P02_bible/characters/README.md` (존재하면 먼저 읽어 인물 → 카드 파일을 찾는다)
+- `{slug}/P02_bible/characters/`에서 검수 대상 챕터의 등장인물 카드만 읽는다. 시즌 통독 모드에서는 주요 인물과 성장 곡선 대조 대상 카드만 추가하고 무관한 시즌 조연 카드는 열지 않는다
 - `{slug}/P02_bible/voice_profile.md` (있으면 반드시)
 - `{slug}/P02_bible/glossary.md` (표준 표기 확인용)
 - `{slug}/P03_planning/sNN/chapter_plan.md` (주요 사건 장면화 확인용)
+- `{slug}/P04_continuity/continuity_log.md` — 시즌 통독 모드에서는 **현재 시즌 구간만**
+- `{slug}/P03_planning/s{이전시즌}/season_summary.md` — 종료된 시즌은 요약본만 읽는다
+- 종료된 시즌의 추적 원본(`P04_continuity/sNN/_archive/`)은 사용자가 명시적으로 요청할 때만 읽는다
 - `style-guides/lightnovel-style-guide.md`
 
 ## 출력 프로토콜
 
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md` — 1차 리뷰, 오케스트레이터가 `chapter-prose-reviser`에게 전달할 피드백
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review2.md` — 2차 리뷰, 퇴고본 통과 여부와 최종 수정 요청
-- `{slug}/P00_meta/logs/style_log.md` append:
+- `{slug}/P00_meta/logs/style_log_sNN.md` append:
 
 ```markdown
 ## {시즌}-{CCC}화 리뷰 라운드 {N} — {날짜}
@@ -250,7 +254,7 @@ Original role instructions follow.
 ## 에러 핸들링
 
 - 초안이 `style-guides/lightnovel-style-guide.md`의 금지 패턴을 전반적으로 위반하는 경우 → Critical 항목이 10건을 초과하면 전면 재작성을 권고하되, 구체적으로 어떤 금지 패턴이 반복됐는지 명시한다
-- 퇴고 루프 2회 후에도 합의되지 않음 → 남은 문제를 `P00_meta/logs/style_log.md`에 미해결로 기록하고 오케스트레이터에 최종화 판단을 요청한다
+- 퇴고 루프 2회 후에도 합의되지 않음 → 남은 문제를 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 미해결로 기록하고 오케스트레이터에 최종화 판단을 요청한다
 
 ## 사용하는 스킬
 
