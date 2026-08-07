@@ -24,9 +24,9 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 | `{slug}/P02_bible/worldbuilding/` | 세계관 규칙과 세력/장소 | `world_rules.md`, `system_rules.md`, `factions.md`, `locations.md` |
 | `{slug}/P03_planning/` | Phase 3~4 시즌/챕터 설계 | `03_season_plan.md`, `04_chapter_plan.md` |
 | `{slug}/P03_planning/sNN/` | 시즌별 바이블·챕터 플랜·종료 요약 | `season_bible.md`, `chapter_plan.md`, `season_summary.md` |
-| `{slug}/P04_continuity/sNN/` | 챕터 원고와 내부 검수 산출물 | `chapters/*_final.md` (내부: `*_draft.md`, `*_review.md`, `*_revised.md`, `*_review2.md`) |
+| `{slug}/P04_continuity/sNN/` | 챕터 원고와 내부 검수 산출물 | `chapters/*_final.md` (승인 전: `*_draft.md`, `*_review.md`, `*_revised*.md`, `*_review2.md`, `*_user_review*.md`) |
 | `{slug}/P04_continuity/sNN/_archive/` | 종료 시즌의 추적 원본 | `continuity_log_sNN.md`, `timeline_sNN.md`, `foreshadowing_tracker_sNN.md`, `character_state_table_sNN_end.md` |
-| `{slug}/P04_continuity/sNN/chapters/_archive/` | 종료 시즌의 챕터 배관·백업 파일 | `*_draft*.md`, `*_review*.md`, `*_revised*.md`, `*_final_v*.md` |
+| `{slug}/P04_continuity/sNN/chapters/_archive/` | 종료 시즌의 챕터 배관·백업 파일 | `*_draft*.md`, `*_review*.md`, `*_user_review*.md`, `*_revised*.md`, `*_final_v*.md` |
 | `{slug}/P04_continuity/` | 연속성 추적 | `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`, `character_state_table.md` |
 | `{slug}/P00_meta/logs/` | 검수/편집/롤업/빌드 로그 | `05_review_log.md`, `style_log_sNN.md`, `critical_status.md`, `rollup_log.md`, `editor_notes.md`, `build_log.md` |
 | `{slug}/P05_manuscript/` | 출판/EPUB용 최종 원고와 메타데이터 | `04_manuscript.md`, `book_manifest.json`, `s01/season_manuscript.md` |
@@ -63,12 +63,12 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 | 게이트 | 시점 | 정지 유형 | 보고 내용 |
 |--------|------|----------|----------|
-| G1 | Phase 0 완료 후 | 정지 | 요청 해석 표: 장르·주인공·분량·시즌·진행 모드 |
+| G1 | Phase 0 완료 후 | 정지 | 요청 해석 표: 장르·주인공·분량·시즌 |
 | G2 | Phase 2 완료 후 | 정지 | 바이블 다이제스트: logline 1줄, 주인공 3줄, 핵심 인물 1줄씩 최대 4명, 세계 규칙 3줄, 시즌 씨앗 목록 |
 | G3 | Phase 4 완료 후 | 정지 | 시즌 아크 요약 + 챕터당 1줄 요약표(제목·핵심 사건·훅 유형) |
 | G4 | Phase 5 완료 후 | 조건부 정지 | 검증 판정. Critical이 있으면 정지하고, 없으면 보고 후 진행 |
-| G5 | 1화 파일럿 완성 후 | 정지 | 파일럿 경로 + 문체 확인 요청. 승인 전 배치 집필 금지 |
-| G6 | 이후 3화 배치마다 | 정지 | 진행표(챕터·자수·검수 상태·미해결) + 계속/수정 선택 |
+| G5 | 1화 파일럿 2차 검수 완료 후 | 정지 | 파일럿 경로(`revised`) + 문체 확인 요청. **승인 시 final 생성.** 승인 전 배치 집필 금지 |
+| G6 | 이후 3화 배치마다 | 정지 | 진행표(챕터·자수·검수 상태·미해결) + 계속/수정 선택. **승인 시 배치 final 일괄 생성** |
 | G7 | Phase 8 완료 후 | 정지 | 시즌 검수·교열 요약 + 통합 원고 경로 |
 | G7.5 | Phase 8.5 완료 후 | 정지 | 삽화 슬롯·이미지 상태 + 슬롯별 승인/수정/제외 선택 |
 | G7.7 | Phase 8.7 완료 후 | 정지 | 시즌 롤업 다이제스트: 카드·성장 방향·압축·아카이브 결과 |
@@ -76,13 +76,7 @@ description: Use for 소설/라노벨 Korean fiction workflows from premise to E
 
 G2에서 표시하는 핵심 인물 4명은 다이제스트 표시 상한일 뿐 등장인물 수 제한이 아니다. 전체 캐스트는 `P02_bible/characters/`에 인원 제한 없이 정의하고, 5명 이상이면 `외 조연 N명 — supporting.md 참조`로 표시한다.
 
-### 진행 모드
-
-Phase 0에서 `진행 모드`를 확정한다.
-
-- **gate (기본값):** 위 게이트 전체를 적용한다.
-- **auto:** 정지 게이트를 G2·G5·G7.7·G8로 축소하고 나머지는 다이제스트만 보고한 뒤 진행한다. 단, 삽화 PNG가 누락된 슬롯이 있으면 G7.5에서도 정지한다. **G7.7은 신규 인물 카드와 다음 시즌 성장 방향을 승인하는 게이트이므로 `auto` 모드에서도 항상 정지한다.**
-- 보고 형식 규칙은 두 모드 모두 동일하게 적용한다.
+위 게이트는 전부 적용한다. 건너뛰기 옵션은 없다 — 소설은 사용자가 각 게이트에서 직접 읽고 판단해야 하는 산출물이기 때문이다.
 
 ### 게이트 상태 파일
 
@@ -90,7 +84,6 @@ Phase 0에서 `진행 모드`를 확정한다.
 
 ```markdown
 # Gate Status
-- 진행 모드: gate
 - 현재 위치: G5 대기 (s01 001화 파일럿 완성)
 
 | 게이트 | 상태 | 일시 | 비고 |
@@ -118,15 +111,32 @@ Phase 0에서 `진행 모드`를 확정한다.
 
 사용자 퇴고 루프는 G5·G6·G7·G7.5·G7.7과 완료 후 부분 재실행에서 동일하게 적용한다.
 
-1. 피드백을 분류한다.
-   - 문장·문체·리듬 → `chapter-prose-reviser` 재퇴고
-   - 사건·전개·씬 구조 → `chapter-novelist` 부분 재집필 후 검수·퇴고와 `continuity-keeper` 재갱신
-   - 전역 문체 규칙 → 규칙으로 변환해 `voice_profile.md`의 `## 사용자 피드백 보정`에 추가하고 해당 챕터 재퇴고. 확정된 다른 챕터에 소급할지는 사용자에게 확인
-   - 설정·Canon → 영향받는 챕터·복선·관계를 다이제스트로 보고하고 승인 후 `story-bible-planner`로 개정
-2. 챕터 플랜과 어긋나는 사건·구조 수정은 `chapter_plan.md` 갱신 여부를 확인한다.
-3. 수정 전 파일을 `_v{N}` 접미사로 백업하고 라운드 이력을 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 1줄 기록한다.
-4. 완료 후 무엇을 왜 어떻게 바꿨는지 5줄 이내 변경 다이제스트와 파일 경로만 재제시한다.
-5. 사용자가 승인하면 종료하고, 추가 피드백이 오면 다시 분류한다.
+1. 피드백을 분류한다. (문장·문체·리듬 / 사건·전개·씬 구조 / 전역 문체 규칙 / 설정·Canon)
+2. **피드백을 review 규약으로 변환해 `{CCC}_user_review{N}.md`에 기록한다.** 사용자에게 형식을 요구하지 않고 오케스트레이터가 변환한다. 형식은 `{CCC}_review.md`와 동일하며 각 항목에 원문 인용·문제 유형·보존해야 할 의도·퇴고 방향을 포함하고, 사용자 발언 원문도 함께 남긴다.
+3. 유형별로 라우팅한다.
+   - 문장·문체·리듬 → `chapter-prose-reviser`에 마지막 퇴고본과 `{CCC}_user_review{N}.md`를 전달해 다음 미사용 번호의 `{CCC}_revised{N}.md`를 만든다. 표준 순서는 `{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md`이다. 내부 보정으로 출력 번호가 이미 사용됐으면 기존 파일을 덮어쓰지 않고 그 다음 미사용 번호를 쓴다.
+   - 사건·전개·씬 구조 → `chapter-novelist` 부분 재집필 후 검수·퇴고를 재통과한다.
+   - 전역 문체 규칙 → `voice_profile.md`의 `## 사용자 피드백 보정`에 규칙으로 추가하고 해당 챕터를 재퇴고한다. 확정된 다른 챕터 소급 여부는 사용자에게 확인한다.
+   - 설정·Canon → 파급 범위를 다이제스트로 보고하고 승인 후 `story-bible-planner`로 개정한다.
+4. 챕터 플랜과 어긋나는 사건·구조 수정은 `chapter_plan.md` 갱신 여부를 확인한다.
+5. 라운드 이력을 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 1줄 기록한다. **승인 전에는 `_v{N}` 백업을 만들지 않는다** — 각 라운드가 별도 `{CCC}_revised{N}.md` 파일로 남으므로 백업이 중복이다.
+6. 변경 다이제스트(무엇을 왜 어떻게, 5줄 이내)와 파일 경로만 재제시한다.
+7. 사용자가 승인하면 아래 final 생성 절차 또는 Phase 6의 승인 절차를 따른다. 추가 피드백이 오면 2로 돌아간다.
+
+### final 생성 이후의 수정
+
+`{CCC}_final.md`가 이미 존재하는 상태에서 수정 요청이 오면 승인된 산출물을 되돌리는 것이므로 아래를 따른다.
+
+1. 수정 전 `{CCC}_final.md`를 `{CCC}_final_v{N}.md`로 백업한다.
+2. 수정 사유·범위·요청자를 `{CCC}_final.md` 본문 끝 저자 노트의 `### 승인 후 수정 이력`에 append한다.
+
+   | 라운드 | 일시 | 게이트 | 요청 내용 | 변경 범위 | 백업 |
+   |--------|------|--------|----------|----------|------|
+
+3. 사건·구조 변경이면 `continuity-keeper`를 재호출해 연속성을 재갱신한다.
+4. 변경 다이제스트를 5줄 이내로 재제시하고 재승인을 받는다.
+
+**승인 전 라운드와 구분한다.** 승인 전에는 `_revised{N}.md`가 이력을 담당하므로 `_v{N}` 백업을 만들지 않는다. `_v{N}`은 승인 후 수정에만 쓴다.
 
 ---
 
@@ -169,7 +179,6 @@ Phase 0에서 `진행 모드`를 확정한다.
 | 권/챕터 수 | 미지정 시 시즌당 20챕터 기본값 |
 | 시점 | 미지정 시 "1인칭 주인공" 기본값 |
 | 저자명 | 미지정 시 기본값 `AI-Author` |
-| 진행 모드 | 미지정 시 `gate` (게이트별 정지) |
 
 **슬러그 생성:** 작품 핵심 키워드로 영문 슬러그를 만든다. 예: `회귀한 마검사` → `regression-swordmaster`.
 
@@ -318,7 +327,7 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 ## Phase 6: 챕터 집필
 
-**실행 모드:** 오케스트레이터 주도 순환 (초안 작성 → 스타일 검수·퇴고 → 최종본 확정)
+**실행 모드:** 오케스트레이터 주도 순환 (초안 작성 → 스타일 검수·퇴고 → 사용자 승인 → 최종본 확정)
 
 가장 긴 Phase다. 시즌 단위로 진행하며, 한 시즌이 완료된 후 다음 시즌으로 넘어간다.
 
@@ -328,16 +337,17 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 
 1. `chapter-novelist`가 챕터 초안을 쓴다
 2. `novel-style-guardian`과 `chapter-prose-reviser`가 문체 검수와 퇴고를 처리한다
-3. `{CCC}_final.md`가 확정되면 `continuity-keeper`가 연속성을 갱신한다
+3. 사용자가 원고를 승인하면 오케스트레이터가 마지막 퇴고본을 내용 변경 없이 `{CCC}_final.md`로 저장하고 `continuity-keeper`가 연속성을 갱신한다
 
 **내부 실행 상세:**
 
 **단계 A — 파일럿 (시즌 첫 챕터, 필수):**
 
-1. 시즌 첫 챕터 `001`을 단독으로 전체 파이프라인(초안 → 1차 검수 → 퇴고 → 2차 검수 → 최종화 → 연속성 갱신)에 통과시킨다. 이때 병렬 배치를 시작하지 않는다.
-2. **G5 게이트:** `001_final.md` 경로, 자수, 씬 수, 훅 유형, 핵심 소재 도달 여부, 검수 요약 3줄을 보고하고 정지한다. 본문은 채팅에 출력하지 않는다.
-3. 문체 피드백을 받으면 규칙 형태로 변환해 `P02_bible/voice_profile.md`의 `## 사용자 피드백 보정`에 추가하고 `chapter-prose-reviser`로 001화를 보정한다. 사용자 퇴고 루프에 따라 G5를 다시 제시한다.
-4. 승인 후 `gate_status.md`를 갱신하고 단계 B로 진행한다. 이후 모든 챕터 프롬프트에는 갱신된 `voice_profile.md`를 포함한다.
+1. 시즌 첫 챕터 `001`을 초안 → 1차 검수 → 퇴고 → 2차 검수까지 통과시킨다. **여기서 `{CCC}_final.md`를 만들지 않는다.** 2차 검수가 깨끗해도 최종본은 사용자 승인 후에만 생성한다. 병렬 배치를 시작하지 않는다.
+2. **G5 게이트:** `001_revised.md` 경로, 자수, 씬 수, 훅 유형, 핵심 소재 도달 여부, 검수 요약 3줄을 보고하고 정지한다. 본문은 채팅에 출력하지 않는다.
+3. 사용자 피드백이 오면 사용자 퇴고 루프 절차를 따르고 승인까지 반복한다.
+4. **사용자가 승인하면** 마지막 퇴고본(`{CCC}_revised.md` 또는 `{CCC}_revised{N}.md`)을 내용 변경 없이 `{CCC}_final.md`로 저장한다. 이후 `continuity-keeper`가 연속성을 갱신한다.
+5. `gate_status.md`를 갱신하고 단계 B로 진행한다. 이후 모든 챕터 프롬프트에는 갱신된 `voice_profile.md`를 포함한다.
 
 **단계 B — 배치 집필 (승인된 문체 기준):**
 
@@ -346,15 +356,15 @@ Phase 2~4의 모든 산출물(스토리 바이블·시즌 구조·챕터 플랜)
 3. 모든 병렬 초안이 완성되면 각 `{CCC}_draft.md`를 **순차적으로** `novel-style-guardian`에게 전달한다. 1차 피드백은 `{CCC}_review.md`와 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 저장한다.
 4. `{CCC}_draft.md`와 `{CCC}_review.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_revised.md`를 만든다.
 5. `{CCC}_revised.md`를 `novel-style-guardian`에게 전달해 2차 검수하고 `{CCC}_review2.md`를 만든다.
-6. `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달해 `{CCC}_final.md`를 만든다.
-7. `continuity-keeper`가 `{CCC}_final.md` 기준으로 연속성 레코드와 `glossary.md`를 갱신한다.
+6. `{CCC}_revised.md`와 `{CCC}_review2.md`를 `chapter-prose-reviser`에게 전달한다. 2차 검수에 Critical/Should가 남아 있으면 해당 지적만 최소 수정해 `{CCC}_revised2.md`를 만든다. 잔존 지적이 없으면 `{CCC}_revised.md`를 그대로 둔다. **이 단계에서 `{CCC}_final.md`를 만들지 않는다.**
+7. 배치의 모든 챕터가 위 상태에 도달하면 단계 C로 진행한다. 연속성 갱신은 G6 승인 이후에 수행한다.
 8. Critical 경고는 문체 문제면 `chapter-prose-reviser`, 사건·연속성 문제면 `chapter-novelist`로 라우팅한다. 내부 자동 루프는 최대 2회이며 사용자 퇴고 라운드는 이 상한에 포함하지 않는다.
 
 **단계 C — 배치 게이트:**
 
 1. 3화 배치마다 **G6 게이트**에서 챕터·제목·자수·씬 수·1차 리뷰 Critical/Should 건수·최종 검수 상태·미해결 이슈를 표로 보고하고 정지한다. 시즌 끝의 남은 배치가 1~2화여도 완료 직후 같은 G6를 실행한다.
 2. 직전 배치보다 1차 리뷰 지적 건수가 2배 이상 증가하거나 3개 배치 연속 상승하면 `품질 하락 추세 — 원인(피로 패턴/플랜 밀도 저하) 점검 권고`를 1줄 추가한다.
-3. `계속`이면 `gate_status.md`를 갱신하고 다음 배치로 진행한다. 수정 요청은 사용자 퇴고 루프와 부분 재실행 규칙을 따른다.
+3. 사용자의 `계속`을 배치 승인으로 간주한다. 승인되면 각 챕터의 마지막 퇴고본(`{CCC}_revised.md` 또는 `{CCC}_revised{N}.md`)을 내용 변경 없이 `{CCC}_final.md`로 저장하고, `continuity-keeper`가 챕터 번호 순으로 연속성과 `glossary.md`를 갱신한다. 그 뒤 `gate_status.md`를 갱신하고 다음 배치로 진행한다. 수정 요청은 사용자 퇴고 루프를 따르며, 승인 전에는 어떤 챕터의 `final.md`도 만들지 않는다.
 4. 전역 문체 피드백은 `voice_profile.md`에 추가해 이후 배치에 적용하며, 기존 확정 챕터 소급 여부는 사용자에게 확인한다.
 
 **병렬 → 순차 혼합 이유:** 초안은 병렬로 빠르게 생성하고, 검수·퇴고·연속성 갱신은 순차로 처리해 충돌을 방지한다.
@@ -477,7 +487,6 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 - 자동 생성, 외부 생성 후 배치 대기, 삽화 생략 중 하나를 선택할 수 있게 한다.
 - 일부 이미지만 있으면 누락 슬롯 제외 후 빌드할지 배치까지 기다릴지 확인한다.
 - 모든 슬롯이 승인되고 이미지가 확보되거나 제외가 확정된 뒤 `gate_status.md`를 갱신한다. **시즌제 작품은 Phase 8.7로 진행하고, 단권(`s01` 단독) 작품만 G8로 진행한다.**
-- `auto` 모드라도 누락 이미지가 있으면 이 게이트에서 정지한다.
 
 ---
 
@@ -511,7 +520,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 3. `continuity_log.md`, `timeline.md`, `foreshadowing_tracker.md`의 시즌 N 구간을 `{slug}/P04_continuity/sNN/_archive/`의 시즌별 원본 파일로 추출한다. 새 활성 `continuity_log.md`와 `timeline.md`에는 `season_summary.md` 링크를 남기고, `foreshadowing_tracker.md`에는 요약 링크와 **미회수·이월 복선 행 전체**를 다음 시즌 활성 상태로 보존한다
 4. `character_state_table.md`를 `_archive/character_state_table_sNN_end.md`로 동결 복사한다. 다음 계획 시즌이 있으면 활성 본체의 행과 종료 상태는 유지하고 `최종 업데이트 챕터`만 다음 시즌 시작 상태로 리셋한다. **마지막 계획 시즌이면 최종 챕터 값을 유지하고 리셋하지 않는다**
 5. `glossary.md`에서 본문·계획 어디에도 실제 사용되지 않은 항목과 중복 표기를 정리한 새 파일을 스테이징한다. 향후 시즌 계획에 있는 표기는 미사용으로 보지 않는다. 표준 표기 변경은 자동 적용하지 않고 파급 범위를 보고한다
-6. 시즌 N의 챕터 배관·백업 파일을 아카이브한다. `chapters/{CCC}_draft*.md`, `{CCC}_review*.md`, `{CCC}_revised*.md`, `{CCC}_final_v*.md`를 `chapters/_archive/`로 이동하고 현재 `{CCC}_final.md`만 `chapters/` 직하에 유지한다
+6. 시즌 N의 챕터 배관·백업 파일을 아카이브한다. `chapters/{CCC}_draft*.md`, `{CCC}_review*.md`, `{CCC}_user_review*.md`, `{CCC}_revised*.md`, `{CCC}_final_v*.md`를 `chapters/_archive/`로 이동하고 현재 `{CCC}_final.md`만 `chapters/` 직하에 유지한다
 7. `P00_meta/logs/style_log_sNN.md`와 해당 시즌의 `resolved` Critical 상세를 `P04_continuity/sNN/_archive/`로 이동한다. `critical_status.md`의 `open`·`user_accepted`와 시즌별 건수는 활성 상태로 유지한다
 
 ### 아카이브 트랜잭션 규칙
@@ -573,7 +582,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 | 다음 시즌 성장 방향 | 다음 시즌 있음: 주요 인물 N명 작성 완료 / 마지막 계획 시즌: 해당 없음 (`s{N+1}` 미생성) |
 | Critical 상태 | open 0건 / resolved N건 / user_accepted N건 |
 
-사용자는 신규 인물 카드와 성장 방향을 승인하거나 수정 요청한다. 수정 요청에는 사용자 퇴고 루프를 적용한다. 승인 전 다음 시즌 Phase 3·4를 시작하지 않으며, 승인 후 `gate_status.md`를 갱신한다. 남은 계획 시즌이 있으면 다음 시즌의 Phase 3 상세화 또는 Phase 4로 이동하고, 마지막 계획 시즌까지 완료했을 때만 G8로 진행한다. **`auto` 모드에서도 G7.7은 항상 정지한다.**
+사용자는 신규 인물 카드와 성장 방향을 승인하거나 수정 요청한다. 수정 요청에는 사용자 퇴고 루프를 적용한다. 승인 전 다음 시즌 Phase 3·4를 시작하지 않으며, 승인 후 `gate_status.md`를 갱신한다. 남은 계획 시즌이 있으면 다음 시즌의 Phase 3 상세화 또는 Phase 4로 이동하고, 마지막 계획 시즌까지 완료했을 때만 G8로 진행한다.
 
 ---
 
@@ -634,7 +643,7 @@ Phase 6에서 검수가 이미 챕터별로 이루어졌으나, 이 Phase에서�
 
 파일명 컨벤션:
 - Phase 산출물: `{NN}_{artifact}.md` (NN = Phase 번호 2자리)
-- 챕터: `{CCC}_draft.md` / `{CCC}_review.md` / `{CCC}_revised.md` / `{CCC}_review2.md` / `{CCC}_final.md` (CCC = 시즌 내 3자리 제로 패딩, 시즌별 리셋)
+- 챕터: `{CCC}_draft.md` / `{CCC}_review.md` / `{CCC}_revised.md` / `{CCC}_review2.md` / `{CCC}_user_review{N}.md` / `{CCC}_revised{N}.md` / `{CCC}_final.md` (CCC = 시즌 내 3자리 제로 패딩, 시즌별 리셋. 사용자 피드백 N은 1부터, 대응 퇴고본 번호는 2부터 시작)
 - 시즌 설계 경로: `P03_planning/s{NN}/`, 챕터 원고·연속성 경로: `P04_continuity/s{NN}/`, 시즌 통합 원고 경로: `P05_manuscript/s{NN}/` (NN = 2자리 제로 패딩)
 
 ---
