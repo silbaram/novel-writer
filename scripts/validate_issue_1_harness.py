@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate static harness criteria from issues #1 and #2."""
+"""Validate static harness criteria from issues #1 through #3."""
 
 from __future__ import annotations
 
@@ -117,7 +117,123 @@ def main() -> int:
         "proofread_log.md",
         "glossary.md",
     )
-    forbid(orchestrator, "Codex", "gpt-5")
+    # Issue #3 — approval-owned final files, reusable user reviews, and mandatory gates.
+    forbid(orchestrator, "Codex", "gpt-5", "진행 모드", "auto")
+    require(
+        orchestrator,
+        "{CCC}_user_review{N}.md",
+        "### final 생성 이후의 수정",
+        "승인 시 final 생성",
+        "승인 전에는 `_v{N}` 백업을 만들지 않는다",
+        "승인 시 배치 final 일괄 생성",
+        "{CCC}_user_review*.md",
+        "*_user_review*.md",
+    )
+    gate_definition_issue_3 = section(
+        orchestrator, "### 게이트 정의", "### 게이트 상태 파일"
+    )
+    for needle in (
+        "| G5 | 1화 파일럿 2차 검수 완료 후 | 정지 |",
+        "승인 시 final 생성",
+        "| G6 | 이후 3화 배치마다 | 정지 |",
+        "승인 시 배치 final 일괄 생성",
+        "위 게이트는 전부 적용한다. 건너뛰기 옵션은 없다",
+    ):
+        if needle not in gate_definition_issue_3:
+            failures.append(f"{orchestrator}: issue #3 gate contract missing {needle!r}")
+    user_revision = section(
+        orchestrator, "### 사용자 퇴고 루프", "### final 생성 이후의 수정"
+    )
+    for needle in (
+        "원문 인용·문제 유형·보존해야 할 의도·퇴고 방향",
+        "사용자 발언 원문도 함께 남긴다",
+        "{CCC}_user_review{N}.md",
+        "{CCC}_revised2.md",
+        "{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md",
+        "사건·전개·씬 구조",
+        "voice_profile.md",
+        "story-bible-planner",
+        "style_log_sNN.md",
+        "승인 전에는 `_v{N}` 백업을 만들지 않는다",
+    ):
+        if needle not in user_revision:
+            failures.append(f"{orchestrator}: issue #3 user-review contract missing {needle!r}")
+    post_final_revision = section(
+        orchestrator, "### final 생성 이후의 수정", "## 실행 모드 요약"
+    )
+    for needle in (
+        "{CCC}_final_v{N}.md",
+        "### 승인 후 수정 이력",
+        "| 라운드 | 일시 | 게이트 | 요청 내용 | 변경 범위 | 백업 |",
+        "continuity-keeper",
+        "재승인을 받는다",
+        "`_v{N}`은 승인 후 수정에만 쓴다",
+    ):
+        if needle not in post_final_revision:
+            failures.append(f"{orchestrator}: issue #3 post-final contract missing {needle!r}")
+    phase_6_issue_3 = section(orchestrator, "## Phase 6", "## Phase 7")
+    for needle in (
+        "여기서 `{CCC}_final.md`를 만들지 않는다",
+        "**G5 게이트:** `001_revised.md` 경로",
+        "사용자가 승인하면",
+        "내용 변경 없이 `{CCC}_final.md`로 저장",
+        "연속성 갱신은 G6 승인 이후에 수행한다",
+        "사용자의 `계속`을 배치 승인으로 간주한다",
+        "승인 전에는 어떤 챕터의 `final.md`도 만들지 않는다",
+    ):
+        if needle not in phase_6_issue_3:
+            failures.append(f"{orchestrator}: issue #3 Phase 6 contract missing {needle!r}")
+    require_order(
+        orchestrator,
+        "**단계 A — 파일럿 (시즌 첫 챕터, 필수):**",
+        "**단계 B — 배치 집필 (승인된 문체 기준):**",
+        "**단계 C — 배치 게이트:**",
+    )
+    require(
+        ".claude/agents/chapter-prose-reviser.md",
+        "2차 리뷰에 잔존 지적이 있거나 사용자 피드백이 수정을 요구하면",
+        "Critical/Should가 없으면 새 파일을 만들지 않고 기존 `{CCC}_revised.md`",
+        "{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md",
+        "기존 파일을 덮어쓰지 않고 다음 미사용 번호",
+    )
+    forbid(".claude/agents/chapter-prose-reviser.md", "{CCC}_final.md")
+    require(
+        ".claude/skills/novel-prose-revision/SKILL.md",
+        "`{CCC}_revised.md` 또는 마지막 `{CCC}_revised{N}.md`",
+        "{CCC}_user_review{N}.md",
+        "Critical/Should가 없으면 새 파일을 만들지 않고 기존 `{CCC}_revised.md`",
+        "{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md",
+    )
+    forbid(".claude/skills/novel-prose-revision/SKILL.md", "### 최종화", "{CCC}_final.md")
+    require(
+        ".claude/agents/chapter-novelist.md",
+        "사용자 승인 후 최종본 생성은 오케스트레이터가 담당",
+        "직전 퇴고본(`{CCC}_revised.md` 또는 `{CCC}_revised{N}.md`)을 보존",
+    )
+    forbid(
+        ".claude/agents/chapter-novelist.md",
+        "최종본 생성은 `chapter-prose-reviser`가 담당",
+        "`{CCC}_draft_v1.md`로 백업 후 신규 작성",
+    )
+    require(
+        ".claude/skills/novel-chapter-writing/SKILL.md",
+        "사용자 승인 후 최종본 생성은 오케스트레이터가 담당",
+    )
+    forbid(
+        ".claude/skills/novel-chapter-writing/SKILL.md",
+        "최종본 생성은 `chapter-prose-reviser`",
+        "`chapter-prose-reviser`가 생성한다",
+    )
+    require(
+        ".claude/agents/novel-style-guardian.md",
+        "미해결 기록 후 사용자 게이트 전달",
+        "사용자 승인 전에는 최종본 생성을 요청하지 않는다",
+    )
+    forbid(
+        ".claude/agents/novel-style-guardian.md",
+        "미해결 기록 후 최종화",
+        "최종화 판단을 요청한다",
+    )
 
     require(
         "style-guides/lightnovel-style-guide.md",
@@ -167,12 +283,11 @@ def main() -> int:
         "P04_continuity/sNN/_archive/",
         "P04_continuity/sNN/chapters/_archive/",
         "rollup_log.md",
-        "`auto` 모드에서도 G7.7은 항상 정지",
         "인물 추가·카드 수정",
         "아카이브된 시즌이면 `_archive/`에서 해당 챕터 배관 파일을 먼저 복원",
     )
     require_order(orchestrator, "## Phase 8.5", "## Phase 8.7", "## Phase 9")
-    gate_definition = section(orchestrator, "### 게이트 정의", "### 진행 모드")
+    gate_definition = section(orchestrator, "### 게이트 정의", "### 게이트 상태 파일")
     if "| G7.7 | Phase 8.7 완료 후 | 정지 |" not in gate_definition:
         failures.append(f"{orchestrator}: gate definition missing exact G7.7 stop row")
     gate_status = section(orchestrator, "### 게이트 상태 파일", "### 사용자 퇴고 루프")
@@ -296,6 +411,7 @@ def main() -> int:
         "인물 카드 갱신을 포함한 어떤 쓰기도 시작하지 않는다",
         "미회수·이월 복선 행 전체",
         "{CCC}_draft*.md",
+        "{CCC}_user_review*.md",
         "{CCC}_final_v*.md",
         "카드·색인·관계·용어집·추적·Critical 상태 파일",
         "현재 및 향후 시즌 계획 어디에도 쓰이지 않은 용어",
@@ -338,8 +454,8 @@ def main() -> int:
         return 1
 
     print(
-        "Issue #1 WP1-WP12 and issue #2 WP15-WP20 static acceptance criteria passed. "
-        "WP21 actual pilot A/B is not covered."
+        "Issue #1 WP1-WP12, issue #2 WP15-WP20, and issue #3 WP22-WP25 "
+        "static acceptance criteria passed. WP21 and issue #3 actual pilot behavior are not covered."
     )
     return 0
 

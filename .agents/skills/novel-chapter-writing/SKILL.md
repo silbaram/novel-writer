@@ -5,7 +5,7 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 
 # Novel Chapter Writing
 
-라이트노벨/웹소설의 챕터 초안을 저술하는 절차 가이드다. `chapter-novelist`가 이 스킬을 참조한다. 스타일 리뷰 이후의 문장 퇴고와 최종본 생성은 `chapter-prose-reviser`와 `novel-prose-revision`이 담당한다.
+라이트노벨/웹소설의 챕터 초안을 저술하는 절차 가이드다. `chapter-novelist`가 이 스킬을 참조한다. 스타일 리뷰 이후의 문장 퇴고는 `chapter-prose-reviser`와 `novel-prose-revision`이 담당하고, 사용자 승인 후 최종본 생성은 오케스트레이터가 담당한다.
 
 ---
 
@@ -241,7 +241,7 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 
 저자 노트는 독자에게 보이지 않는 내부 메타데이터다. `novel-editor`가 통합 원고 생성 시 제거하고, `continuity-keeper`가 복선·연속성 갱신에 활용한다.
 
-최종본(`{CCC}_final.md`)은 스타일 리뷰와 퇴고를 거친 뒤 `chapter-prose-reviser`가 생성한다.
+최종본(`{CCC}_final.md`)은 스타일 리뷰와 퇴고를 거친 원고를 사용자가 승인한 뒤 오케스트레이터가 마지막 퇴고본의 내용을 변경하지 않고 생성한다.
 
 ---
 
@@ -275,4 +275,4 @@ description: Use to write a Korean light novel chapter draft from story bible, s
 | 챕터 플랜이 없거나 해당 섹션 비어 있음 | 오케스트레이터에 Phase 4 미완료 보고, 집필 대기 |
 | `[LOCKED]` 설정과 챕터 플랜 충돌 | 오케스트레이터와 `story-bible-planner`에게 보고, 집필 중단 |
 | 레퍼런스에 없는 사실이 필요한 경우 | `(설정 확인 필요)` 표기 후 계속 작성, 저자 노트에 기록 |
-| 스타일 리뷰 피드백이 직접 들어옴 | 최종본을 작성하지 않고 오케스트레이터에 `chapter-prose-reviser` 라우팅 필요를 보고 |
+| 스타일 리뷰 피드백이 직접 들어옴 | 퇴고본을 직접 작성하지 않고 오케스트레이터에 `chapter-prose-reviser` 라우팅 필요를 보고 |

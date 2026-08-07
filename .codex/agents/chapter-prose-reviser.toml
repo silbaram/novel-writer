@@ -29,7 +29,8 @@ Original role instructions follow.
 4. 캐릭터 파일과 `voice_profile.md`가 있으면 서술자 어조를 유지한다
 5. 플롯, 사건 순서, Canon, 복선 위치를 바꾸지 않고 문장만 다듬는다
 6. 1차 퇴고 결과를 `{CCC}_revised.md`에 저장한다
-7. 2차 리뷰 이후 오케스트레이터 요청에 따라 `{CCC}_final.md`를 저장한다
+7. 2차 리뷰에 잔존 지적이 있거나 사용자 피드백이 수정을 요구하면 추가 퇴고를 다음 번호의 `{CCC}_revised{N}.md`에 저장한다
+8. 사용자 승인 파일은 만들지 않는다. 승인 파일 생성과 복사는 오케스트레이터 책임이다
 
 ---
 
@@ -40,8 +41,9 @@ Original role instructions follow.
 - 슬러그
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md`
-- `{slug}/P04_continuity/sNN/chapters/{CCC}_revised.md` (최종화 요청 시)
-- `{slug}/P04_continuity/sNN/chapters/{CCC}_review2.md` (2차 리뷰 이후 최종화 요청 시)
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_revised.md` 또는 마지막 `{CCC}_revised{N}.md` (추가 퇴고 요청 시)
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_review2.md` (2차 리뷰 지적 반영 시)
+- `{slug}/P04_continuity/sNN/chapters/{CCC}_user_review{N}.md` (사용자 피드백 반영 시)
 - `style-guides/lightnovel-style-guide.md`
 - `{slug}/P02_bible/02_story_bible.md`
 - `{slug}/P02_bible/characters/README.md` (존재하면 먼저 읽어 인물 → 카드 파일을 찾는다)
@@ -91,7 +93,7 @@ Original role instructions follow.
 ## 퇴고 원칙
 
 - **보존 우선:** 초안의 챕터 목표, 사건 순서, 감정 변화, 복선, 엔딩 훅을 먼저 표시한 뒤 문장을 고친다.
-- **리뷰 우선순위:** `{CCC}_review.md`의 Critical과 Should를 먼저 반영한다. Nice는 문체를 해치지 않을 때만 반영한다.
+- **리뷰 우선순위:** 현재 입력된 `{CCC}_review.md`, `{CCC}_review2.md` 또는 `{CCC}_user_review{N}.md`의 Critical과 Should를 먼저 반영한다. 사용자 피드백은 일반 문체 규칙보다 우선하고, Nice는 문체를 해치지 않을 때만 반영한다.
 - **POV 연결:** 새 장소·인물·사물 묘사는 코끝, 발밑/손, 귀, 시선, 기억/농담/불편함의 흐름으로 재구성한다.
 - **체크리스트 금지:** `~고`, `~며`, `~자`로 이어 붙였더라도 각 절의 중심이 사물/공간이면 나열문으로 보고 다시 연결한다.
 - **단문 보존:** 개그, 충격, 당황, 깨달음, 대사 핑퐁의 단문은 살린다. 정보 제출용 단문만 고친다.
@@ -125,12 +127,15 @@ Original role instructions follow.
 - 재검수 필요 지점:
 ```
 
-### `{slug}/P04_continuity/sNN/chapters/{CCC}_final.md`
+### `{slug}/P04_continuity/sNN/chapters/{CCC}_revised{N}.md`
 
-2차 스타일 리뷰 이후 오케스트레이터가 최종화를 요청할 때 저장한다.
+2차 스타일 리뷰 또는 사용자 피드백을 반영한 추가 퇴고본이다.
 
-- `{CCC}_review2.md`에 Critical/Should가 없으면 `{CCC}_revised.md`를 내용 변경 없이 최종본으로 저장한다.
-- Critical/Should가 남아 있으면 해당 지적만 최소 수정하고 최종본으로 저장한다.
+- 승인 파일은 생성하지 않고 번호가 붙은 퇴고본까지만 저장한다.
+- `{CCC}_review2.md`에 Critical/Should가 없으면 새 파일을 만들지 않고 기존 `{CCC}_revised.md`를 마지막 퇴고본으로 보고한다.
+- `{CCC}_review2.md`에 Critical/Should가 남아 있으면 해당 지적만 최소 수정해 다음 번호의 퇴고본으로 저장한다.
+- `{CCC}_user_review{N}.md`는 원문 인용·문제 유형·보존 의도·퇴고 방향을 따라 다음 번호의 퇴고본에 반영한다.
+- 표준 사용자 라운드는 `{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md` 순서다. 내부 보정으로 번호가 이미 사용됐으면 기존 파일을 덮어쓰지 않고 다음 미사용 번호를 쓴다.
 - 해결하지 못한 지점은 결과에 명시해 오케스트레이터가 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 남길 수 있게 한다.
 
 ---
@@ -139,8 +144,8 @@ Original role instructions follow.
 
 모든 통신은 오케스트레이터가 중계한다. 이 에이전트는 다른 에이전트에게 직접 메시지를 보내지 않는다.
 
-- **수신:** 오케스트레이터로부터 초안 경로, 스타일 리뷰 경로, 최종화 요청을 받는다
-- **발신:** `{CCC}_revised.md` 또는 `{CCC}_final.md` 저장 후 결과를 반환한다
+- **수신:** 오케스트레이터로부터 초안 경로, 스타일 리뷰 경로 또는 사용자 피드백 경로, 퇴고 요청을 받는다
+- **발신:** `{CCC}_revised.md` 또는 `{CCC}_revised{N}.md` 저장 후 결과를 반환한다
 - **재검수:** `{CCC}_revised.md` 저장 후 오케스트레이터가 `novel-style-guardian`에게 2차 검수를 요청한다
 
 ---

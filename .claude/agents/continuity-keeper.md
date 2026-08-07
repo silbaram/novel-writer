@@ -141,7 +141,7 @@ Phase 8.7 롤업 모드에서는 다음 파일도 생성·갱신한다.
 4. `season_summary.md`에 사건 라인, 인물 변화, 복선 상태, 주요 타임라인, 다음 시즌 이월 사항을 작성한다. 이월 복선은 전부 보존하고 목표 크기는 5KB 이내로 한다
 5. **사전 검사:** 카드·색인·관계·용어집·요약·Critical 상태·추적 파일·챕터 배관·백업·스타일 로그의 정확한 대상과 목적지를 나열하고, 일반 파일 여부, 심볼릭 링크, 기존 목적지 충돌을 쓰기 전에 검사한다
 6. 본문·현재 및 향후 시즌 계획 어디에도 쓰이지 않은 용어와 중복 표기만 정리한 `glossary.md`를 만든다. 표준 표기 변경은 자동 적용하지 않는다. 추적 원본과 `season_summary.md`, `critical_status_sNN.md`, 갱신된 카드·색인·관계·용어집 파일, 새 활성 추적 파일·`critical_status.md` 전체를 `_archive/.staging/new-active/`에 프로젝트 상대 경로 그대로 작성한다. 새 활성 `foreshadowing_tracker.md`에는 요약 링크와 **미회수·이월 복선 행 전체**를 유지한다. 원본 바이트·항목 수·이월 복선 수·Critical 상태별 수를 검증한다
-7. 챕터의 `{CCC}_draft*.md`, `{CCC}_review*.md`, `{CCC}_revised*.md`, `{CCC}_final_v*.md`와 `style_log_sNN.md`를 아카이브한다. 각 조작 전에 `rollup_log.md`의 `pending` 항목을 저장하고 예상 바이트를 기록한 뒤 한 파일씩 이동하며, 성공한 항목만 `done`으로 바꾼다
+7. 챕터의 `{CCC}_draft*.md`, `{CCC}_review*.md`, `{CCC}_user_review*.md`, `{CCC}_revised*.md`, `{CCC}_final_v*.md`와 `style_log_sNN.md`를 아카이브한다. 각 조작 전에 `rollup_log.md`의 `pending` 항목을 저장하고 예상 바이트를 기록한 뒤 한 파일씩 이동하며, 성공한 항목만 `done`으로 바꾼다
 8. 교체할 기존 카드·색인·관계·용어집·활성 추적·Critical 상태 파일을 `_archive/pre_rollup_snapshot/`의 프로젝트 상대 경로로 이동한 뒤 `new-active/` 파일을 최종 경로로 하나씩 승격한다. 신규 파일은 기존 스냅샷이 없음을 저널에 기록한다. 다음 계획 시즌이 있으면 `character_state_table.md`의 인물 행은 유지하고 `최종 업데이트 챕터`만 리셋한다. **마지막 계획 시즌이면 최종 챕터 값을 유지하고 리셋하지 않는다**
 9. **커밋 롤백:** 어느 조작에서든 실패하면 저널을 역순으로 실행한다. 승격한 새 파일을 `new-active/`로 되돌리고 `pre_rollup_snapshot/`의 카드·색인·관계·용어집·추적·Critical 상태 파일과 먼저 이동한 챕터 배관·백업·스타일 로그를 모두 원래 위치로 복원한다. 완전 롤백 전에는 재시도하지 않는다
 10. 전 이동, 활성 미회수 복선, Critical 집계, 신규·교체 파일을 검증한 뒤에만 아카이브 건수, 활성 파일 수 변화, 원본/요약 바이트, 압축률과 `committed` 상태를 `rollup_log.md`에 append한다. `pre_rollup_snapshot/`은 복구 감사 자료로 보존한다

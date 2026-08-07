@@ -15,6 +15,7 @@ description: Use to revise Korean light novel prose after a style review, focusi
 
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_draft.md`
 - `{slug}/P04_continuity/sNN/chapters/{CCC}_review.md`
+- 추가 퇴고 시 `{CCC}_revised.md` 또는 마지막 `{CCC}_revised{N}.md`와 `{CCC}_review2.md` 또는 `{CCC}_user_review{N}.md`
 - `style-guides/lightnovel-style-guide.md`
 - `{slug}/P02_bible/02_story_bible.md`
 - `{slug}/P02_bible/characters/README.md`가 있으면 먼저 읽고, 퇴고 대상 챕터의 등장인물 카드만 선택한다. `README.md`가 없는 12명 이하 레거시 구조에서만 `supporting.md`를 읽으며 무관한 `supporting_sNN.md`는 열지 않는다.
@@ -46,7 +47,7 @@ description: Use to revise Korean light novel prose after a style review, focusi
 
 ### 단계 2 — 리뷰 지시 분해
 
-`{CCC}_review.md`의 Critical과 Should를 우선 반영한다. Nice는 문체를 해치지 않고 자연스럽게 들어갈 때만 반영한다.
+현재 입력된 `{CCC}_review.md`, `{CCC}_review2.md` 또는 `{CCC}_user_review{N}.md`의 Critical과 Should를 우선 반영한다. 사용자 피드백은 일반 문체 규칙보다 우선하고, Nice는 문체를 해치지 않고 자연스럽게 들어갈 때만 반영한다.
 
 각 지적은 아래처럼 해석한다.
 
@@ -150,14 +151,17 @@ D가 달려 있었다 → D가 움직임에 맞춰 흔들렸다
 - 재검수 필요 지점:
 ```
 
-### 최종화
+### 추가 퇴고
 
-2차 스타일 리뷰(`{CCC}_review2.md`) 이후 오케스트레이터가 최종화를 요청하면 아래 규칙을 따른다.
+2차 스타일 리뷰 또는 사용자 피드백을 반영할 때 아래 규칙을 따른다.
 
-- Critical/Should가 없으면 `{CCC}_revised.md`를 내용 변경 없이 `{CCC}_final.md`로 저장한다.
-- Critical/Should가 있으면 해당 지적만 최소 수정하고 `{CCC}_final.md`로 저장한다.
+- 승인 파일 생성은 오케스트레이터 책임이다. 이 스킬은 번호가 붙은 퇴고본까지만 생성한다.
+- `{CCC}_review2.md`에 Critical/Should가 없으면 새 파일을 만들지 않고 기존 `{CCC}_revised.md`를 마지막 퇴고본으로 유지한다.
+- `{CCC}_review2.md`에 Critical/Should가 있으면 해당 지적만 최소 수정하고 다음 번호의 `{CCC}_revised{N}.md`로 저장한다.
+- `{CCC}_user_review{N}.md`는 원문 인용·문제 유형·보존 의도·퇴고 방향을 따라 다음 번호의 `{CCC}_revised{N}.md`에 반영한다.
+- 표준 사용자 라운드는 `{CCC}_user_review1.md → {CCC}_revised2.md → {CCC}_user_review2.md → {CCC}_revised3.md` 순서다. 내부 보정으로 번호가 이미 사용됐으면 기존 파일을 덮어쓰지 않고 다음 미사용 번호를 쓴다.
 - 해결하지 못한 지점은 현재 시즌의 `P00_meta/logs/style_log_sNN.md`에 남기도록 오케스트레이터에 보고한다.
-- `{CCC}_final.md`에도 저자 노트는 유지한다. `continuity-keeper`와 `novel-editor`가 참조한다.
+- 기존 저자 노트와 `### 퇴고 요약`은 유지·갱신한다.
 
 ---
 
